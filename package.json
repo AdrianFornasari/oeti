@@ -1,0 +1,20 @@
+{
+  "name": "onehealth-emerging-threat-intelligence",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace apps/web run dev",
+    "build:web": "npm --workspace apps/web run build",
+    "lint:web": "npm --workspace apps/web run lint",
+    "supabase:start": "npx supabase start",
+    "supabase:stop": "npx supabase stop",
+    "supabase:reset": "npx supabase db reset",
+    "supabase:test": "npx supabase test db"
+  },
+  "devDependencies": {
+    "supabase": "2.117.0"
+  }
+}

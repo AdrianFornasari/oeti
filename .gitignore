@@ -1,0 +1,25 @@
+# Node
+node_modules/
+.next/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Supabase local state
+supabase/.branches/
+supabase/.temp/
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db
