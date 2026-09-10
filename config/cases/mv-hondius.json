@@ -1,0 +1,37 @@
+{
+  "case_code": "ARG-HANTA-MV-HONDIUS-2026",
+  "title": "Hantavirus / MV Hondius - reconstrucción retrospectiva",
+  "purpose": "Primer caso vertical para validar ingesta, trazabilidad y posterior extracción de señales One Health.",
+  "targets": [
+    {
+      "source_code": "ARG_MSAL_NEWS",
+      "url": "https://www.argentina.gob.ar/noticias/salud-monitorea-junto-organismos-internacionales-los-casos-de-hantavirus-reportados-en-el",
+      "label": "Notificación inicial y monitoreo nacional - 04/05/2026"
+    },
+    {
+      "source_code": "ARG_MSAL_NEWS",
+      "url": "https://www.argentina.gob.ar/noticias/actualizacion-del-boletin-epidemiologico-nacional-de-la-semana-ndeg-17",
+      "label": "BEN SE17 - 12/05/2026"
+    },
+    {
+      "source_code": "ARG_MSAL_NEWS",
+      "url": "https://www.argentina.gob.ar/node/502023",
+      "label": "BEN SE18 - 19/05/2026"
+    },
+    {
+      "source_code": "ARG_MSAL_NEWS",
+      "url": "https://www.argentina.gob.ar/noticias/actualizacion-del-boletin-epidemiologico-nacional-de-la-semana-ndeg-19",
+      "label": "BEN SE19 - 26/05/2026"
+    },
+    {
+      "source_code": "ARG_ANLIS_NEWS",
+      "url": "https://www.argentina.gob.ar/noticias/anlis-malbran-identifico-hantavirus-en-roedores-de-tierra-del-fuego-sin-relacion-con-el-0",
+      "label": "Roedores Tierra del Fuego - evidencia genómica no relacionada - 29/06/2026"
+    },
+    {
+      "source_code": "ARG_ANLIS_NEWS",
+      "url": "https://www.argentina.gob.ar/noticias/especialistas-de-la-anlis-malbran-no-identificaron-hantavirus-en-roedores-capturados-en",
+      "label": "Roedores Mendoza - evidencia negativa - 08/07/2026"
+    }
+  ]
+}

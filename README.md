@@ -62,3 +62,15 @@ python -m onehealth_worker
 ## Siguiente objetivo
 
 Construir el primer pipeline real sobre una publicación oficial argentina relacionada con hantavirus/MV Hondius: **fetch -> raw_item -> extractor -> signal -> validación -> persistencia**.
+
+## Sprint 1B - ingesta Argentina-first
+
+La versión 0.2 agrega el primer pipeline real de ingesta de páginas oficiales argentinas y un manifiesto retrospectivo del caso hantavirus / MV Hondius.
+
+Flujo implementado:
+
+`URL oficial -> raw_item -> raw_item_payload`
+
+La generación de `signals` queda deliberadamente fuera de este sprint y se implementará en Sprint 1C.
+
+Ver `docs/sprint-1b-ingestion.md` y `services/worker/README.md`.
