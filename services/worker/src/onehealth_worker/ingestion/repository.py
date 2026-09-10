@@ -54,6 +54,37 @@ class IngestionRepository:
                 )
                 existing = cur.fetchone()
                 if existing:
+                    # Same source + same normalized body = same raw document.
+                    # Do not create a duplicate, but refresh parser-derived metadata.
+                    # This is important when parser improvements fix title/date/language
+                    # without changing the underlying article body/hash.
+                    refreshed_metadata = dict(parsed.metadata)
+                    refreshed_metadata["last_seen_at"] = fetched.retrieved_at.isoformat()
+                    refreshed_metadata["deduplication"] = "same_source_same_normalized_text"
+
+                    cur.execute(
+                        """
+                        update public.raw_items
+                        set
+                          url = %s,
+                          title = coalesce(%s, title),
+                          published_at = coalesce(%s, published_at),
+                          language = coalesce(%s, language),
+                          mime_type = coalesce(%s, mime_type),
+                          metadata = coalesce(metadata, '{}'::jsonb) || %s::jsonb
+                        where id = %s
+                        """,
+                        (
+                            parsed.url,
+                            parsed.title,
+                            parsed.published_at,
+                            parsed.language,
+                            mime_type,
+                            json.dumps(refreshed_metadata, ensure_ascii=False),
+                            existing["id"],
+                        ),
+                    )
+                    conn.commit()
                     return str(existing["id"]), False
 
                 cur.execute(

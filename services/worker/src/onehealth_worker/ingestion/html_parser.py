@@ -57,20 +57,38 @@ def _find_published_at(soup: BeautifulSoup, visible_text: str) -> datetime | Non
 
 
 def _extract_title(soup: BeautifulSoup) -> str | None:
-    h1 = soup.find("h1")
-    if h1:
-        title = " ".join(h1.stripped_strings).strip()
-        if title:
-            return title
+    # Prefer explicit page metadata: government sites may expose a site-wide H1
+    # (for example, "Presidencia de la Nación") before the article headline.
     for selector in (
         ('meta[property="og:title"]', "content"),
         ('meta[name="twitter:title"]', "content"),
     ):
         node = soup.select_one(selector[0])
         if node and node.get(selector[1]):
-            return str(node.get(selector[1])).strip()
+            title = str(node.get(selector[1])).strip()
+            if title:
+                return title
+
+    # Then prefer headings scoped to the actual content container.
+    for selector in ("article h1", "main h1"):
+        node = soup.select_one(selector)
+        if node:
+            title = " ".join(node.stripped_strings).strip()
+            if title:
+                return title
+
+    # Generic fallback for sites without article/main semantics.
+    h1 = soup.find("h1")
+    if h1:
+        title = " ".join(h1.stripped_strings).strip()
+        if title:
+            return title
+
     if soup.title and soup.title.string:
-        return soup.title.string.strip()
+        title = soup.title.string.strip()
+        if title.endswith(" | Argentina.gob.ar"):
+            title = title.removesuffix(" | Argentina.gob.ar").strip()
+        return title
     return None
 
 
@@ -116,7 +134,7 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
         metadata={
             "http_status": fetched.status_code,
             "response_headers": fetched.headers,
-            "parser": "beautifulsoup-html-v0.2",
+            "parser": "beautifulsoup-html-v0.2.1",
             "paragraph_count": len(unique_paragraphs),
         },
     )

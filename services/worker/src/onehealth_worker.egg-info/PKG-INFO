@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: onehealth-worker
+Version: 0.2.2
+Summary: Ingestion and extraction worker for One Health Emerging Threat Intelligence
+Requires-Python: >=3.12
+Requires-Dist: beautifulsoup4<5,>=4.13
+Requires-Dist: httpx<1,>=0.28
+Requires-Dist: pydantic<3,>=2.11
+Requires-Dist: pydantic-settings<3,>=2.10
+Requires-Dist: psycopg[binary]<4,>=3.2
+Requires-Dist: tenacity<10,>=9
+Provides-Extra: test
+Requires-Dist: pytest<9,>=8.4; extra == "test"
