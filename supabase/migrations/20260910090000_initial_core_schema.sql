@@ -81,6 +81,7 @@ for each row execute function public.set_updated_at();
 
 create table public.raw_items (
   id uuid primary key default gen_random_uuid(),
+  source_id uuid not null references public.sources(id) on delete restrict,
   external_id text,
   url text not null,
   title text,
