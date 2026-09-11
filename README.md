@@ -74,3 +74,9 @@ Flujo implementado:
 La generación de `signals` queda deliberadamente fuera de este sprint y se implementará en Sprint 1C.
 
 Ver `docs/sprint-1b-ingestion.md` y `services/worker/README.md`.
+
+## Sprint 1C - structured signal extraction
+
+OETI now includes an auditable epidemiological extraction boundary: `raw_item_payload -> Structured Output JSON -> schema validation -> catalog resolution -> signals/evidence`. See `docs/sprint-1c-signal-extraction.md`.
+
+Before first use, apply migration `20260910183000_signal_extraction_runs.sql` and configure `LLM_API_KEY` only in the root `.env`.

@@ -4,12 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "onehealth-worker"
-version = "0.2.2"
-description = "Ingestion and extraction worker for One Health Emerging Threat Intelligence"
+version = "0.3.0"
+description = "Ingestion and structured epidemiological extraction worker for One Health Emerging Threat Intelligence"
 requires-python = ">=3.12"
 dependencies = [
   "beautifulsoup4>=4.13,<5",
   "httpx>=0.28,<1",
+  "jsonschema[format]>=4.25,<5",
   "pydantic>=2.11,<3",
   "pydantic-settings>=2.10,<3",
   "psycopg[binary]>=3.2,<4",

@@ -8,6 +8,13 @@ src/onehealth_worker.egg-info/SOURCES.txt
 src/onehealth_worker.egg-info/dependency_links.txt
 src/onehealth_worker.egg-info/requires.txt
 src/onehealth_worker.egg-info/top_level.txt
+src/onehealth_worker/extraction/__init__.py
+src/onehealth_worker/extraction/file_pipeline.py
+src/onehealth_worker/extraction/openai_provider.py
+src/onehealth_worker/extraction/pipeline.py
+src/onehealth_worker/extraction/prompt.py
+src/onehealth_worker/extraction/repository.py
+src/onehealth_worker/extraction/schema.py
 src/onehealth_worker/ingestion/__init__.py
 src/onehealth_worker/ingestion/content.py
 src/onehealth_worker/ingestion/html_parser.py
@@ -15,4 +22,7 @@ src/onehealth_worker/ingestion/http_client.py
 src/onehealth_worker/ingestion/models.py
 src/onehealth_worker/ingestion/pipeline.py
 src/onehealth_worker/ingestion/repository.py
+tests/test_extraction_prompt.py
+tests/test_extraction_schema.py
 tests/test_html_parser.py
+tests/test_openai_provider.py

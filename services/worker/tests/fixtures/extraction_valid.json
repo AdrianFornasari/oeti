@@ -1,0 +1,111 @@
+{
+  "schema_version": "0.3",
+  "document": {
+    "raw_item_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3",
+    "language": "es",
+    "document_date": "2026-05-04"
+  },
+  "signals": [
+    {
+      "local_signal_id": "S1",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.8
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.7
+      },
+      "hosts": [
+        {
+          "verbatim": "pasajero",
+          "canonical_name": null,
+          "host_type": "human",
+          "confidence": 0.8
+        }
+      ],
+      "locations": [
+        {
+          "country": "Cabo Verde",
+          "country_iso2": "CV",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "role": "current_location",
+          "precision": "country",
+          "confidence": 0.8
+        }
+      ],
+      "event_date": {
+        "start": "2026-05-02",
+        "end": null,
+        "precision": "day"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "confirmed_cases",
+          "value_numeric": 1,
+          "value_text": null,
+          "unit": "persons",
+          "as_of_date": "2026-05-02",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "El 2 de mayo"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Un pasajero tuvo confirmación laboratorial de hantavirus.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "un pasajero con confirmación laboratorial de hantavirus",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.8
+    }
+  ],
+  "warnings": []
+}

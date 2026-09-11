@@ -69,3 +69,30 @@ order by r.published_at nulls last, r.retrieved_at;
 ```
 
 El texto completo está en `raw_item_payloads` y no tiene política de lectura para clientes autenticados.
+
+## Signal extraction (Sprint 1C)
+
+Dry extraction without database writes:
+
+```powershell
+python -m onehealth_worker extract-raw-item --raw-item-id RAW_UUID --no-persist --output .\tmp\extraction.json
+```
+
+Validate a saved structured output:
+
+```powershell
+python -m onehealth_worker validate-extraction --file .\tmp\extraction.json
+```
+
+Persist an approved output:
+
+```powershell
+python -m onehealth_worker persist-extraction --file .\tmp\extraction.json --provider openai_reviewed --model gpt-5.4-mini
+```
+
+The LLM output is not trusted directly: it must satisfy `shared/schemas/signal-extractor-v0.1.schema.json`, match the requested `raw_item_id`, and is then normalized/persisted by server-side code.
+
+
+## Semantic extraction v0.3.4
+
+See `docs/sprint-1c-semantic-refinement-v0.3.4.md`. Run extraction with `--no-persist` first; review `signal_role`, `location.role`, `reference_period`, metric attribution, and conservative pathogen normalization before persistence.

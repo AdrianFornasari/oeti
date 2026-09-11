@@ -1,17 +1,17 @@
-# OETI Sprint 1B — duplicate metadata refresh v0.2.2
+# OETI Sprint 1C — temporal precision fix v0.3.3
 
-This patch keeps content-hash deduplication but changes duplicate handling:
+Corrige el caso real en que el extractor devuelve un año (por ejemplo `2004`) en `metrics[].as_of_date`.
 
-- Same source + same normalized body stays one `raw_item` (`inserted: false`).
-- Parser-derived metadata (`title`, `published_at`, `language`, `mime_type`, `url`) is refreshed on the existing row.
-- `metadata.last_seen_at` records the latest fetch time.
-- The Argentina.gob.ar title fix from v0.2.1 is included.
+## Decisión epidemiológica
 
-Copy the patch over the project root and reinstall the editable worker only if needed:
+OETI no convierte `2004` en `2004-01-01`, porque eso inventaría precisión temporal. El contrato v0.2 de extracción conserva:
 
-```powershell
-pip install -e ".\services\worker[test]"
-pytest .\services\worker\tests
-```
+- `as_of_date`: sólo fecha exacta `YYYY-MM-DD` o `null`;
+- `as_of_year`: año cuando está disponible;
+- `as_of_month`: mes cuando está disponible;
+- `as_of_precision`: `day | month | year | unknown`;
+- `as_of_verbatim`: expresión temporal original.
 
-Then rerun the same `ingest-url`. `inserted: false` is expected if the body did not change. Verify the row in Supabase; the title should now be corrected.
+La base no requiere migración: `signal_metrics.as_of_date` conserva fechas exactas y los componentes parciales se guardan en `signal_metrics.metadata`.
+
+Además, el pipeline normaliza defensivamente salidas del proveedor antes de la validación canónica, por lo que un año aislado queda preservado con precisión anual y genera un warning auditable.
