@@ -3,8 +3,8 @@ from __future__ import annotations
 from datetime import datetime
 
 
-PROMPT_VERSION = "oeti-signal-extractor-prompt-v0.3"
-EXTRACTOR_VERSION = "oeti-signal-extractor-v0.3"
+PROMPT_VERSION = "oeti-signal-extractor-prompt-v0.3.5"
+EXTRACTOR_VERSION = "oeti-signal-extractor-v0.3.5"
 
 
 SYSTEM_INSTRUCTIONS = """\
@@ -32,7 +32,13 @@ Reglas obligatorias:
 18. TIEMPO DEL EVENTO VS CONTEXTO: event_date describe cuándo ocurrió el hecho de la señal. No uses como event_date el inicio de una temporada, el inicio de una serie histórica o una fecha administrativa. Esos intervalos deben representarse en reference_period.
 19. reference_period debe preservar ventanas temporales contextuales (temporada, serie histórica, período de vigilancia) sin inventar precisión. Usá start/end con date/year/month/precision/verbatim y period_type apropiado.
 20. No conviertas afirmaciones como 'sin casos desde 1996' en un evento ocurrido en 1996. Es un baseline observado al momento del documento con reference_period que comienza en 1996.
-21. Respondé únicamente con el JSON exigido por el esquema estructurado.
+21. DIAGNÓSTICO VS GENÓMICA: usá diagnostics para resultados de pruebas diagnósticas o de laboratorio (PCR, serología, confirmación laboratorial, pruebas en curso). Reservá genomics exclusivamente para secuenciación, linaje, clado, accession o análisis genómico explícito. Una confirmación laboratorial de hantavirus sin secuenciación debe tener diagnostics.result='positive' y genomics.test_result='not_applicable'.
+22. UBICACIÓN DE LABORATORIO: usá location.role='laboratory_location' o 'testing_location' cuando la fuente indica dónde se procesan/analizan muestras. Usá 'sampling_location' sólo cuando la fuente diga que la muestra fue recolectada allí.
+23. PRUEBAS EN CURSO: si la fuente dice que se realizan pruebas para identificar etiología, cepa u origen pero todavía no informa resultado, usá signal_type='laboratory_investigation' y diagnostics.result='pending'. No lo llames laboratory_result.
+24. EVIDENCIA LITERAL: evidence.text debe ser una cita textual CONTIGUA del documento. No uses elipsis, corchetes, paráfrasis ni reconstrucciones. El código verificará que cada evidencia exista literalmente en el raw_text (ignorando sólo diferencias de espacios en blanco).
+25. ITINERARIOS: cuando una señal de movilidad describa un itinerario explícito, capturá todos los lugares mencionados explícitamente en ese mismo itinerario que sean relevantes, cada uno con role='travel_history'. No inventes lugares ni interpretes esos lugares como exposición salvo que la fuente lo diga.
+26. OFFICIAL_ALERT: una señal puramente administrativa de alerta/seguimiento puede conservarse como official_alert, pero no la uses para duplicar recuentos clínicos o etiológicos ya expresados en otras señales.
+27. Respondé únicamente con el JSON exigido por el esquema estructurado.
 """
 
 

@@ -8,7 +8,7 @@ from .normalization import normalize_extraction_payload
 from .openai_provider import OpenAIResponsesProvider
 from .prompt import SYSTEM_INSTRUCTIONS, build_document_input
 from .repository import ExtractionRepository
-from .schema import load_schema, validate_extraction
+from .schema import load_schema, validate_extraction, validate_literal_evidence
 
 
 @dataclass(slots=True)
@@ -60,6 +60,7 @@ def extract_raw_item(
         payload = normalize_extraction_payload(provider_response.payload)
         validate_extraction(payload, schema)
         _validate_document_binding(payload, document.raw_item_id)
+        validate_literal_evidence(payload, document.raw_text)
     except Exception as exc:
         if persist:
             repo.record_failed_run(

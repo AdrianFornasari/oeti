@@ -96,3 +96,7 @@ The LLM output is not trusted directly: it must satisfy `shared/schemas/signal-e
 ## Semantic extraction v0.3.4
 
 See `docs/sprint-1c-semantic-refinement-v0.3.4.md`. Run extraction with `--no-persist` first; review `signal_role`, `location.role`, `reference_period`, metric attribution, and conservative pathogen normalization before persistence.
+
+## v0.3.5
+
+Agrega `diagnostics`, `laboratory_investigation`, roles de laboratorio, validación de evidencia literal e itinerarios completos. La persistencia marca `official_alert`, `background_context` y `surveillance_baseline` como no elegibles para matching automático.

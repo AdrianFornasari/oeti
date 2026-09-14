@@ -11,6 +11,7 @@ from psycopg import Connection
 from psycopg.rows import dict_row
 
 from .prompt import EXTRACTOR_VERSION, PROMPT_VERSION
+from .matching import event_matching_eligible
 
 
 @dataclass(slots=True)
@@ -179,16 +180,19 @@ class ExtractionRepository:
             """
             insert into public.signals (
               schema_version, raw_item_id, local_signal_key, version, supersedes_signal_id,
-              is_current, domains, signal_role, signal_type, signal_summary, verification_status,
+              is_current, domains, signal_role, signal_type, event_matching_eligible, signal_summary, verification_status,
               extraction_confidence, disease_id, disease_verbatim, disease_confidence,
               disease_normalization_status, pathogen_id, pathogen_verbatim, pathogen_confidence,
               pathogen_normalization_status, occurred_start, occurred_end, date_precision, reference_period,
               transmission, extractor_version, model_name, warnings, review_status,
               extraction_run_id
             ) values (
-              %s, %s, %s, %s, %s, true, %s, %s, %s, %s, %s,
-              %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s::jsonb,
-              %s::jsonb, %s, %s, '[]'::jsonb, 'pending', %s
+              %s, %s, %s, %s, %s, true,
+              %s, %s, %s, %s, %s, %s, %s,
+              %s, %s, %s, %s,
+              %s, %s, %s, %s,
+              %s, %s, %s, %s::jsonb, %s::jsonb,
+              %s, %s, '[]'::jsonb, 'pending', %s
             ) returning id
             """,
             (
@@ -200,6 +204,7 @@ class ExtractionRepository:
                 signal["domains"],
                 signal["signal_role"],
                 signal["signal_type"],
+                event_matching_eligible(signal),
                 signal["signal_summary"],
                 signal["verification_status"],
                 signal["extraction_confidence"],
@@ -286,6 +291,34 @@ class ExtractionRepository:
                     evidence["text"],
                     evidence.get("location_in_document"),
                     evidence.get("page_number"),
+                ),
+            )
+
+        diagnostics = signal.get("diagnostics", {})
+        if (
+            diagnostics.get("test_reported")
+            or diagnostics.get("test_type")
+            or diagnostics.get("method")
+            or diagnostics.get("target")
+            or diagnostics.get("specimen")
+            or diagnostics.get("result") not in {None, "unknown", "not_applicable"}
+        ):
+            cur.execute(
+                """
+                insert into public.diagnostic_observations (
+                  signal_id, pathogen_id, test_reported, test_type, test_method,
+                  target, specimen, test_result
+                ) values (%s, %s, %s, %s, %s, %s, %s, %s)
+                """,
+                (
+                    signal_id,
+                    pathogen_id,
+                    bool(diagnostics.get("test_reported")),
+                    diagnostics.get("test_type"),
+                    diagnostics.get("method"),
+                    diagnostics.get("target"),
+                    diagnostics.get("specimen"),
+                    diagnostics.get("result") or "unknown",
                 ),
             )
 

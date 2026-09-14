@@ -80,3 +80,7 @@ Ver `docs/sprint-1b-ingestion.md` y `services/worker/README.md`.
 OETI now includes an auditable epidemiological extraction boundary: `raw_item_payload -> Structured Output JSON -> schema validation -> catalog resolution -> signals/evidence`. See `docs/sprint-1c-signal-extraction.md`.
 
 Before first use, apply migration `20260910183000_signal_extraction_runs.sql` and configure `LLM_API_KEY` only in the root `.env`.
+
+## Sprint 1C v0.3.5
+
+El extractor separa diagnóstico de genómica, valida evidencia literal contra el raw_text, distingue ubicaciones de laboratorio y excluye alertas administrativas/baselines del futuro event matching.

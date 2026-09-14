@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import time
+import re
 from dataclasses import dataclass
 from typing import Any
 
@@ -106,6 +107,17 @@ def _to_openai_structured_output_schema(schema: dict[str, Any]) -> dict[str, Any
     return clean(schema)
 
 
+def _structured_output_name(schema: dict[str, Any]) -> str:
+    version_schema = schema.get("properties", {}).get("schema_version", {})
+    version = version_schema.get("const")
+    if version is None:
+        enum = version_schema.get("enum")
+        if isinstance(enum, list) and len(enum) == 1:
+            version = enum[0]
+    safe = re.sub(r"[^A-Za-z0-9_-]+", "_", str(version or "unknown"))
+    return f"oeti_signal_extractor_v{safe}"
+
+
 class OpenAIResponsesProvider:
     """OpenAI Responses API adapter using Structured Outputs (JSON Schema)."""
 
@@ -127,7 +139,7 @@ class OpenAIResponsesProvider:
             "text": {
                 "format": {
                     "type": "json_schema",
-                    "name": "oeti_signal_extractor_v0_3",
+                    "name": _structured_output_name(schema),
                     "schema": _to_openai_structured_output_schema(schema),
                     "strict": True,
                 },

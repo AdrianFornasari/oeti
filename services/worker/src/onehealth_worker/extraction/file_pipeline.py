@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from .repository import ExtractionRepository
-from .schema import load_schema, validate_extraction
+from .schema import load_schema, validate_extraction, validate_literal_evidence
 
 
 def validate_file(path: Path, schema_path: Path | None = None) -> dict[str, Any]:
@@ -25,8 +25,10 @@ def persist_file(
     payload = validate_file(path, schema_path)
     raw_item_id = payload["document"]["raw_item_id"]
     repo = ExtractionRepository(database_url)
-    # Force existence and payload binding before any write.
-    repo.load_raw_document(raw_item_id)
+    # Force existence and payload binding before any write and verify evidence
+    # against the exact stored source text.
+    document = repo.load_raw_document(raw_item_id)
+    validate_literal_evidence(payload, document.raw_text)
     return repo.persist_extraction(
         raw_item_id=raw_item_id,
         payload=payload,

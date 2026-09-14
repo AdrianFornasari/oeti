@@ -13,7 +13,7 @@ class ExtractionSchemaError(ValueError):
 
 def default_schema_path() -> Path:
     # services/worker/src/onehealth_worker/extraction/schema.py -> repository root
-    return Path(__file__).resolve().parents[5] / "shared" / "schemas" / "signal-extractor-v0.3.schema.json"
+    return Path(__file__).resolve().parents[5] / "shared" / "schemas" / "signal-extractor-v0.4.schema.json"
 
 
 def load_schema(path: Path | None = None) -> dict[str, Any]:
@@ -34,3 +34,35 @@ def validate_extraction(payload: dict[str, Any], schema: dict[str, Any] | None =
     if len(errors) > 10:
         details.append(f"... y {len(errors) - 10} errores adicionales")
     raise ExtractionSchemaError("Salida de extracción inválida:\n" + "\n".join(details))
+
+
+def _normalize_evidence_text(value: str) -> str:
+    """Normalize whitespace only; do not alter words or punctuation."""
+    return " ".join(value.split())
+
+
+def validate_literal_evidence(payload: dict[str, Any], raw_text: str) -> None:
+    """Require every evidence excerpt to be a contiguous literal source span.
+
+    Whitespace differences caused by HTML/PDF extraction are ignored, but ellipses,
+    paraphrases and reconstructed quotes are rejected.
+    """
+    normalized_source = _normalize_evidence_text(raw_text)
+    failures: list[str] = []
+    for signal in payload.get("signals", []):
+        local_id = signal.get("local_signal_id", "?")
+        for index, evidence in enumerate(signal.get("evidence", [])):
+            excerpt = evidence.get("text")
+            if not isinstance(excerpt, str) or not excerpt.strip():
+                failures.append(f"{local_id}.evidence[{index}]: evidencia vacía")
+                continue
+            normalized_excerpt = _normalize_evidence_text(excerpt)
+            if normalized_excerpt not in normalized_source:
+                failures.append(
+                    f"{local_id}.evidence[{index}]: el fragmento no existe literalmente en raw_text: {excerpt!r}"
+                )
+    if failures:
+        raise ExtractionSchemaError(
+            "Evidencia no literal o no trazable:\n" + "\n".join(failures[:10])
+            + (f"\n... y {len(failures)-10} errores adicionales" if len(failures) > 10 else "")
+        )

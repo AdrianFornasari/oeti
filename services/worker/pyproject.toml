@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "onehealth-worker"
-version = "0.3.0"
+version = "0.3.5"
 description = "Ingestion and structured epidemiological extraction worker for One Health Emerging Threat Intelligence"
 requires-python = ">=3.12"
 dependencies = [

@@ -21,11 +21,7 @@ def test_prompt_contains_non_attribution_and_context_rules():
     assert "hantavirus" in SYSTEM_INSTRUCTIONS
 
 
-def test_default_schema_is_v03():
-    schema = load_schema()
+def test_v03_schema_remains_available():
+    root = Path(__file__).resolve().parents[3]
+    schema = json.loads((root / "shared/schemas/signal-extractor-v0.3.schema.json").read_text(encoding="utf-8"))
     assert schema["properties"]["schema_version"]["const"] == "0.3"
-    signal = schema["$defs"]["signal"]
-    assert "signal_role" in signal["required"]
-    assert "reference_period" in signal["required"]
-    location = schema["$defs"]["location"]
-    assert "role" in location["required"]
