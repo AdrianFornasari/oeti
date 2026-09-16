@@ -62,12 +62,13 @@ def test_v045_reassembles_initial_notification_into_seven_canonical_signals():
 def test_v045_reassembles_tierra_del_fuego_into_four_canonical_signals():
     prediction = _assemble("2026-06-29-tierra-del-fuego-rodents-v044-atomic-automatic.claims.json")
     assert len(prediction["signals"]) == 4
-    assert [s["signal_type"] for s in prediction["signals"]] == [
+    assert {s["signal_type"] for s in prediction["signals"]} == {
         "laboratory_result",
         "genomic_observation",
         "wildlife_event",
         "transmission_observation",
-    ]
+    }
+    assert not any(s["signal_type"] == "intervention" for s in prediction["signals"])
     genomic = next(s for s in prediction["signals"] if s["signal_type"] == "genomic_observation")
     assert genomic["pathogen"]["canonical_name"] == "Orthohantavirus andesense"
     assert genomic["genomics"]["lineage"] == "variante viral no descripta previamente"
