@@ -84,3 +84,35 @@ Before first use, apply migration `20260910183000_signal_extraction_runs.sql` an
 ## Sprint 1C v0.3.5
 
 El extractor separa diagnóstico de genómica, valida evidencia literal contra el raw_text, distingue ubicaciones de laboratorio y excluye alertas administrativas/baselines del futuro event matching.
+
+## Sprint 1D v0.4.0 - evaluación contra gold standard
+
+Se agrega un benchmark reproducible para comparar extracciones contra referencias humanas adjudicadas antes de habilitar deduplicación/event matching. Incluye el primer gold standard del caso MV Hondius (04/05/2026), matching semántico de señales, métricas de precision/recall/F1 por documento y un gate de corpus. Ver `docs/sprint-1d-gold-standard-evaluation.md`.
+
+
+## Sprint 1D v0.4.1 - benchmark autocontenido
+
+La predicción automática de referencia del 04/05/2026 se versiona en `evaluation/predictions/` y el manifiesto ya no depende de archivos temporales locales. El benchmark inicial compara deliberadamente la salida automática no revisada contra el gold standard humano.
+
+
+### Resultado reproducible v0.4.1
+
+Sobre la salida automática no revisada del 04/05/2026, el benchmark devuelve composite score 0.943878. El event matcher continúa bloqueado hasta completar y adjudicar el corpus de seis documentos.
+
+
+## Sprint 1D v0.4.2
+
+Corpus MV Hondius de seis documentos adjudicado; usar `extract-evaluation-corpus` para generar automáticamente las cinco predicciones faltantes y luego `evaluate-corpus` para ejecutar el release gate.
+
+## Sprint 1D v0.4.3 - hardening del extractor y evaluator v0.2
+
+La primera corrida del corpus completo v0.4.2 no superó el gate (`mean_signal_f1=0.648135`; evidencia exacta macro=0.208333). La v0.4.3 corrigió dos capas por separado:
+
+- extractor: consolidación de actualizaciones, menos sobre-fragmentación, normalización explícita de Andes virus y reglas para evidencia negativa/genómica;
+- evaluador: `evidence_exact_f1` + `evidence_support_f1`, snapshots de señales no emparejadas y release thresholds versionados en el manifiesto.
+
+Las predicciones v0.4.3 usan archivos nuevos `evaluation/predictions/...v043-automatic.json`. Regenerar con `extract-evaluation-corpus --force` y volver a ejecutar `evaluate-corpus`; no se habilita event matching hasta superar el gate completo.
+
+## Sprint 1D v0.4.4 - Atomic Claims + Deterministic Signal Assembly
+
+La extracción se divide en dos etapas: el LLM produce claims epidemiológicos atómicos y un assembler determinístico construye las signals canónicas v0.4. Esto reduce la sobre-fragmentación y permite distinguir si un error proviene del modelo o de las reglas de ensamblado. Cada predicción de benchmark conserva además un sidecar `*.claims.json` para auditoría. Ver `docs/sprint-1d-atomic-claims-v0.4.4.md`.

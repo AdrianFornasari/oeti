@@ -1,0 +1,761 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onehealth.local/schemas/atomic-claims-v0.1.schema.json",
+  "title": "OETI Atomic Epidemiological Claims v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "document",
+    "claims",
+    "warnings"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "claims-0.1"
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_item_id",
+        "language",
+        "document_date"
+      ],
+      "properties": {
+        "raw_item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "document_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "country",
+        "country_iso2",
+        "admin1",
+        "admin2",
+        "locality",
+        "region",
+        "role",
+        "precision",
+        "confidence"
+      ],
+      "properties": {
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "country_iso2": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{2}$"
+        },
+        "admin1": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "admin2": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "locality": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "precision": {
+          "enum": [
+            "country",
+            "admin1",
+            "admin2",
+            "locality",
+            "point",
+            "region",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "role": {
+          "enum": [
+            "event_location",
+            "current_location",
+            "possible_exposure_location",
+            "travel_history",
+            "sampling_location",
+            "reporting_jurisdiction",
+            "laboratory_location",
+            "testing_location",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "eventDate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end",
+        "precision"
+      ],
+      "properties": {
+        "start": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "end": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "precision": {
+          "type": "string"
+        }
+      }
+    },
+    "temporalPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "date",
+        "year",
+        "month",
+        "precision",
+        "verbatim"
+      ],
+      "properties": {
+        "date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "year": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1900,
+          "maximum": 2100
+        },
+        "month": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 12
+        },
+        "precision": {
+          "enum": [
+            "day",
+            "month",
+            "year",
+            "unknown"
+          ]
+        },
+        "verbatim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "referencePeriod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end",
+        "period_type",
+        "verbatim"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/temporalPoint"
+        },
+        "end": {
+          "$ref": "#/$defs/temporalPoint"
+        },
+        "period_type": {
+          "enum": [
+            "surveillance_period",
+            "historical_period",
+            "season",
+            "observation_window",
+            "unknown"
+          ]
+        },
+        "verbatim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "test_reported",
+        "test_type",
+        "method",
+        "target",
+        "specimen",
+        "result"
+      ],
+      "properties": {
+        "test_reported": {
+          "type": "boolean"
+        },
+        "test_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "specimen": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "result": {
+          "enum": [
+            "positive",
+            "negative",
+            "indeterminate",
+            "pending",
+            "not_applicable",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "value_numeric",
+        "value_text",
+        "unit",
+        "as_of_date",
+        "as_of_year",
+        "as_of_month",
+        "as_of_precision",
+        "as_of_verbatim"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value_numeric": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "value_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "as_of_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "as_of_year": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1900,
+          "maximum": 2100
+        },
+        "as_of_month": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 12
+        },
+        "as_of_precision": {
+          "enum": [
+            "day",
+            "month",
+            "year",
+            "unknown"
+          ]
+        },
+        "as_of_verbatim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text",
+        "location_in_document",
+        "page_number"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "location_in_document": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "page_number": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verbatim",
+        "canonical_name",
+        "subject_type",
+        "confidence"
+      ],
+      "properties": {
+        "verbatim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "canonical_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subject_type": {
+          "enum": [
+            "human",
+            "animal",
+            "wildlife",
+            "vector",
+            "environment",
+            "pathogen",
+            "population",
+            "mobility",
+            "other"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        }
+      }
+    },
+    "genomics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence_reported",
+        "lineage",
+        "clade",
+        "accession",
+        "test_result"
+      ],
+      "properties": {
+        "sequence_reported": {
+          "type": "boolean"
+        },
+        "lineage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clade": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "accession": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "test_result": {
+          "enum": [
+            "positive",
+            "negative",
+            "indeterminate",
+            "not_applicable",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "transmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "human_to_human",
+        "animal_to_human",
+        "vector_borne"
+      ],
+      "properties": {
+        "human_to_human": {
+          "enum": [
+            "confirmed",
+            "probable",
+            "suspected",
+            "refuted",
+            "unknown"
+          ]
+        },
+        "animal_to_human": {
+          "enum": [
+            "confirmed",
+            "probable",
+            "suspected",
+            "refuted",
+            "unknown"
+          ]
+        },
+        "vector_borne": {
+          "enum": [
+            "confirmed",
+            "probable",
+            "suspected",
+            "refuted",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "group_id",
+        "claim_kind",
+        "polarity",
+        "domains",
+        "disease_verbatim",
+        "pathogen_verbatim",
+        "subject",
+        "locations",
+        "event_date",
+        "reference_period",
+        "metric",
+        "diagnostics",
+        "genomics",
+        "transmission",
+        "verification_status",
+        "summary",
+        "evidence",
+        "confidence"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_kind": {
+          "enum": [
+            "syndromic_cluster",
+            "outbreak_update",
+            "case_status",
+            "death_count",
+            "diagnostic_result",
+            "laboratory_investigation",
+            "genomic_finding",
+            "transmission_statement",
+            "surveillance_baseline",
+            "wildlife_sampling",
+            "wildlife_presence_absence",
+            "mobility",
+            "historical_context",
+            "intervention",
+            "official_action"
+          ]
+        },
+        "polarity": {
+          "enum": [
+            "positive",
+            "negative",
+            "uncertain",
+            "not_applicable"
+          ]
+        },
+        "domains": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "human",
+              "animal",
+              "wildlife",
+              "vector",
+              "environment",
+              "genomic",
+              "food",
+              "amr",
+              "mobility"
+            ]
+          }
+        },
+        "disease_verbatim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pathogen_verbatim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subject": {
+          "$ref": "#/$defs/subject"
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/location"
+          }
+        },
+        "event_date": {
+          "$ref": "#/$defs/eventDate"
+        },
+        "reference_period": {
+          "$ref": "#/$defs/referencePeriod"
+        },
+        "metric": {
+          "$ref": "#/$defs/atomicMetric"
+        },
+        "diagnostics": {
+          "$ref": "#/$defs/diagnostics"
+        },
+        "genomics": {
+          "$ref": "#/$defs/genomics"
+        },
+        "transmission": {
+          "$ref": "#/$defs/transmission"
+        },
+        "verification_status": {
+          "enum": [
+            "confirmed",
+            "probable",
+            "suspected",
+            "reported",
+            "refuted",
+            "unknown"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        }
+      }
+    },
+    "atomicMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reported",
+        "name",
+        "value_numeric",
+        "value_text",
+        "unit",
+        "as_of_date",
+        "as_of_year",
+        "as_of_month",
+        "as_of_precision",
+        "as_of_verbatim"
+      ],
+      "properties": {
+        "reported": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value_numeric": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "value_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "as_of_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "as_of_year": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1900,
+          "maximum": 2100
+        },
+        "as_of_month": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 12
+        },
+        "as_of_precision": {
+          "enum": [
+            "day",
+            "month",
+            "year",
+            "unknown"
+          ]
+        },
+        "as_of_verbatim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

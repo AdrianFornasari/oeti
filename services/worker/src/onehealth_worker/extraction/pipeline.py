@@ -4,11 +4,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .atomic_claims import assemble_claims_payload
 from .normalization import normalize_extraction_payload
 from .openai_provider import OpenAIResponsesProvider
 from .prompt import SYSTEM_INSTRUCTIONS, build_document_input
 from .repository import ExtractionRepository
-from .schema import load_schema, validate_extraction, validate_literal_evidence
+from .schema import (
+    load_schema,
+    load_atomic_claims_schema,
+    validate_atomic_claims,
+    validate_extraction,
+    validate_literal_claim_evidence,
+    validate_literal_evidence,
+)
 
 
 @dataclass(slots=True)
@@ -36,7 +44,8 @@ def extract_raw_item(
 ) -> ExtractionResult:
     repo = ExtractionRepository(database_url)
     document = repo.load_raw_document(raw_item_id)
-    schema = load_schema(schema_path)
+    signal_schema = load_schema(schema_path)
+    claims_schema = load_atomic_claims_schema()
     document_input = build_document_input(
         raw_item_id=document.raw_item_id,
         title=document.title,
@@ -47,7 +56,7 @@ def extract_raw_item(
     )
 
     if provider_name.lower() != "openai":
-        raise ValueError(f"Provider no soportado en Sprint 1C: {provider_name!r}")
+        raise ValueError(f"Provider no soportado en Sprint 1D: {provider_name!r}")
 
     provider = OpenAIResponsesProvider(api_key=api_key, model=model_name)
     provider_response = None
@@ -55,17 +64,23 @@ def extract_raw_item(
         provider_response = provider.extract(
             instructions=SYSTEM_INSTRUCTIONS,
             document_input=document_input,
-            schema=schema,
+            schema=claims_schema,
         )
-        payload = normalize_extraction_payload(provider_response.payload)
-        validate_extraction(payload, schema)
+        claims_payload = provider_response.payload
+        validate_atomic_claims(claims_payload, claims_schema)
+        _validate_document_binding(claims_payload, document.raw_item_id)
+        validate_literal_claim_evidence(claims_payload, document.raw_text)
+
+        payload = assemble_claims_payload(claims_payload)
+        payload = normalize_extraction_payload(payload)
+        validate_extraction(payload, signal_schema)
         _validate_document_binding(payload, document.raw_item_id)
         validate_literal_evidence(payload, document.raw_text)
     except Exception as exc:
         if persist:
             repo.record_failed_run(
                 raw_item_id=document.raw_item_id,
-                schema_version=_schema_version(schema),
+                schema_version=_schema_version(signal_schema),
                 provider=provider_name,
                 model_name=model_name,
                 input_char_count=len(document_input),

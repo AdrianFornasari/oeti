@@ -1,0 +1,804 @@
+{
+  "schema_version": "claims-0.1",
+  "document": {
+    "raw_item_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b",
+    "language": "es",
+    "document_date": "2026-05-26"
+  },
+  "claims": [
+    {
+      "claim_id": "c1",
+      "group_id": "g1_hantavirus_mv-hondius_update",
+      "claim_kind": "outbreak_update",
+      "polarity": "positive",
+      "domains": [
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "hantavirus",
+      "subject": {
+        "verbatim": "pasajeros",
+        "canonical_name": null,
+        "subject_type": "human",
+        "confidence": 0.77
+      },
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metric": {
+        "reported": true,
+        "name": "new_cases",
+        "value_numeric": 1,
+        "value_text": null,
+        "unit": "case",
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "confirmed",
+      "summary": "Se confirmó un nuevo caso de hantavirus entre pasajeros del crucero MV Hondius.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "el BEN confirma que se confirmó un nuevo caso entre los pasajeros",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.74
+    },
+    {
+      "claim_id": "c2",
+      "group_id": "g1_hantavirus_mv-hondius_update",
+      "claim_kind": "case_status",
+      "polarity": "positive",
+      "domains": [
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "cepa Andes",
+      "subject": {
+        "verbatim": "un nuevo caso entre los pasajeros",
+        "canonical_name": null,
+        "subject_type": "human",
+        "confidence": 0.7
+      },
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metric": {
+        "reported": false,
+        "name": null,
+        "value_numeric": null,
+        "value_text": null,
+        "unit": null,
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "confirmed",
+      "summary": "El nuevo caso corresponde a la cepa Andes.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "se confirmó un nuevo caso entre los pasajeros, también correspondiente a la cepa Andes.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.7
+    },
+    {
+      "claim_id": "c3",
+      "group_id": "g1_hantavirus_mv-hondius_update",
+      "claim_kind": "outbreak_update",
+      "polarity": "positive",
+      "domains": [
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "hantavirus",
+      "subject": {
+        "verbatim": "casos",
+        "canonical_name": null,
+        "subject_type": "human",
+        "confidence": 0.52
+      },
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metric": {
+        "reported": true,
+        "name": "cases_confirmed_total",
+        "value_numeric": 9,
+        "value_text": null,
+        "unit": "case",
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "reported",
+      "summary": "El total asciende a 9 casos confirmados.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "el total de casos asciende a 9 confirmados",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.72
+    },
+    {
+      "claim_id": "c4",
+      "group_id": "g1_hantavirus_mv-hondius_update",
+      "claim_kind": "outbreak_update",
+      "polarity": "positive",
+      "domains": [
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "hantavirus",
+      "subject": {
+        "verbatim": "casos",
+        "canonical_name": null,
+        "subject_type": "human",
+        "confidence": 0.52
+      },
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metric": {
+        "reported": true,
+        "name": "cases_probable_total",
+        "value_numeric": 2,
+        "value_text": null,
+        "unit": "case",
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "reported",
+      "summary": "El total asciende a 2 casos probables.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "el total de casos asciende a 9 confirmados y 2 probables.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.72
+    },
+    {
+      "claim_id": "c5",
+      "group_id": "g1_hantavirus_mv-hondius_update",
+      "claim_kind": "genomic_finding",
+      "polarity": "positive",
+      "domains": [
+        "genomic",
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "virus del crucero",
+      "subject": {
+        "verbatim": "la secuencia del virus del crucero",
+        "canonical_name": null,
+        "subject_type": "pathogen",
+        "confidence": 0.66
+      },
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Neuquén",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.75,
+          "role": "unknown"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2018,
+          "month": null,
+          "precision": "year",
+          "verbatim": "2018"
+        },
+        "end": {
+          "date": null,
+          "year": 2018,
+          "month": null,
+          "precision": "year",
+          "verbatim": "2018"
+        },
+        "period_type": "historical_period",
+        "verbatim": "2018"
+      },
+      "metric": {
+        "reported": false,
+        "name": null,
+        "value_numeric": null,
+        "value_text": null,
+        "unit": null,
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "not_applicable"
+      },
+      "genomics": {
+        "sequence_reported": true,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "positive"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "reported",
+      "summary": "La secuencia del virus del crucero tiene alto grado de parentesco con cepas detectadas en 2018 en Neuquén.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "la ANLIS Malbrán determinó que la secuencia del virus del crucero tiene un alto grado de parentesco con cepas detectadas en 2018 en Neuquén",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.73
+    },
+    {
+      "claim_id": "c6",
+      "group_id": "g1_hantavirus_mv-hondius_update",
+      "claim_kind": "transmission_statement",
+      "polarity": "uncertain",
+      "domains": [
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "hantavirus",
+      "subject": {
+        "verbatim": "el origen del brote",
+        "canonical_name": null,
+        "subject_type": "other",
+        "confidence": 0.55
+      },
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metric": {
+        "reported": false,
+        "name": null,
+        "value_numeric": null,
+        "value_text": null,
+        "unit": null,
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "unknown",
+      "summary": "No es posible confirmar el origen del brote.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "aún no es posible confirmar el origen del brote.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.74
+    },
+    {
+      "claim_id": "c7",
+      "group_id": "g1_hantavirus_mv-hondius_update",
+      "claim_kind": "laboratory_investigation",
+      "polarity": "positive",
+      "domains": [
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "hantavirus",
+      "subject": {
+        "verbatim": "la cartera sanitaria nacional",
+        "canonical_name": null,
+        "subject_type": "other",
+        "confidence": 0.42
+      },
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metric": {
+        "reported": false,
+        "name": null,
+        "value_numeric": null,
+        "value_text": null,
+        "unit": null,
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "pending"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "reported",
+      "summary": "Se continúa realizando la investigación epidemiológica del brote.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "continúa realizando la investigación epidemiológica correspondiente",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.6
+    },
+    {
+      "claim_id": "c8",
+      "group_id": "g2_hantavirus_national_SE19",
+      "claim_kind": "surveillance_baseline",
+      "polarity": "negative",
+      "domains": [
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "hantavirus",
+      "subject": {
+        "verbatim": "A nivel nacional",
+        "canonical_name": null,
+        "subject_type": "population",
+        "confidence": 0.62
+      },
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "country",
+          "confidence": 0.9,
+          "role": "reporting_jurisdiction"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "SE 19"
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "SE 19"
+        },
+        "period_type": "surveillance_period",
+        "verbatim": "SE 19"
+      },
+      "metric": {
+        "reported": true,
+        "name": "cases_reported",
+        "value_numeric": 0,
+        "value_text": null,
+        "unit": "case",
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "reported",
+      "summary": "A nivel nacional no se notificaron casos de hantavirus durante la SE 19.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "A nivel nacional, no se notificó ningún caso de hantavirus durante la SE 19.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.84
+    },
+    {
+      "claim_id": "c9",
+      "group_id": "g3_hantavirus_national_season_2025-2026",
+      "claim_kind": "surveillance_baseline",
+      "polarity": "positive",
+      "domains": [
+        "human"
+      ],
+      "disease_verbatim": null,
+      "pathogen_verbatim": "hantavirus",
+      "subject": {
+        "verbatim": "A nivel nacional",
+        "canonical_name": null,
+        "subject_type": "population",
+        "confidence": 0.62
+      },
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "country",
+          "confidence": 0.9,
+          "role": "reporting_jurisdiction"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2025,
+          "month": null,
+          "precision": "year",
+          "verbatim": "temporada 2025-2026"
+        },
+        "end": {
+          "date": null,
+          "year": 2026,
+          "month": null,
+          "precision": "year",
+          "verbatim": "temporada 2025-2026"
+        },
+        "period_type": "season",
+        "verbatim": "temporada 2025-2026"
+      },
+      "metric": {
+        "reported": true,
+        "name": "cases_confirmed_total",
+        "value_numeric": 106,
+        "value_text": null,
+        "unit": "case",
+        "as_of_date": null,
+        "as_of_year": null,
+        "as_of_month": null,
+        "as_of_precision": "unknown",
+        "as_of_verbatim": null
+      },
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "verification_status": "reported",
+      "summary": "En la temporada 2025-2026 el total de casos confirmados de hantavirus se mantiene en 106.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "El total de casos de toda la temporada 2025-2026 se mantiene en 106 confirmados.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "confidence": 0.82
+    }
+  ],
+  "warnings": []
+}

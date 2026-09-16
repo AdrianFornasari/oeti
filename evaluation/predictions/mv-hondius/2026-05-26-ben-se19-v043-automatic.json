@@ -1,0 +1,291 @@
+{
+  "schema_version": "0.4",
+  "document": {
+    "raw_item_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b",
+    "language": "es",
+    "document_date": "2026-05-26"
+  },
+  "signals": [
+    {
+      "local_signal_id": "sig-1",
+      "domains": [
+        "human",
+        "genomic"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "outbreak",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "ambiguous",
+        "confidence": 0.66
+      },
+      "pathogen": {
+        "verbatim": "cepa Andes",
+        "canonical_name": "Andes virus",
+        "normalization_status": "resolved",
+        "confidence": 0.78
+      },
+      "hosts": [
+        {
+          "verbatim": "pasajeros",
+          "canonical_name": null,
+          "host_type": "human",
+          "confidence": 0.74
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "country",
+          "confidence": 0.4,
+          "role": "reporting_jurisdiction"
+        },
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": "crucero MV Hondius",
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.62,
+          "role": "event_location"
+        },
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": "Neuquén",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.63,
+          "role": "unknown"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "cases_confirmed",
+          "value_numeric": 9,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        },
+        {
+          "name": "cases_probable",
+          "value_numeric": 2,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        },
+        {
+          "name": "cases_confirmed_new",
+          "value_numeric": 1,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": true,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "Actualización del brote de hantavirus detectado en el crucero MV Hondius: se confirmó un nuevo caso entre pasajeros (cepa Andes) y el total asciende a 9 confirmados y 2 probables; ANLIS Malbrán informó parentesco alto de la secuencia del virus del crucero con cepas detectadas en 2018 en Neuquén, sin poder confirmar el origen del brote.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "el BEN confirma que se confirmó un nuevo caso entre los pasajeros, también correspondiente a la cepa Andes. De esta manera, el total de casos asciende a 9 confirmados y 2 probables.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "text",
+          "text": "la ANLIS Malbrán determinó que la secuencia del virus del crucero tiene un alto grado de parentesco con cepas detectadas en 2018 en Neuquén, aún no es posible confirmar el origen del brote.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.77,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "sig-2",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "surveillance_baseline",
+      "signal_type": "official_alert",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "ambiguous",
+        "confidence": 0.66
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.45
+      },
+      "hosts": [
+        {
+          "verbatim": null,
+          "canonical_name": null,
+          "host_type": "human",
+          "confidence": 0.4
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "country",
+          "confidence": 0.88,
+          "role": "reporting_jurisdiction"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2025,
+          "month": null,
+          "precision": "year",
+          "verbatim": "temporada 2025-2026"
+        },
+        "end": {
+          "date": null,
+          "year": 2026,
+          "month": null,
+          "precision": "year",
+          "verbatim": "temporada 2025-2026"
+        },
+        "period_type": "season",
+        "verbatim": "temporada 2025-2026"
+      },
+      "metrics": [
+        {
+          "name": "cases_reported_weekly",
+          "value_numeric": 0,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "SE 19"
+        },
+        {
+          "name": "cases_confirmed_cumulative",
+          "value_numeric": 106,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": 2026,
+          "as_of_month": null,
+          "as_of_precision": "year",
+          "as_of_verbatim": "temporada 2025-2026"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Vigilancia nacional: no se notificaron casos de hantavirus durante la SE 19; el total de la temporada 2025-2026 se mantiene en 106 confirmados.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "A nivel nacional, no se notificó ningún caso de hantavirus durante la SE 19. El total de casos de toda la temporada 2025-2026 se mantiene en 106 confirmados.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.73,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    }
+  ],
+  "warnings": [
+    "Se excluyeron señales sobre influenza/virus respiratorios, arbovirosis (chikungunya, dengue) y leptospirosis por estar fuera del EVALUATION_SCOPE."
+  ]
+}

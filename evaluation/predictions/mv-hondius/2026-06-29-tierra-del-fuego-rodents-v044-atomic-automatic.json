@@ -1,0 +1,602 @@
+{
+  "schema_version": "0.4",
+  "document": {
+    "raw_item_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784",
+    "language": "es",
+    "document_date": "2026-06-29"
+  },
+  "signals": [
+    {
+      "local_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-01",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "laboratory_result",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus",
+        "normalization_status": "resolved",
+        "confidence": 0.78
+      },
+      "hosts": [
+        {
+          "verbatim": "cinco ejemplares pertenecientes al género Abrothrix",
+          "canonical_name": "Abrothrix",
+          "host_type": "wildlife",
+          "confidence": 0.78
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": "Ushuaia",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.86,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "seropositive_animals",
+          "value_numeric": 5,
+          "value_text": "cinco ejemplares",
+          "unit": "animals",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego).",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "Los resultados obtenidos mostraron que cinco ejemplares pertenecientes al género Abrothrix presentaron anticuerpos específicos contra hantavirus.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.8,
+      "diagnostics": {
+        "test_reported": true,
+        "test_type": "serología",
+        "method": null,
+        "target": "anticuerpos específicos",
+        "specimen": null,
+        "result": "positive"
+      }
+    },
+    {
+      "local_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-02",
+      "domains": [
+        "genomic",
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "genomic_observation",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": "una variante viral",
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.4
+      },
+      "hosts": [],
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": true,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "positive"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Análisis moleculares identificaron una variante viral de hantavirus no descripta previamente. Estudios genéticos determinaron que la variante se considera emparentada con el virus Andes y se clasifica dentro de Orthohantavirus andesense.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "Asimismo, los análisis moleculares permitieron identificar una variante viral no descripta previamente.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "quote",
+          "text": "Además, los estudios genéticos determinaron que el virus, por su grado de identidad nucleotídica, se considera emparentado con el virus Andes y se clasifica dentro de la especie Orthohantavirus andesense .",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.74,
+      "diagnostics": {
+        "test_reported": true,
+        "test_type": "molecular",
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "not_applicable"
+      }
+    },
+    {
+      "local_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-03",
+      "domains": [
+        "human",
+        "wildlife"
+      ],
+      "signal_role": "negative_evidence",
+      "signal_type": "transmission_observation",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus",
+        "normalization_status": "resolved",
+        "confidence": 0.78
+      },
+      "hosts": [
+        {
+          "verbatim": "los roedores analizados",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.72
+        }
+      ],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.2,
+          "role": "unknown"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "refuted",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Se descartó que los roedores analizados fueran la fuente de infección del brote asociado al crucero MV Hondius.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "De esta manera, la investigación permitió descartar que los roedores analizados hayan sido la fuente de infección vinculada a ese evento.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.8,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "wildlife_event",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "roedores silvestres",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.66
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": "Ushuaia",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.74,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": "2026-05-18",
+        "end": "2026-05-22",
+        "precision": "day_range"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "captured_rodents",
+          "value_numeric": 144,
+          "value_text": "144 roedores",
+          "unit": "animals",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Durante operativos (18–22 de mayo) se capturaron 144 roedores.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "Los operativos de captura de roedores silvestres se desarrollaron entre el 18 y el 22 de mayo",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "quote",
+          "text": "Cabe destacar que durante esos operativos se capturaron 144 roedores",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.78,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-05",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "negative_evidence",
+      "signal_type": "wildlife_event",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "Oligoryzomys longicaudatus",
+          "canonical_name": "Oligoryzomys longicaudatus",
+          "host_type": "wildlife",
+          "confidence": 0.9
+        }
+      ],
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "animals_identified",
+          "value_numeric": 0,
+          "value_text": "no se identificaron ejemplares",
+          "unit": "animals",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "No se identificaron ejemplares de Oligoryzomys longicaudatus durante los operativos de captura.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "no se identificaron ejemplares de Oligoryzomys longicaudatus , principal reservorio conocido del virus Andes en la región patagónica.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.82,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-06",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "intervention",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus",
+        "normalization_status": "resolved",
+        "confidence": 0.78
+      },
+      "hosts": [],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.7,
+          "role": "reporting_jurisdiction"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "ANLIS Malbrán realizó una capacitación para transferir la técnica de diagnóstico de hantavirus al personal del Hospital Regional de Tierra del Fuego.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "Además, los científicos de la ANLIS Malbrán llevaron adelante una capacitación para la transferencia de la técnica de diagnóstico de hantavirus al personal del Hospital Regional de Tierra del Fuego.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.7,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    }
+  ],
+  "warnings": [
+    "El documento menciona un brote asociado al crucero MV Hondius pero no aporta cifras de casos o fallecidos; sólo se extrajo el descarte de fuente en roedores y hallazgos/operativos vinculados.",
+    "Signal 8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-06: se descartó host no biológico 'el personal del Hospital Regional de Tierra del Fuego Homo sapiens'."
+  ]
+}

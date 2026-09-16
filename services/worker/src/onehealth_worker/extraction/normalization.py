@@ -7,6 +7,7 @@ from typing import Any
 
 _YEAR_RE = re.compile(r"^(?P<year>\d{4})$")
 _MONTH_RE = re.compile(r"^(?P<year>\d{4})-(?P<month>\d{2})$")
+_NON_BIOLOGICAL_HOST_RE = re.compile(r"\b(embarcaci[oó]n|buque|crucero|barco|veh[ií]culo|laboratorio|hospital|instituci[oó]n|edificio)\b", re.IGNORECASE)
 
 
 def normalize_extraction_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -31,10 +32,82 @@ def normalize_extraction_payload(payload: dict[str, Any]) -> dict[str, Any]:
             endpoint = reference_period.get(endpoint_name)
             if isinstance(endpoint, dict):
                 _normalize_temporal_point(endpoint, local_id=local_id, field_name=f"reference_period.{endpoint_name}", warnings=warnings)
+        _normalize_explicit_pathogen(signal, local_id=local_id, warnings=warnings)
+        _remove_non_biological_hosts(signal, local_id=local_id, warnings=warnings)
 
+    result["signals"] = _deduplicate_exact_signals(result.get("signals") or [], warnings=warnings)
     result["warnings"] = warnings
     return result
 
+
+
+def _normalize_explicit_pathogen(signal: dict[str, Any], *, local_id: str, warnings: list[str]) -> None:
+    """Resolve only pathogen names that are explicitly present in provider verbatim text."""
+    pathogen = signal.get("pathogen")
+    if not isinstance(pathogen, dict):
+        return
+    verbatim = str(pathogen.get("verbatim") or "").strip()
+    folded = verbatim.casefold()
+    canonical: str | None = None
+    if "orthohantavirus andesense" in folded:
+        canonical = "Orthohantavirus andesense"
+    elif re.search(r"\b(cepa|virus|variante)?\s*andes\b", folded):
+        canonical = "Andes virus"
+    if canonical is None:
+        return
+    if pathogen.get("canonical_name") != canonical or pathogen.get("normalization_status") != "resolved":
+        previous = pathogen.get("canonical_name")
+        pathogen["canonical_name"] = canonical
+        pathogen["normalization_status"] = "resolved"
+        warnings.append(
+            f"Signal {local_id}: patógeno explícito {verbatim!r} normalizado determinísticamente a {canonical!r}; canonical previo={previous!r}."
+        )
+
+
+def _remove_non_biological_hosts(signal: dict[str, Any], *, local_id: str, warnings: list[str]) -> None:
+    hosts = signal.get("hosts")
+    if not isinstance(hosts, list):
+        return
+    kept: list[dict[str, Any]] = []
+    for host in hosts:
+        verbatim = str((host or {}).get("verbatim") or "")
+        canonical = str((host or {}).get("canonical_name") or "")
+        candidate = f"{verbatim} {canonical}".strip()
+        if candidate and _NON_BIOLOGICAL_HOST_RE.search(candidate):
+            warnings.append(f"Signal {local_id}: se descartó host no biológico {candidate!r}.")
+            continue
+        kept.append(host)
+    signal["hosts"] = kept
+
+
+def _exact_signal_signature(signal: dict[str, Any]) -> str:
+    """Stable signature for exact semantic duplicates only.
+
+    local_signal_id, summary confidence and evidence location metadata are intentionally
+    ignored; substantive epidemiological fields and evidence text remain part of the key.
+    """
+    import json
+
+    material = {
+        key: value
+        for key, value in signal.items()
+        if key not in {"local_signal_id", "signal_summary", "extraction_confidence"}
+    }
+    return json.dumps(material, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def _deduplicate_exact_signals(signals: list[dict[str, Any]], *, warnings: list[str]) -> list[dict[str, Any]]:
+    seen: dict[str, str] = {}
+    kept: list[dict[str, Any]] = []
+    for signal in signals:
+        signature = _exact_signal_signature(signal)
+        local_id = str(signal.get("local_signal_id") or "?")
+        if signature in seen:
+            warnings.append(f"Signal {local_id}: duplicado exacto de {seen[signature]} descartado durante normalización.")
+            continue
+        seen[signature] = local_id
+        kept.append(signal)
+    return kept
 
 def _normalize_metric_date(metric: dict[str, Any], *, local_id: str, warnings: list[str]) -> None:
     raw = metric.get("as_of_date")

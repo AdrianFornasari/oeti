@@ -100,3 +100,64 @@ See `docs/sprint-1c-semantic-refinement-v0.3.4.md`. Run extraction with `--no-pe
 ## v0.3.5
 
 Agrega `diagnostics`, `laboratory_investigation`, roles de laboratorio, validación de evidencia literal e itinerarios completos. La persistencia marca `official_alert`, `background_context` y `surveillance_baseline` como no elegibles para matching automático.
+
+
+## Sprint 1D v0.4.0 - gold standard y evaluación
+
+Evaluar una extracción contra la primera referencia adjudicada:
+
+```powershell
+python -m onehealth_worker evaluate-extraction `
+  --prediction ".\tmp\mv-hondius-semantic-v035-original.json" `
+  --gold ".\evaluation\gold\mv-hondius\2026-05-04-initial-notification.gold.json" `
+  --output ".\tmp\eval-mv-hondius-20260504.json"
+```
+
+Evaluar el corpus definido para el caso:
+
+```powershell
+python -m onehealth_worker evaluate-corpus `
+  --manifest ".\config\evaluation\mv-hondius-gold-standard.json" `
+  --output ".\tmp\eval-mv-hondius-corpus.json"
+```
+
+La evaluación es offline y no necesita `DATABASE_URL` ni `LLM_API_KEY`. El event matcher permanece bloqueado hasta completar al menos seis documentos adjudicados y superar el gate cuantitativo.
+
+## Sprint 1D v0.4.3
+
+El evaluador distingue ahora `evidence_exact_f1` de `evidence_support_f1`. El release gate usa la segunda, pero toda evidencia sigue debiendo pasar validación literal contra `raw_text`.
+
+Para comparar el extractor v0.4.3 con el corpus adjudicado completo, regenerar las seis predicciones en rutas versionadas nuevas:
+
+```powershell
+python -m onehealth_worker extract-evaluation-corpus `
+  --manifest ".\config\evaluation\mv-hondius-gold-standard.json" `
+  --force
+
+python -m onehealth_worker evaluate-corpus `
+  --manifest ".\config\evaluation\mv-hondius-gold-standard.json" `
+  --output ".\tmp\eval-mv-hondius-corpus-v043.json"
+```
+
+No se requiere migración de Supabase para v0.4.3.
+
+## Sprint 1D v0.4.4 - Atomic Claims + Deterministic Signal Assembly
+
+El LLM ya no genera directamente las `signals` canónicas. Produce `atomic claims` validados contra `shared/schemas/atomic-claims-v0.1.schema.json`; el worker los ensambla determinísticamente en `signal-extractor-v0.4`.
+
+En el benchmark se conservan ambos artefactos:
+
+- `*.claims.json`: salida atómica original del modelo;
+- `*.json`: signals ensambladas y normalizadas.
+
+```powershell
+python -m onehealth_worker extract-evaluation-corpus `
+  --manifest ".\config\evaluation\mv-hondius-gold-standard.json" `
+  --force
+
+python -m onehealth_worker evaluate-corpus `
+  --manifest ".\config\evaluation\mv-hondius-gold-standard.json" `
+  --output ".\tmp\eval-mv-hondius-corpus-v044.json"
+```
+
+No se requiere migración de Supabase para v0.4.4.

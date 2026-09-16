@@ -1,0 +1,511 @@
+{
+  "schema_version": "0.4",
+  "document": {
+    "raw_item_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080",
+    "language": "es",
+    "document_date": "2026-07-08"
+  },
+  "signals": [
+    {
+      "local_signal_id": "sig-001",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "negative_evidence",
+      "signal_type": "laboratory_result",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.6
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.6
+      },
+      "hosts": [
+        {
+          "verbatim": "roedores silvestres",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.7
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Mendoza",
+          "admin2": null,
+          "locality": "Malargüe",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.85,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "ANLIS Malbrán informó resultados serológicos negativos (sin anticuerpos específicos) para hantavirus en muestras de roedores silvestres capturados cerca de Malargüe (Mendoza) durante la investigación del brote asociado al crucero MV Hondius.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "concluyó el análisis de las muestras obtenidas de roedores silvestres capturados en zonas aledañas a Malargüe, Mendoza, como parte de la investigación epidemiológica del brote de hantavirus asociado al crucero MV Hondius.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "quote",
+          "text": "Los estudios serológicos determinaron que los ejemplares no presentaron anticuerpos específicos contra la enfermedad.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.74,
+      "diagnostics": {
+        "test_reported": true,
+        "test_type": "serología",
+        "method": null,
+        "target": "anticuerpos específicos",
+        "specimen": "muestras obtenidas de roedores silvestres",
+        "result": "negative"
+      }
+    },
+    {
+      "local_signal_id": "sig-002",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "laboratory_investigation",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.55
+      },
+      "pathogen": {
+        "verbatim": "virus Andes",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.55
+      },
+      "hosts": [
+        {
+          "verbatim": "Oligoryzomys longicaudatus",
+          "canonical_name": "Oligoryzomys longicaudatus",
+          "host_type": "wildlife",
+          "confidence": 0.9
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Mendoza",
+          "admin2": null,
+          "locality": "Malargüe",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.8,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": "2026-06-08",
+        "end": "2026-06-12",
+        "precision": "day_range"
+      },
+      "reference_period": {
+        "start": {
+          "date": "2026-06-08",
+          "year": 2026,
+          "month": 6,
+          "precision": "day",
+          "verbatim": "8"
+        },
+        "end": {
+          "date": "2026-06-12",
+          "year": 2026,
+          "month": 6,
+          "precision": "day",
+          "verbatim": "12"
+        },
+        "period_type": "observation_window",
+        "verbatim": "entre el 8 y el 12 de junio"
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "Durante actividades de captura de roedores en Malargüe (Mendoza) no se identificaron ejemplares de Oligoryzomys longicaudatus, señalado como principal reservorio del virus Andes en gran parte de la región patagónica.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "En las actividades de captura no se identificaron ejemplares de la especie Oligoryzomys longicaudatus , principal reservorio del virus Andes en gran parte de la región patagónica.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "quote",
+          "text": "Los operativos sanitarios se llevaron a cabo entre el 8 y el 12 de junio.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.68,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "not_applicable"
+      }
+    },
+    {
+      "local_signal_id": "sig-003",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "environmental_signal",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.5
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.5
+      },
+      "hosts": [
+        {
+          "verbatim": "roedores de otras especies, entre ellas Abrothrix olivacea",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.75
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Mendoza",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.75,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": "2026-06-08",
+          "year": 2026,
+          "month": 6,
+          "precision": "day",
+          "verbatim": "8"
+        },
+        "end": {
+          "date": "2026-06-12",
+          "year": 2026,
+          "month": 6,
+          "precision": "day",
+          "verbatim": "12"
+        },
+        "period_type": "observation_window",
+        "verbatim": "entre el 8 y el 12 de junio"
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "En la misión de captura en Mendoza se recolectaron roedores de otras especies (incluida Abrothrix olivacea), mencionándose antecedentes de infección por hantavirus para esta especie y desconocimiento sobre su rol como reservorio.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "se recolectaron roedores de otras especies, entre ellas Abrothrix olivacea , para la que existen antecedentes de infección, aunque se desconoce su posible rol como reservorio de hantavirus.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.6,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "not_applicable"
+      }
+    },
+    {
+      "local_signal_id": "sig-004",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "outbreak",
+      "disease": {
+        "verbatim": "brote de hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.65
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.55
+      },
+      "hosts": [
+        {
+          "verbatim": "pareja de turistas neerlandeses",
+          "canonical_name": null,
+          "host_type": "human",
+          "confidence": 0.72
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Mendoza",
+          "admin2": null,
+          "locality": "Malargüe",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.8,
+          "role": "travel_history"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "La reconstrucción epidemiológica indicó que una pareja de turistas neerlandeses que enfermó había permanecido en Malargüe antes de abordar el crucero MV Hondius, en el contexto de un brote de hantavirus asociado a dicho crucero.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "la reconstrucción epidemiológica indicó que la pareja de turistas neerlandeses que enfermó había permanecido allí durante su recorrido por la Argentina antes de abordar el crucero.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "quote",
+          "text": "brote de hantavirus asociado al crucero MV Hondius",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.62,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "sig-005",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "intervention",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.5
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "ambiguous",
+        "confidence": 0.5
+      },
+      "hosts": [
+        {
+          "verbatim": "personal del Laboratorio Núcleo del Hospital Lencinas",
+          "canonical_name": null,
+          "host_type": "human",
+          "confidence": 0.6
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Mendoza",
+          "admin2": null,
+          "locality": "Godoy Cruz",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.85,
+          "role": "event_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "Científicos de ANLIS Malbrán brindaron capacitación para transferir técnicas diagnósticas de hantavirus al personal del Laboratorio Núcleo del Hospital Lencinas (Godoy Cruz, Mendoza) para fortalecer diagnóstico y vigilancia.",
+      "evidence": [
+        {
+          "type": "quote",
+          "text": "científicos de la ANLIS Malbrán brindaron una capacitación para transferir las técnicas diagnósticas de hantavirus al personal del Laboratorio Núcleo del Hospital Lencinas, ubicado en la ciudad de Godoy Cruz, provincia de Mendoza.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.64,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "not_applicable"
+      }
+    }
+  ],
+  "warnings": [
+    "El documento no reporta recuentos de casos, hospitalizaciones o muertes; sólo menciona que una pareja de turistas neerlandeses enfermó y describe acciones de investigación y resultados serológicos negativos en roedores."
+  ]
+}

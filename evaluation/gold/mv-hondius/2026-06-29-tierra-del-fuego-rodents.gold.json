@@ -1,0 +1,431 @@
+{
+  "gold_standard_version": "0.2",
+  "case_code": "ARG-HANTA-MV-HONDIUS-2026",
+  "document_label": "Roedores Tierra del Fuego - evidencia genómica no relacionada - 29/06/2026",
+  "source_url": "https://www.argentina.gob.ar/noticias/anlis-malbran-identifico-hantavirus-en-roedores-de-tierra-del-fuego-sin-relacion-con-el-0",
+  "evaluation_scope": "Solo señales directamente vinculadas con hantavirus, MV Hondius y vigilancia nacional de hantavirus; excluir otros temas epidemiológicos de la página.",
+  "adjudication": {
+    "status": "adjudicated",
+    "date": "2026-09-14",
+    "basis": "official_source_human_adjudication",
+    "raw_item_binding": "prediction",
+    "notes": [
+      "La detección en Abrothrix es una señal One Health wildlife/genómica.",
+      "La diferencia genómica respecto del brote humano se adjudica como negative_evidence y relación animal->humano refutada para los roedores analizados."
+    ]
+  },
+  "expected": {
+    "schema_version": "0.4",
+    "document": {
+      "raw_item_id": "66f5218f-c56e-5552-a7ba-72c4b4538056",
+      "language": "es",
+      "document_date": "2026-06-29"
+    },
+    "signals": [
+      {
+        "local_signal_id": "GS-MVH-20260629-01",
+        "domains": [
+          "wildlife"
+        ],
+        "signal_role": "primary_event",
+        "signal_type": "laboratory_result",
+        "disease": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus disease",
+          "normalization_status": "resolved",
+          "confidence": 0.9
+        },
+        "pathogen": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus",
+          "normalization_status": "resolved",
+          "confidence": 0.85
+        },
+        "hosts": [
+          {
+            "verbatim": "ejemplares pertenecientes al género Abrothrix",
+            "canonical_name": "Abrothrix",
+            "host_type": "wildlife",
+            "confidence": 0.95
+          }
+        ],
+        "locations": [
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Tierra del Fuego",
+            "admin2": null,
+            "locality": "Ushuaia",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          }
+        ],
+        "event_date": {
+          "start": null,
+          "end": null,
+          "precision": "unknown"
+        },
+        "reference_period": {
+          "start": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "end": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "period_type": "unknown",
+          "verbatim": null
+        },
+        "metrics": [
+          {
+            "name": "seropositive_rodents",
+            "value_numeric": 5,
+            "value_text": "cinco ejemplares",
+            "unit": "animals",
+            "as_of_date": null,
+            "as_of_year": 2026,
+            "as_of_month": 6,
+            "as_of_precision": "month",
+            "as_of_verbatim": "resultados obtenidos"
+          }
+        ],
+        "transmission": {
+          "human_to_human": "unknown",
+          "animal_to_human": "unknown",
+          "vector_borne": "unknown"
+        },
+        "genomics": {
+          "sequence_reported": false,
+          "lineage": null,
+          "clade": null,
+          "accession": null,
+          "test_result": "not_applicable"
+        },
+        "verification_status": "confirmed",
+        "signal_summary": "Cinco roedores del género Abrothrix capturados en Ushuaia presentaron anticuerpos específicos contra hantavirus.",
+        "evidence": [
+          {
+            "type": "text",
+            "text": "Los resultados obtenidos mostraron que cinco ejemplares pertenecientes al género Abrothrix presentaron anticuerpos específicos contra hantavirus.",
+            "location_in_document": null,
+            "page_number": null
+          }
+        ],
+        "extraction_confidence": 0.85,
+        "diagnostics": {
+          "test_reported": true,
+          "test_type": "análisis serológicos",
+          "method": "serología",
+          "target": "anticuerpos específicos contra hantavirus",
+          "specimen": null,
+          "result": "positive"
+        }
+      },
+      {
+        "local_signal_id": "GS-MVH-20260629-02",
+        "domains": [
+          "wildlife",
+          "genomic"
+        ],
+        "signal_role": "primary_event",
+        "signal_type": "genomic_observation",
+        "disease": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus disease",
+          "normalization_status": "resolved",
+          "confidence": 0.9
+        },
+        "pathogen": {
+          "verbatim": "Orthohantavirus andesense",
+          "canonical_name": "Orthohantavirus andesense",
+          "normalization_status": "resolved",
+          "confidence": 0.98
+        },
+        "hosts": [
+          {
+            "verbatim": "ejemplares pertenecientes al género Abrothrix",
+            "canonical_name": "Abrothrix",
+            "host_type": "wildlife",
+            "confidence": 0.95
+          }
+        ],
+        "locations": [
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Tierra del Fuego",
+            "admin2": null,
+            "locality": "Ushuaia",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          }
+        ],
+        "event_date": {
+          "start": null,
+          "end": null,
+          "precision": "unknown"
+        },
+        "reference_period": {
+          "start": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "end": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "period_type": "unknown",
+          "verbatim": null
+        },
+        "metrics": [],
+        "transmission": {
+          "human_to_human": "unknown",
+          "animal_to_human": "unknown",
+          "vector_borne": "unknown"
+        },
+        "genomics": {
+          "sequence_reported": true,
+          "lineage": "variante viral no descripta previamente",
+          "clade": null,
+          "accession": null,
+          "test_result": "positive"
+        },
+        "verification_status": "confirmed",
+        "signal_summary": "Se identificó una variante viral no descripta previamente, emparentada con virus Andes y clasificada como Orthohantavirus andesense.",
+        "evidence": [
+          {
+            "type": "text",
+            "text": "los estudios genéticos determinaron que el virus, por su grado de identidad nucleotídica, se considera emparentado con el virus Andes y se clasifica dentro de la especie Orthohantavirus andesense.",
+            "location_in_document": null,
+            "page_number": null
+          }
+        ],
+        "extraction_confidence": 0.85,
+        "diagnostics": {
+          "test_reported": false,
+          "test_type": null,
+          "method": null,
+          "target": null,
+          "specimen": null,
+          "result": "unknown"
+        }
+      },
+      {
+        "local_signal_id": "GS-MVH-20260629-03",
+        "domains": [
+          "wildlife",
+          "human",
+          "genomic"
+        ],
+        "signal_role": "negative_evidence",
+        "signal_type": "transmission_observation",
+        "disease": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus disease",
+          "normalization_status": "resolved",
+          "confidence": 0.9
+        },
+        "pathogen": {
+          "verbatim": "Orthohantavirus andesense",
+          "canonical_name": "Orthohantavirus andesense",
+          "normalization_status": "resolved",
+          "confidence": 0.95
+        },
+        "hosts": [
+          {
+            "verbatim": "ejemplares pertenecientes al género Abrothrix",
+            "canonical_name": "Abrothrix",
+            "host_type": "wildlife",
+            "confidence": 0.95
+          }
+        ],
+        "locations": [],
+        "event_date": {
+          "start": null,
+          "end": null,
+          "precision": "unknown"
+        },
+        "reference_period": {
+          "start": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "end": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "period_type": "unknown",
+          "verbatim": null
+        },
+        "metrics": [],
+        "transmission": {
+          "human_to_human": "unknown",
+          "animal_to_human": "refuted",
+          "vector_borne": "unknown"
+        },
+        "genomics": {
+          "sequence_reported": true,
+          "lineage": "variante viral no descripta previamente",
+          "clade": null,
+          "accession": null,
+          "test_result": "positive"
+        },
+        "verification_status": "refuted",
+        "signal_summary": "La variante de los roedores fue diferente de la observada en humanos y permitió descartar a los roedores analizados como fuente del brote.",
+        "evidence": [
+          {
+            "type": "text",
+            "text": "la variante viral hallada en los roedores de Tierra del Fuego es diferente de la observada en los casos humanos asociados al brote investigado.",
+            "location_in_document": null,
+            "page_number": null
+          }
+        ],
+        "extraction_confidence": 0.85,
+        "diagnostics": {
+          "test_reported": false,
+          "test_type": null,
+          "method": null,
+          "target": null,
+          "specimen": null,
+          "result": "unknown"
+        }
+      },
+      {
+        "local_signal_id": "GS-MVH-20260629-04",
+        "domains": [
+          "wildlife"
+        ],
+        "signal_role": "negative_evidence",
+        "signal_type": "wildlife_event",
+        "disease": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus disease",
+          "normalization_status": "resolved",
+          "confidence": 0.9
+        },
+        "pathogen": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus",
+          "normalization_status": "resolved",
+          "confidence": 0.85
+        },
+        "hosts": [],
+        "locations": [
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Tierra del Fuego",
+            "admin2": null,
+            "locality": "Ushuaia",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          }
+        ],
+        "event_date": {
+          "start": null,
+          "end": null,
+          "precision": "unknown"
+        },
+        "reference_period": {
+          "start": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "end": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "period_type": "unknown",
+          "verbatim": null
+        },
+        "metrics": [
+          {
+            "name": "captured_rodents",
+            "value_numeric": 144,
+            "value_text": "144 roedores",
+            "unit": "animals",
+            "as_of_date": null,
+            "as_of_year": 2026,
+            "as_of_month": 5,
+            "as_of_precision": "month",
+            "as_of_verbatim": "durante esos operativos"
+          },
+          {
+            "name": "oligoryzomys_longicaudatus_identified",
+            "value_numeric": 0,
+            "value_text": "no se identificaron ejemplares de Oligoryzomys longicaudatus",
+            "unit": "animals",
+            "as_of_date": null,
+            "as_of_year": 2026,
+            "as_of_month": 5,
+            "as_of_precision": "month",
+            "as_of_verbatim": "durante esos operativos"
+          }
+        ],
+        "transmission": {
+          "human_to_human": "unknown",
+          "animal_to_human": "unknown",
+          "vector_borne": "unknown"
+        },
+        "genomics": {
+          "sequence_reported": false,
+          "lineage": null,
+          "clade": null,
+          "accession": null,
+          "test_result": "not_applicable"
+        },
+        "verification_status": "confirmed",
+        "signal_summary": "Se capturaron 144 roedores y no se identificó Oligoryzomys longicaudatus, principal reservorio conocido de virus Andes en Patagonia.",
+        "evidence": [
+          {
+            "type": "text",
+            "text": "durante esos operativos se capturaron 144 roedores y no se identificaron ejemplares de Oligoryzomys longicaudatus",
+            "location_in_document": null,
+            "page_number": null
+          }
+        ],
+        "extraction_confidence": 0.85,
+        "diagnostics": {
+          "test_reported": false,
+          "test_type": null,
+          "method": null,
+          "target": null,
+          "specimen": null,
+          "result": "unknown"
+        }
+      }
+    ],
+    "warnings": []
+  }
+}

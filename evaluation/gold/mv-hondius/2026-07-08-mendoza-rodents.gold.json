@@ -1,0 +1,458 @@
+{
+  "gold_standard_version": "0.2",
+  "case_code": "ARG-HANTA-MV-HONDIUS-2026",
+  "document_label": "Roedores Mendoza - evidencia negativa - 08/07/2026",
+  "source_url": "https://www.argentina.gob.ar/noticias/especialistas-de-la-anlis-malbran-no-identificaron-hantavirus-en-roedores-capturados-en",
+  "evaluation_scope": "Solo señales directamente vinculadas con hantavirus, MV Hondius y vigilancia nacional de hantavirus; excluir otros temas epidemiológicos de la página.",
+  "adjudication": {
+    "status": "adjudicated",
+    "date": "2026-09-14",
+    "basis": "official_source_human_adjudication",
+    "raw_item_binding": "prediction",
+    "notes": [
+      "La serología negativa es evidencia negativa real, no ausencia de información.",
+      "La estadía en Malargüe se modela como travel_history, no como lugar de exposición confirmado.",
+      "La ausencia de Oligoryzomys longicaudatus se conserva como hallazgo ecológico negativo."
+    ]
+  },
+  "expected": {
+    "schema_version": "0.4",
+    "document": {
+      "raw_item_id": "e05ae99c-05d6-5f00-a78a-d80301de61a5",
+      "language": "es",
+      "document_date": "2026-07-08"
+    },
+    "signals": [
+      {
+        "local_signal_id": "GS-MVH-20260708-01",
+        "domains": [
+          "wildlife"
+        ],
+        "signal_role": "negative_evidence",
+        "signal_type": "laboratory_result",
+        "disease": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus disease",
+          "normalization_status": "resolved",
+          "confidence": 0.9
+        },
+        "pathogen": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus",
+          "normalization_status": "resolved",
+          "confidence": 0.85
+        },
+        "hosts": [
+          {
+            "verbatim": "roedores silvestres",
+            "canonical_name": null,
+            "host_type": "wildlife",
+            "confidence": 0.85
+          }
+        ],
+        "locations": [
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Mendoza",
+            "admin2": null,
+            "locality": "Malargüe",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          }
+        ],
+        "event_date": {
+          "start": null,
+          "end": null,
+          "precision": "unknown"
+        },
+        "reference_period": {
+          "start": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "end": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "period_type": "unknown",
+          "verbatim": null
+        },
+        "metrics": [],
+        "transmission": {
+          "human_to_human": "unknown",
+          "animal_to_human": "unknown",
+          "vector_borne": "unknown"
+        },
+        "genomics": {
+          "sequence_reported": false,
+          "lineage": null,
+          "clade": null,
+          "accession": null,
+          "test_result": "not_applicable"
+        },
+        "verification_status": "confirmed",
+        "signal_summary": "Los roedores capturados en zonas aledañas a Malargüe no presentaron anticuerpos específicos contra hantavirus.",
+        "evidence": [
+          {
+            "type": "text",
+            "text": "Los estudios serológicos determinaron que los ejemplares no presentaron anticuerpos específicos contra la enfermedad.",
+            "location_in_document": null,
+            "page_number": null
+          }
+        ],
+        "extraction_confidence": 0.85,
+        "diagnostics": {
+          "test_reported": true,
+          "test_type": "estudios serológicos",
+          "method": "serología",
+          "target": "anticuerpos específicos contra hantavirus",
+          "specimen": null,
+          "result": "negative"
+        }
+      },
+      {
+        "local_signal_id": "GS-MVH-20260708-02",
+        "domains": [
+          "human",
+          "mobility"
+        ],
+        "signal_role": "primary_event",
+        "signal_type": "travel_or_mobility",
+        "disease": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus disease",
+          "normalization_status": "resolved",
+          "confidence": 0.9
+        },
+        "pathogen": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus",
+          "normalization_status": "resolved",
+          "confidence": 0.85
+        },
+        "hosts": [
+          {
+            "verbatim": null,
+            "canonical_name": "Homo sapiens",
+            "host_type": "human",
+            "confidence": 0.9
+          }
+        ],
+        "locations": [
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Mendoza",
+            "admin2": null,
+            "locality": "Malargüe",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "travel_history"
+          }
+        ],
+        "event_date": {
+          "start": null,
+          "end": null,
+          "precision": "unknown"
+        },
+        "reference_period": {
+          "start": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "end": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "period_type": "unknown",
+          "verbatim": null
+        },
+        "metrics": [],
+        "transmission": {
+          "human_to_human": "unknown",
+          "animal_to_human": "unknown",
+          "vector_borne": "unknown"
+        },
+        "genomics": {
+          "sequence_reported": false,
+          "lineage": null,
+          "clade": null,
+          "accession": null,
+          "test_result": "not_applicable"
+        },
+        "verification_status": "reported",
+        "signal_summary": "La investigación en Malargüe se vinculó al antecedente de estadía allí de la pareja neerlandesa que enfermó antes de abordar el crucero.",
+        "evidence": [
+          {
+            "type": "text",
+            "text": "la pareja de turistas neerlandeses que enfermó había permanecido allí durante su recorrido por la Argentina antes de abordar el crucero.",
+            "location_in_document": null,
+            "page_number": null
+          }
+        ],
+        "extraction_confidence": 0.85,
+        "diagnostics": {
+          "test_reported": false,
+          "test_type": null,
+          "method": null,
+          "target": null,
+          "specimen": null,
+          "result": "unknown"
+        }
+      },
+      {
+        "local_signal_id": "GS-MVH-20260708-03",
+        "domains": [
+          "wildlife",
+          "environment"
+        ],
+        "signal_role": "primary_event",
+        "signal_type": "intervention",
+        "disease": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus disease",
+          "normalization_status": "resolved",
+          "confidence": 0.9
+        },
+        "pathogen": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus",
+          "normalization_status": "resolved",
+          "confidence": 0.85
+        },
+        "hosts": [],
+        "locations": [
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Mendoza",
+            "admin2": null,
+            "locality": "Reserva Natural Humedal Llancanelo",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          },
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Mendoza",
+            "admin2": null,
+            "locality": "Bardas Blancas",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          },
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Mendoza",
+            "admin2": null,
+            "locality": "Las Loicas",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          },
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Mendoza",
+            "admin2": null,
+            "locality": "Reserva Natural Caverna de las Brujas",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          }
+        ],
+        "event_date": {
+          "start": null,
+          "end": null,
+          "precision": "unknown"
+        },
+        "reference_period": {
+          "start": {
+            "date": "2026-06-08",
+            "year": 2026,
+            "month": 6,
+            "precision": "day",
+            "verbatim": "entre el 8"
+          },
+          "end": {
+            "date": "2026-06-12",
+            "year": 2026,
+            "month": 6,
+            "precision": "day",
+            "verbatim": "y el 12 de junio"
+          },
+          "period_type": "observation_window",
+          "verbatim": "entre el 8 y el 12 de junio"
+        },
+        "metrics": [
+          {
+            "name": "traps_installed",
+            "value_numeric": 250,
+            "value_text": "más de 250 trampas",
+            "unit": "traps",
+            "as_of_date": null,
+            "as_of_year": 2026,
+            "as_of_month": 6,
+            "as_of_precision": "month",
+            "as_of_verbatim": "más de 250 trampas"
+          }
+        ],
+        "transmission": {
+          "human_to_human": "unknown",
+          "animal_to_human": "unknown",
+          "vector_borne": "unknown"
+        },
+        "genomics": {
+          "sequence_reported": false,
+          "lineage": null,
+          "clade": null,
+          "accession": null,
+          "test_result": "not_applicable"
+        },
+        "verification_status": "reported",
+        "signal_summary": "El operativo de campo en Mendoza instaló más de 250 trampas en cuatro sectores de muestreo.",
+        "evidence": [
+          {
+            "type": "text",
+            "text": "Las acciones incluyeron la instalación de más de 250 trampas bajo estrictos protocolos de bioseguridad.",
+            "location_in_document": null,
+            "page_number": null
+          }
+        ],
+        "extraction_confidence": 0.85,
+        "diagnostics": {
+          "test_reported": false,
+          "test_type": null,
+          "method": null,
+          "target": null,
+          "specimen": null,
+          "result": "unknown"
+        }
+      },
+      {
+        "local_signal_id": "GS-MVH-20260708-04",
+        "domains": [
+          "wildlife"
+        ],
+        "signal_role": "negative_evidence",
+        "signal_type": "wildlife_event",
+        "disease": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus disease",
+          "normalization_status": "resolved",
+          "confidence": 0.9
+        },
+        "pathogen": {
+          "verbatim": "hantavirus",
+          "canonical_name": "Hantavirus",
+          "normalization_status": "resolved",
+          "confidence": 0.85
+        },
+        "hosts": [],
+        "locations": [
+          {
+            "country": "Argentina",
+            "country_iso2": "AR",
+            "admin1": "Mendoza",
+            "admin2": null,
+            "locality": "Malargüe",
+            "region": null,
+            "precision": "locality",
+            "confidence": 0.8,
+            "role": "sampling_location"
+          }
+        ],
+        "event_date": {
+          "start": null,
+          "end": null,
+          "precision": "unknown"
+        },
+        "reference_period": {
+          "start": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "end": {
+            "date": null,
+            "year": null,
+            "month": null,
+            "precision": "unknown",
+            "verbatim": null
+          },
+          "period_type": "unknown",
+          "verbatim": null
+        },
+        "metrics": [
+          {
+            "name": "oligoryzomys_longicaudatus_identified",
+            "value_numeric": 0,
+            "value_text": "no se identificaron ejemplares de la especie Oligoryzomys longicaudatus",
+            "unit": "animals",
+            "as_of_date": null,
+            "as_of_year": 2026,
+            "as_of_month": 6,
+            "as_of_precision": "month",
+            "as_of_verbatim": "actividades de captura"
+          }
+        ],
+        "transmission": {
+          "human_to_human": "unknown",
+          "animal_to_human": "unknown",
+          "vector_borne": "unknown"
+        },
+        "genomics": {
+          "sequence_reported": false,
+          "lineage": null,
+          "clade": null,
+          "accession": null,
+          "test_result": "not_applicable"
+        },
+        "verification_status": "confirmed",
+        "signal_summary": "No se identificó Oligoryzomys longicaudatus en las capturas; se recolectaron otras especies, incluida Abrothrix olivacea.",
+        "evidence": [
+          {
+            "type": "text",
+            "text": "En las actividades de captura no se identificaron ejemplares de la especie Oligoryzomys longicaudatus, principal reservorio del virus Andes en gran parte de la región patagónica.",
+            "location_in_document": null,
+            "page_number": null
+          }
+        ],
+        "extraction_confidence": 0.85,
+        "diagnostics": {
+          "test_reported": false,
+          "test_type": null,
+          "method": null,
+          "target": null,
+          "specimen": null,
+          "result": "unknown"
+        }
+      }
+    ],
+    "warnings": []
+  }
+}

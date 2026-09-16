@@ -1,0 +1,166 @@
+{
+  "evaluation_schema_version": "0.1",
+  "gold_standard_version": "0.1",
+  "case_code": "ARG-HANTA-MV-HONDIUS-2026",
+  "document": {
+    "raw_item_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3",
+    "language": "es",
+    "document_date": "2026-05-04"
+  },
+  "matching_threshold": 0.55,
+  "signal_detection": {
+    "tp": 7,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "gold_signals": 7,
+    "predicted_signals": 7,
+    "matched_signals": 7
+  },
+  "field_metrics": {
+    "signal_role_accuracy": 1.0,
+    "signal_type_accuracy": 1.0,
+    "disease_accuracy": 1.0,
+    "pathogen_accuracy": 1.0,
+    "normalization_status_accuracy": 1.0,
+    "event_date_accuracy": 1.0,
+    "reference_period_accuracy": 0.857143,
+    "diagnostics_accuracy": 0.857143,
+    "domains_f1": 1.0,
+    "metrics_f1": 1.0,
+    "locations_f1": 1.0,
+    "hosts_f1": 1.0,
+    "evidence_f1": 1.0
+  },
+  "composite_score": 0.979592,
+  "matched_signals": [
+    {
+      "gold_signal_id": "GS-MVH-20260504-01",
+      "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-1",
+      "match_score": 1.0,
+      "components": {
+        "signal_role": 1.0,
+        "signal_type": 1.0,
+        "disease": 1.0,
+        "pathogen": 1.0,
+        "metrics": 1.0,
+        "locations": 1.0,
+        "event_date": 1.0,
+        "reference_period": 1.0,
+        "diagnostics": 1.0,
+        "domains": 1.0
+      }
+    },
+    {
+      "gold_signal_id": "GS-MVH-20260504-02",
+      "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-2",
+      "match_score": 1.0,
+      "components": {
+        "signal_role": 1.0,
+        "signal_type": 1.0,
+        "disease": 1.0,
+        "pathogen": 1.0,
+        "metrics": 1.0,
+        "locations": 1.0,
+        "event_date": 1.0,
+        "reference_period": 1.0,
+        "diagnostics": 1.0,
+        "domains": 1.0
+      }
+    },
+    {
+      "gold_signal_id": "GS-MVH-20260504-03",
+      "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-3",
+      "match_score": 1.0,
+      "components": {
+        "signal_role": 1.0,
+        "signal_type": 1.0,
+        "disease": 1.0,
+        "pathogen": 1.0,
+        "metrics": 1.0,
+        "locations": 1.0,
+        "event_date": 1.0,
+        "reference_period": 1.0,
+        "diagnostics": 1.0,
+        "domains": 1.0
+      }
+    },
+    {
+      "gold_signal_id": "GS-MVH-20260504-04",
+      "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-4",
+      "match_score": 0.96,
+      "components": {
+        "signal_role": 1.0,
+        "signal_type": 1.0,
+        "disease": 1.0,
+        "pathogen": 1.0,
+        "metrics": 1.0,
+        "locations": 1.0,
+        "event_date": 1.0,
+        "reference_period": 1.0,
+        "diagnostics": 0.0,
+        "domains": 1.0
+      }
+    },
+    {
+      "gold_signal_id": "GS-MVH-20260504-05",
+      "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-5",
+      "match_score": 1.0,
+      "components": {
+        "signal_role": 1.0,
+        "signal_type": 1.0,
+        "disease": 1.0,
+        "pathogen": 1.0,
+        "metrics": 1.0,
+        "locations": 1.0,
+        "event_date": 1.0,
+        "reference_period": 1.0,
+        "diagnostics": 1.0,
+        "domains": 1.0
+      }
+    },
+    {
+      "gold_signal_id": "GS-MVH-20260504-06",
+      "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-6",
+      "match_score": 1.0,
+      "components": {
+        "signal_role": 1.0,
+        "signal_type": 1.0,
+        "disease": 1.0,
+        "pathogen": 1.0,
+        "metrics": 1.0,
+        "locations": 1.0,
+        "event_date": 1.0,
+        "reference_period": 1.0,
+        "diagnostics": 1.0,
+        "domains": 1.0
+      }
+    },
+    {
+      "gold_signal_id": "GS-MVH-20260504-07",
+      "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-7",
+      "match_score": 0.96,
+      "components": {
+        "signal_role": 1.0,
+        "signal_type": 1.0,
+        "disease": 1.0,
+        "pathogen": 1.0,
+        "metrics": 1.0,
+        "locations": 1.0,
+        "event_date": 1.0,
+        "reference_period": 0.0,
+        "diagnostics": 1.0,
+        "domains": 1.0
+      }
+    }
+  ],
+  "unmatched_gold": [],
+  "unmatched_prediction": [],
+  "release_gate": {
+    "single_document_pass": true,
+    "event_matcher_ready": false,
+    "reason": "Se requiere un corpus adjudicado de múltiples documentos antes de habilitar event matching automático."
+  }
+}

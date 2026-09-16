@@ -33,6 +33,35 @@ class ExtractionRepository:
         with psycopg.connect(self.database_url, row_factory=dict_row) as conn:
             yield conn
 
+    def load_raw_document_by_url(self, url: str) -> RawDocument:
+        normalized = url.rstrip("/")
+        with self.connection() as conn, conn.cursor() as cur:
+            cur.execute(
+                """
+                select r.id, r.title, r.url, r.published_at, r.language, p.raw_text
+                from public.raw_items r
+                join public.raw_item_payloads p on p.raw_item_id = r.id
+                where r.url = %s or r.url = %s or r.url = %s
+                order by r.retrieved_at desc
+                limit 1
+                """,
+                (url, normalized, normalized + "/"),
+            )
+            row = cur.fetchone()
+            if not row:
+                raise ValueError(
+                    f"No existe raw_item con payload para url={url!r}. "
+                    "Ejecutá primero ingest-case para el manifiesto del caso."
+                )
+            return RawDocument(
+                raw_item_id=str(row["id"]),
+                title=row["title"],
+                url=row["url"],
+                published_at=row["published_at"],
+                language=row["language"],
+                raw_text=row["raw_text"],
+            )
+
     def load_raw_document(self, raw_item_id: str) -> RawDocument:
         with self.connection() as conn, conn.cursor() as cur:
             cur.execute(

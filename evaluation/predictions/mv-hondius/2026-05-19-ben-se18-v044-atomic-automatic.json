@@ -1,0 +1,894 @@
+{
+  "schema_version": "0.4",
+  "document": {
+    "raw_item_id": "bf2deabc-a495-431c-89cf-e86ca9720db9",
+    "language": "es",
+    "document_date": "2026-05-20"
+  },
+  "signals": [
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-01",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "outbreak",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "casos",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.62
+        },
+        {
+          "verbatim": "casos confirmados",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.62
+        },
+        {
+          "verbatim": "casos probables",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.6
+        },
+        {
+          "verbatim": "caso inconcluso",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.6
+        },
+        {
+          "verbatim": "nuevos casos",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.58
+        },
+        {
+          "verbatim": "caso considerado inconcluso",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.55
+        },
+        {
+          "verbatim": "caso",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.5
+        }
+      ],
+      "locations": [
+        {
+          "country": "Estados Unidos",
+          "country_iso2": "US",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "country",
+          "confidence": 0.8,
+          "role": "current_location"
+        }
+      ],
+      "event_date": {
+        "start": "2026-05-13",
+        "end": null,
+        "precision": "day"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "Desde la última actualización"
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "Desde la última actualización"
+        },
+        "period_type": "observation_window",
+        "verbatim": "Desde la última actualización"
+      },
+      "metrics": [
+        {
+          "name": "cases_total",
+          "value_numeric": 11,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        },
+        {
+          "name": "cases_confirmed",
+          "value_numeric": 8,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        },
+        {
+          "name": "cases_probable",
+          "value_numeric": 2,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        },
+        {
+          "name": "cases_inconclusive",
+          "value_numeric": 1,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        },
+        {
+          "name": "cases_new_confirmed",
+          "value_numeric": 2,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "Desde la última actualización"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "Al 13 de mayo se identificaron 11 casos en el brote de hantavirus detectado en el crucero MV Hondius.",
+      "evidence": [
+        {
+          "type": "document_text",
+          "text": "En lo que refiere a la actualización de la información sobre el brote de hantavirus que se detectó en el crucero MV Hondius, eL BEN confirma que, al 13 de mayo, se identificaron 11 casos:",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "document_text",
+          "text": "8 confirmados",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "document_text",
+          "text": "2 probables",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "document_text",
+          "text": "1 inconcluso",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "document_text",
+          "text": "Desde la última actualización se confirmaron dos nuevos casos.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "document_text",
+          "text": "Asimismo, se agregó otro caso considerado inconcluso en Estados Unidos",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "document_text",
+          "text": "que permanece asintomático.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.6943,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-02",
+      "domains": [
+        "human",
+        "genomic"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "genomic_observation",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
+      },
+      "pathogen": {
+        "verbatim": "cepa Andes",
+        "canonical_name": "Andes virus",
+        "normalization_status": "resolved",
+        "confidence": 0.9
+      },
+      "hosts": [
+        {
+          "verbatim": "confirmados",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.56
+        },
+        {
+          "verbatim": "distintos casos",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.46
+        }
+      ],
+      "locations": [],
+      "event_date": {
+        "start": "2026-05-13",
+        "end": null,
+        "precision": "day"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "preliminar"
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "preliminar"
+        },
+        "period_type": "unknown",
+        "verbatim": "preliminar"
+      },
+      "metrics": [
+        {
+          "name": "cases_with_pathogen_variant",
+          "value_numeric": 8,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": true,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "positive"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "Los 8 casos confirmados fueron reportados como cepa Andes. El análisis genético preliminar muestra secuencias muy similares entre distintos casos.",
+      "evidence": [
+        {
+          "type": "document_text",
+          "text": "8 confirmados (todos cepa Andes)",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "document_text",
+          "text": "El análisis genético preliminar muestra secuencias muy similares entre distintos casos.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.7,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-03",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "transmission_observation",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "el primer caso",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.52
+        }
+      ],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.2,
+          "role": "possible_exposure_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "Hasta el momento"
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "Hasta el momento"
+        },
+        "period_type": "observation_window",
+        "verbatim": "Hasta el momento"
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "suspected",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "suspected",
+      "signal_summary": "La evidencia sugiere que el primer caso adquirió la infección en tierra antes de embarcar. La evidencia sugiere transmisión a bordo de persona a persona.",
+      "evidence": [
+        {
+          "type": "document_text",
+          "text": "Hasta el momento, la evidencia sugiere que el primer caso adquirió la infección en tierra, antes de embarcar",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "document_text",
+          "text": "y que la transmisión a bordo fue de persona a persona.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.68,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-04",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "laboratory_investigation",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [],
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "Actualmente"
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "Actualmente"
+        },
+        "period_type": "observation_window",
+        "verbatim": "Actualmente"
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Se continúa investigando el origen del brote y posibles circunstancias de exposición.",
+      "evidence": [
+        {
+          "type": "document_text",
+          "text": "Actualmente, los equipos técnicos del Ministerio de Salud de la Nación continúan investigando el origen del brote y las posibles circunstancias de exposición",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.66,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "pending"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-05",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "travel_or_mobility",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.86,
+          "role": "travel_history"
+        }
+      ],
+      "event_date": {
+        "start": "2026-05-18",
+        "end": null,
+        "precision": "day"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "El 18 de mayo personal del INEI-ANLIS Malbrán viajó a Tierra del Fuego.",
+      "evidence": [
+        {
+          "type": "document_text",
+          "text": "el 18 de mayo, personal del INEI-ANLIS Malbrán viajó a Tierra del Fuego",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.73,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-06",
+      "domains": [
+        "wildlife",
+        "environment"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "intervention",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": "virus Andes",
+        "canonical_name": "Andes virus",
+        "normalization_status": "resolved",
+        "confidence": 0.9
+      },
+      "hosts": [],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.86,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": "2026-05-18",
+        "end": null,
+        "precision": "day"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Operativo para producir evidencia sobre la presencia de reservorios y virus Andes en lugares visitados por el caso.",
+      "evidence": [
+        {
+          "type": "document_text",
+          "text": "para producir evidencia acerca de la presencia de reservorios y virus Andes en los lugares que hayan sido visitados por el caso.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.67,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-07",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "surveillance_baseline",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "casos nuevos",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.55
+        }
+      ],
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "Durante la SE 17"
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "Durante la SE 17"
+        },
+        "period_type": "surveillance_period",
+        "verbatim": "Durante la SE 17"
+      },
+      "metrics": [
+        {
+          "name": "cases_new",
+          "value_numeric": 3,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "Durante la SE 17"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Durante la SE 17 se identificaron tres casos nuevos (vigilancia).",
+      "evidence": [
+        {
+          "type": "document_text",
+          "text": "Durante la SE 17 se identificaron tres casos nuevos",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.66,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-08",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "surveillance_baseline",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "casos",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.55
+        }
+      ],
+      "locations": [],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "desde la SE 27 de 2025 hasta la SE 17 de 2026"
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "desde la SE 27 de 2025 hasta la SE 17 de 2026"
+        },
+        "period_type": "season",
+        "verbatim": "desde la SE 27 de 2025 hasta la SE 17 de 2026"
+      },
+      "metrics": [
+        {
+          "name": "cases_confirmed_total",
+          "value_numeric": 105,
+          "value_text": null,
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "hasta la SE 17 de 2026"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Total de casos confirmados en la temporada 2025-2026 hasta la SE 17 de 2026: 105.",
+      "evidence": [
+        {
+          "type": "document_text",
+          "text": "el total de casos de la temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026) asciende a 105 confirmados.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.69,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,505 @@
+{
+  "schema_version": "0.4",
+  "document": {
+    "raw_item_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784",
+    "language": "es",
+    "document_date": "2026-06-29"
+  },
+  "signals": [
+    {
+      "local_signal_id": "s1",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "pathogen_detection",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.6
+      },
+      "pathogen": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.6
+      },
+      "hosts": [
+        {
+          "verbatim": "roedores de Ushuaia, Tierra del Fuego",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.7
+        },
+        {
+          "verbatim": "género Abrothrix",
+          "canonical_name": "Abrothrix",
+          "host_type": "wildlife",
+          "confidence": 0.75
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": "Ushuaia",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.8,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2026,
+          "month": 5,
+          "precision": "month",
+          "verbatim": "entre el 18 y el 22 de mayo"
+        },
+        "end": {
+          "date": null,
+          "year": 2026,
+          "month": 5,
+          "precision": "month",
+          "verbatim": "entre el 18 y el 22 de mayo"
+        },
+        "period_type": "observation_window",
+        "verbatim": "Los operativos de captura de roedores silvestres se desarrollaron entre el 18 y el 22 de mayo"
+      },
+      "metrics": [
+        {
+          "name": "seropositive_animals",
+          "value_numeric": 5,
+          "value_text": "cinco ejemplares",
+          "unit": "animals",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "Se detectó circulación de hantavirus en roedores de Ushuaia (Tierra del Fuego); cinco ejemplares del género Abrothrix presentaron anticuerpos específicos contra hantavirus.",
+      "evidence": [
+        {
+          "type": "excerpt",
+          "text": "permitieron detectar por primera vez la circulación de hantavirus en roedores de Ushuaia, Tierra del Fuego.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "excerpt",
+          "text": "cinco ejemplares pertenecientes al género Abrothrix presentaron anticuerpos específicos contra hantavirus.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "excerpt",
+          "text": "Los operativos de captura de roedores silvestres se desarrollaron entre el 18 y el 22 de mayo",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.78,
+      "diagnostics": {
+        "test_reported": true,
+        "test_type": "análisis serológicos",
+        "method": "serología",
+        "target": "anticuerpos específicos contra hantavirus",
+        "specimen": null,
+        "result": "positive"
+      }
+    },
+    {
+      "local_signal_id": "s2",
+      "domains": [
+        "wildlife",
+        "genomic"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "genomic_observation",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.55
+      },
+      "pathogen": {
+        "verbatim": "Orthohantavirus andesense",
+        "canonical_name": "Orthohantavirus andesense",
+        "normalization_status": "resolved",
+        "confidence": 0.75
+      },
+      "hosts": [
+        {
+          "verbatim": "roedores de Tierra del Fuego",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.7
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.75,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2026,
+          "month": 5,
+          "precision": "month",
+          "verbatim": "entre el 18 y el 22 de mayo"
+        },
+        "end": {
+          "date": null,
+          "year": 2026,
+          "month": 5,
+          "precision": "month",
+          "verbatim": "entre el 18 y el 22 de mayo"
+        },
+        "period_type": "observation_window",
+        "verbatim": "Los operativos de captura de roedores silvestres se desarrollaron entre el 18 y el 22 de mayo"
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": true,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "positive"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "Se identificó una variante viral no descripta previamente en roedores de Tierra del Fuego, clasificada dentro de la especie Orthohantavirus andesense y emparentada con el virus Andes por identidad nucleotídica.",
+      "evidence": [
+        {
+          "type": "excerpt",
+          "text": "los análisis moleculares permitieron identificar una variante viral no descripta previamente.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "excerpt",
+          "text": "se considera emparentado con el virus Andes y se clasifica dentro de la especie Orthohantavirus andesense .",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "excerpt",
+          "text": "Los operativos de captura de roedores silvestres se desarrollaron entre el 18 y el 22 de mayo",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.7,
+      "diagnostics": {
+        "test_reported": true,
+        "test_type": "análisis moleculares / estudios genéticos",
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "positive"
+      }
+    },
+    {
+      "local_signal_id": "s3",
+      "domains": [
+        "wildlife",
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "transmission_observation",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.55
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "roedores analizados",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.6
+        },
+        {
+          "verbatim": "casos humanos asociados al brote investigado",
+          "canonical_name": null,
+          "host_type": "human",
+          "confidence": 0.6
+        }
+      ],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.2,
+          "role": "unknown"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2026,
+          "month": 5,
+          "precision": "month",
+          "verbatim": "entre el 18 y el 22 de mayo"
+        },
+        "end": {
+          "date": null,
+          "year": 2026,
+          "month": 5,
+          "precision": "month",
+          "verbatim": "entre el 18 y el 22 de mayo"
+        },
+        "period_type": "observation_window",
+        "verbatim": "Los operativos de captura de roedores silvestres se desarrollaron entre el 18 y el 22 de mayo"
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "refuted",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "La variante viral hallada en roedores de Tierra del Fuego fue reportada como diferente de la observada en los casos humanos del brote investigado, descartándose que los roedores analizados hayan sido la fuente de infección de ese evento.",
+      "evidence": [
+        {
+          "type": "excerpt",
+          "text": "la variante viral hallada en los roedores de Tierra del Fuego es diferente de la observada en los casos humanos asociados al brote investigado.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "excerpt",
+          "text": "la investigación permitió descartar que los roedores analizados hayan sido la fuente de infección vinculada a ese evento.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.66,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "not_applicable"
+      }
+    },
+    {
+      "local_signal_id": "s4",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "wildlife_event",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.2
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.2
+      },
+      "hosts": [
+        {
+          "verbatim": "144 roedores",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.8
+        },
+        {
+          "verbatim": "Oligoryzomys longicaudatus",
+          "canonical_name": "Oligoryzomys longicaudatus",
+          "host_type": "wildlife",
+          "confidence": 0.85
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": "Ushuaia",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.75,
+          "role": "sampling_location"
+        },
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.65,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2026,
+          "month": 5,
+          "precision": "month",
+          "verbatim": "entre el 18 y el 22 de mayo"
+        },
+        "end": {
+          "date": null,
+          "year": 2026,
+          "month": 5,
+          "precision": "month",
+          "verbatim": "entre el 18 y el 22 de mayo"
+        },
+        "period_type": "observation_window",
+        "verbatim": "Los operativos de captura de roedores silvestres se desarrollaron entre el 18 y el 22 de mayo"
+      },
+      "metrics": [
+        {
+          "name": "animals_captured",
+          "value_numeric": 144,
+          "value_text": "144 roedores",
+          "unit": "animals",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        },
+        {
+          "name": "animals_identified",
+          "value_numeric": 0,
+          "value_text": "no se identificaron ejemplares de Oligoryzomys longicaudatus",
+          "unit": "animals",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "Durante operativos de captura en Ushuaia/Parque Nacional Tierra del Fuego se capturaron 144 roedores y no se identificaron ejemplares de Oligoryzomys longicaudatus.",
+      "evidence": [
+        {
+          "type": "excerpt",
+          "text": "durante esos operativos se capturaron 144 roedores y no se identificaron ejemplares de Oligoryzomys longicaudatus , principal reservorio conocido del virus Andes en la región patagónica.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "excerpt",
+          "text": "Los operativos de captura de roedores silvestres se desarrollaron entre el 18 y el 22 de mayo",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "excerpt",
+          "text": "Se realizaron en sectores de la periferia de Ushuaia y áreas del Parque Nacional Tierra del Fuego",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.76,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "not_applicable"
+      }
+    }
+  ],
+  "warnings": [
+    "La nota menciona un brote asociado al crucero MV Hondius, pero no aporta métricas clínicas/humanas (casos, muertes, hospitalizaciones) ni ubicación/fechas del brote humano; las señales extraídas se limitan a los hallazgos en roedores y a la afirmación de no relación con los casos humanos del brote investigado."
+  ]
+}

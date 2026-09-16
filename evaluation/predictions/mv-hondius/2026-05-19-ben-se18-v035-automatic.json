@@ -1,0 +1,1145 @@
+{
+  "schema_version": "0.4",
+  "document": {
+    "raw_item_id": "bf2deabc-a495-431c-89cf-e86ca9720db9",
+    "language": "es",
+    "document_date": "2026-05-20"
+  },
+  "signals": [
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s1",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "outbreak",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": "cepa Andes",
+        "canonical_name": "Andes orthohantavirus",
+        "normalization_status": "resolved",
+        "confidence": 0.72
+      },
+      "hosts": [
+        {
+          "verbatim": "pasajero",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.7
+        }
+      ],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.3,
+          "role": "event_location"
+        }
+      ],
+      "event_date": {
+        "start": "2026-05-13",
+        "end": "2026-05-13",
+        "precision": "day"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "cases_total",
+          "value_numeric": 11,
+          "value_text": "11 casos: 8 confirmados (todos cepa Andes), 2 probables y 1 inconcluso",
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        },
+        {
+          "name": "cases_confirmed",
+          "value_numeric": 8,
+          "value_text": "8 confirmados (todos cepa Andes)",
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        },
+        {
+          "name": "cases_probable",
+          "value_numeric": 2,
+          "value_text": "2 probables",
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        },
+        {
+          "name": "cases_inconclusive",
+          "value_numeric": 1,
+          "value_text": "1 inconcluso",
+          "unit": "cases",
+          "as_of_date": "2026-05-13",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": "al 13 de mayo"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "BEN: brote de hantavirus detectado en el crucero MV Hondius; al 13 de mayo se identificaron 11 casos (8 confirmados, 2 probables, 1 inconcluso) y los confirmados fueron cepa Andes.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "En lo que refiere a la actualización de la información sobre el brote de hantavirus que se detectó en el crucero MV Hondius, eL BEN confirma que, al 13 de mayo, se identificaron 11 casos: 8 confirmados (todos cepa Andes), 2 probables y 1 inconcluso.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.78,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s2",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "pasajero de nacionalidad francesa",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.74
+        }
+      ],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.3,
+          "role": "event_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "cases_new_confirmed_since_last_update",
+          "value_numeric": 1,
+          "value_text": "Uno de ellos corresponde a un pasajero de nacionalidad francesa",
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "Desde la última actualización"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Desde la última actualización se confirmó un nuevo caso (pasajero francés) que presentó síntomas durante la repatriación.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "Desde la última actualización se confirmaron dos nuevos casos. Uno de ellos corresponde a un pasajero de nacionalidad francesa que presentó síntomas durante la repatriación,",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.68,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s3",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "pasajero español",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.7
+        }
+      ],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.3,
+          "role": "event_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "cases_new_confirmed_since_last_update",
+          "value_numeric": 1,
+          "value_text": "el otro a un pasajero español diagnosticado al arribar a su país",
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "Desde la última actualización"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Desde la última actualización se confirmó un nuevo caso (pasajero español) diagnosticado al arribar a su país.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "Desde la última actualización se confirmaron dos nuevos casos. Uno de ellos corresponde a un pasajero de nacionalidad francesa que presentó síntomas durante la repatriación, el otro a un pasajero español diagnosticado al arribar a su país.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.68,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s4",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": "otro caso considerado inconcluso en Estados Unidos",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.55
+        }
+      ],
+      "locations": [
+        {
+          "country": "Estados Unidos",
+          "country_iso2": "US",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "country",
+          "confidence": 0.6,
+          "role": "current_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [
+        {
+          "name": "cases_added_inconclusive",
+          "value_numeric": 1,
+          "value_text": "se agregó otro caso considerado inconcluso en Estados Unidos",
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        },
+        {
+          "name": "clinical_status",
+          "value_numeric": null,
+          "value_text": "permanece asintomático",
+          "unit": null,
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Se agregó un caso inconcluso en Estados Unidos que permanece asintomático.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "Asimismo, se agregó otro caso considerado inconcluso en Estados Unidos, que permanece asintomático.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.73,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s5",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "transmission_observation",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": null,
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.5
+        }
+      ],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.3,
+          "role": "event_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "confirmed",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "La fuente afirma que la transmisión a bordo fue de persona a persona y que el primer caso habría adquirido la infección en tierra antes de embarcar.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "Hasta el momento, la evidencia sugiere que el primer caso adquirió la infección en tierra, antes de embarcar, y que la transmisión a bordo fue de persona a persona.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.72,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s6",
+      "domains": [
+        "genomic",
+        "human"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "genomic_observation",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": null,
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.5
+        }
+      ],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.3,
+          "role": "unknown"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": true,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "verification_status": "reported",
+      "signal_summary": "El análisis genético preliminar reportó secuencias muy similares entre distintos casos del brote.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "El análisis genético preliminar muestra secuencias muy similares entre distintos casos.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.66,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "not_applicable"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s7",
+      "domains": [
+        "human",
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "travel_or_mobility",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": "virus Andes",
+        "canonical_name": "Andes orthohantavirus",
+        "normalization_status": "resolved",
+        "confidence": 0.72
+      },
+      "hosts": [
+        {
+          "verbatim": "personal del INEI-ANLIS Malbrán",
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.6
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Tierra del Fuego",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.7,
+          "role": "travel_history"
+        }
+      ],
+      "event_date": {
+        "start": "2026-05-18",
+        "end": "2026-05-18",
+        "precision": "day"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": null
+        },
+        "period_type": "unknown",
+        "verbatim": null
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "El 18 de mayo, personal del INEI-ANLIS Malbrán viajó a Tierra del Fuego para producir evidencia sobre reservorios y virus Andes en lugares visitados por el caso.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "el 18 de mayo, personal del INEI-ANLIS Malbrán viajó a Tierra del Fuego para producir evidencia acerca de la presencia de reservorios y virus Andes en los lugares que hayan sido visitados por el caso.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.74,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s8",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "surveillance_baseline",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": null,
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.5
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "country",
+          "confidence": 0.9,
+          "role": "reporting_jurisdiction"
+        },
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Rio Negro",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.85,
+          "role": "event_location"
+        },
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Jujuy",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.85,
+          "role": "event_location"
+        },
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Chubut",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.85,
+          "role": "event_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "SE 17"
+        },
+        "end": {
+          "date": null,
+          "year": null,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "SE 17"
+        },
+        "period_type": "surveillance_period",
+        "verbatim": "Durante la SE 17"
+      },
+      "metrics": [
+        {
+          "name": "cases_new",
+          "value_numeric": 3,
+          "value_text": "Durante la SE 17 se identificaron tres casos nuevos",
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "Durante la SE 17"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Vigilancia de hantavirus: durante la SE 17 se identificaron 3 casos nuevos (Río Negro, Jujuy, Chubut).",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "Durante la SE 17 se identificaron tres casos nuevos, uno correspondientes a la provincia de Rio Negro, otro a Jujuy y otro, a Chubut.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.78,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s9",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "surveillance_baseline",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.7
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": null,
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.5
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "country",
+          "confidence": 0.9,
+          "role": "reporting_jurisdiction"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2025,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "SE 27 de 2025"
+        },
+        "end": {
+          "date": null,
+          "year": 2026,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "SE 17 de 2026"
+        },
+        "period_type": "surveillance_period",
+        "verbatim": "la temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026)"
+      },
+      "metrics": [
+        {
+          "name": "cases_confirmed_total",
+          "value_numeric": 105,
+          "value_text": "asciende a 105 confirmados",
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "la temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026)"
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Vigilancia de hantavirus: total de la temporada 2025-2026 (SE 27 2025 a SE 17 2026) asciende a 105 confirmados.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "el total de casos de la temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026) asciende a 105 confirmados.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.8,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-s10",
+      "domains": [
+        "human"
+      ],
+      "signal_role": "surveillance_baseline",
+      "signal_type": "case_report",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [
+        {
+          "verbatim": null,
+          "canonical_name": "Homo sapiens",
+          "host_type": "human",
+          "confidence": 0.5
+        }
+      ],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": "NOA",
+          "precision": "region",
+          "confidence": 0.65,
+          "role": "reporting_jurisdiction"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2025,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "SE 27 de 2025"
+        },
+        "end": {
+          "date": null,
+          "year": 2026,
+          "month": null,
+          "precision": "unknown",
+          "verbatim": "SE 17 de 2026"
+        },
+        "period_type": "surveillance_period",
+        "verbatim": "la temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026)"
+      },
+      "metrics": [
+        {
+          "name": "cases_confirmed",
+          "value_numeric": 37,
+          "value_text": "se registraron 37 casos confirmados",
+          "unit": "cases",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": "la temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026)"
+        },
+        {
+          "name": "incidence_rate",
+          "value_numeric": 0.6,
+          "value_text": "0,60 casos por 100.000 habitantes",
+          "unit": "cases per 100000 inhabitants",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "reported",
+      "signal_summary": "Para la región NOA, se reporta la mayor tasa de incidencia (0,60 por 100.000) y 37 casos confirmados (temporada 2025-2026).",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "La tasa de incidencia más elevada corresponde a la región del NOA (0,60 casos por 100.000 habitantes), donde se registraron 37 casos confirmados.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.75,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    }
+  ],
+  "warnings": []
+}
