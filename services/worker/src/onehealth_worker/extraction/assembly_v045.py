@@ -18,6 +18,7 @@ def assemble_claims_payload(claim_payload: dict[str, Any]) -> dict[str, Any]:
     """
     prepared = _prepare_claims_for_assembly(claim_payload)
     payload = assemble_claims_payload_v044(prepared)
+    _merge_genomic_nonrelation_signals(payload)
     _drop_operational_context_signals(payload)
     _canonicalize_signal_evidence(payload)
     return payload
@@ -77,8 +78,8 @@ def _prepare_group(group: list[dict[str, Any]]) -> None:
     if len(mobility) > 1:
         _prepare_mobility_window(mobility)
 
-    # Tierra del Fuego / general wildlife rule: capture effort and explicit absence
-    # from the same sampling group belong to one negative wildlife observation.
+    # General wildlife rule: capture effort and explicit absence from the same
+    # sampling group belong to one negative wildlife observation.
     negative_presence = [
         c for c in group
         if c.get("claim_kind") == "wildlife_presence_absence" and c.get("polarity") == "negative"
@@ -235,6 +236,137 @@ def _suppress_from_canonical_signals(claim: dict[str, Any]) -> bool:
 def _is_training_context_text(text: str) -> bool:
     folded = text.casefold()
     return "capacit" in folded or "transferencia de la técnica" in folded or "transferencia de la tecnica" in folded
+
+
+def _merge_genomic_nonrelation_signals(payload: dict[str, Any]) -> None:
+    """Merge genomic evidence of animal/human non-relation into a negative transmission signal.
+
+    A source can express the same epidemiologic conclusion twice: first as a genomic
+    comparison (the animal variant differs from the human outbreak) and then as the
+    explicit inference that sampled animals were not the source. Those are separate
+    atomic claims but one canonical OETI transmission observation.
+    """
+    signals = list(payload.get("signals") or [])
+    transmission_targets = [
+        signal for signal in signals
+        if signal.get("signal_type") == "transmission_observation"
+        and (
+            signal.get("signal_role") == "negative_evidence"
+            or (signal.get("transmission") or {}).get("animal_to_human") == "refuted"
+        )
+    ]
+    if not transmission_targets:
+        return
+
+    relation_signals = [
+        signal for signal in signals
+        if signal.get("signal_type") == "genomic_observation" and _is_genomic_nonrelation_signal(signal)
+    ]
+    if not relation_signals:
+        return
+
+    removed_ids: set[int] = set()
+    for relation in relation_signals:
+        target = _best_transmission_target(relation, transmission_targets)
+        if target is None:
+            continue
+        _merge_relation_into_transmission(target, relation)
+        removed_ids.add(id(relation))
+
+    if removed_ids:
+        payload["signals"] = [signal for signal in signals if id(signal) not in removed_ids]
+
+
+def _is_genomic_nonrelation_signal(signal: dict[str, Any]) -> bool:
+    text = " ".join(
+        [str(signal.get("signal_summary") or "")]
+        + [str(ev.get("text") or "") for ev in (signal.get("evidence") or [])]
+    ).casefold()
+    human_context = "human" in text or "brote" in text or "casos" in text
+    difference = (
+        "diferente" in text
+        or "no relacionada" in text
+        or "no relacionado" in text
+        or "sin relación" in text
+        or "sin relacion" in text
+    )
+    return human_context and difference
+
+
+def _best_transmission_target(
+    relation: dict[str, Any], targets: list[dict[str, Any]]
+) -> dict[str, Any] | None:
+    if len(targets) == 1:
+        return targets[0]
+
+    relation_pathogen = (relation.get("pathogen") or {}).get("canonical_name")
+    for target in targets:
+        target_pathogen = (target.get("pathogen") or {}).get("canonical_name")
+        if relation_pathogen and target_pathogen and relation_pathogen == target_pathogen:
+            return target
+    return targets[0] if targets else None
+
+
+def _merge_relation_into_transmission(target: dict[str, Any], relation: dict[str, Any]) -> None:
+    target["signal_role"] = "negative_evidence"
+    target["verification_status"] = "refuted"
+    target["domains"] = _merge_unique_scalars(target.get("domains") or [], relation.get("domains") or [])
+
+    relation_pathogen = relation.get("pathogen") or {}
+    target_pathogen = target.get("pathogen") or {}
+    if _pathogen_specificity(relation_pathogen) > _pathogen_specificity(target_pathogen):
+        target["pathogen"] = deepcopy(relation_pathogen)
+
+    relation_genomics = relation.get("genomics") or {}
+    if relation_genomics.get("sequence_reported") or relation_genomics.get("test_result") == "positive":
+        target["genomics"] = deepcopy(relation_genomics)
+
+    target["hosts"] = _merge_unique_dicts(
+        target.get("hosts") or [], relation.get("hosts") or [],
+        keys=("canonical_name", "verbatim", "host_type"),
+    )
+    target["evidence"] = _merge_unique_dicts(
+        relation.get("evidence") or [], target.get("evidence") or [],
+        keys=("type", "text", "page_number"),
+    )
+
+    relation_summary = str(relation.get("signal_summary") or "").strip()
+    target_summary = str(target.get("signal_summary") or "").strip()
+    if relation_summary and relation_summary not in target_summary:
+        target["signal_summary"] = f"{relation_summary} {target_summary}".strip()
+
+
+def _pathogen_specificity(entity: dict[str, Any]) -> int:
+    canonical = str(entity.get("canonical_name") or "").casefold()
+    if "orthohantavirus andesense" in canonical:
+        return 3
+    if "andes virus" in canonical:
+        return 2
+    if canonical:
+        return 1
+    return 0
+
+
+def _merge_unique_scalars(first: list[Any], second: list[Any]) -> list[Any]:
+    out: list[Any] = []
+    for value in [*first, *second]:
+        if value not in out:
+            out.append(value)
+    return out
+
+
+def _merge_unique_dicts(
+    first: list[dict[str, Any]], second: list[dict[str, Any]], *, keys: tuple[str, ...]
+) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    seen: set[tuple[Any, ...]] = set()
+    for item in [*first, *second]:
+        key = tuple(item.get(k) for k in keys)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(deepcopy(item))
+    return out
 
 
 def _drop_operational_context_signals(payload: dict[str, Any]) -> None:
