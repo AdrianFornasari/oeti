@@ -18,6 +18,7 @@ def assemble_claims_payload(claim_payload: dict[str, Any]) -> dict[str, Any]:
     """
     prepared = _prepare_claims_for_assembly(claim_payload)
     payload = assemble_claims_payload_v044(prepared)
+    _drop_operational_context_signals(payload)
     _canonicalize_signal_evidence(payload)
     return payload
 
@@ -226,9 +227,40 @@ def _suppress_from_canonical_signals(claim: dict[str, Any]) -> bool:
             [str(claim.get("summary") or "")]
             + [str(ev.get("text") or "") for ev in (claim.get("evidence") or [])]
         ).casefold()
-        if "capacit" in text or "transferencia de la técnica" in text:
+        if _is_training_context_text(text):
             return True
     return False
+
+
+def _is_training_context_text(text: str) -> bool:
+    folded = text.casefold()
+    return "capacit" in folded or "transferencia de la técnica" in folded or "transferencia de la tecnica" in folded
+
+
+def _drop_operational_context_signals(payload: dict[str, Any]) -> None:
+    """Second-line guard for operational training signals.
+
+    Canonical suppression should normally happen at claim level. This post-assembly
+    guard prevents an operational training/technology-transfer intervention from
+    leaking into the epidemiological signal set if an upstream claim shape bypasses
+    that filter. Interventions with epidemiologic metrics are always preserved.
+    """
+    kept: list[dict[str, Any]] = []
+    for signal in payload.get("signals") or []:
+        if signal.get("signal_type") != "intervention" or signal.get("metrics"):
+            kept.append(signal)
+            continue
+        text = " ".join(
+            [str(signal.get("signal_summary") or "")]
+            + [str(ev.get("text") or "") for ev in (signal.get("evidence") or [])]
+        )
+        if _is_training_context_text(text):
+            payload.setdefault("warnings", []).append(
+                f"Signal {signal.get('local_signal_id') or '?'}: intervención de capacitación/transferencia técnica omitida del set epidemiológico canónico."
+            )
+            continue
+        kept.append(signal)
+    payload["signals"] = kept
 
 
 def _canonicalize_signal_evidence(payload: dict[str, Any]) -> None:
