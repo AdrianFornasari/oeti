@@ -1,0 +1,75 @@
+{
+  "case_code": "ARG-HANTA-MV-HONDIUS-2026",
+  "benchmark_version": "0.4.6",
+  "minimum_documents_for_event_matcher_gate": 6,
+  "documents": [
+    {
+      "label": "Notificación inicial y monitoreo nacional - 04/05/2026",
+      "status": "adjudicated",
+      "claims": "../../evaluation/predictions/mv-hondius/2026-05-04-v044-atomic-automatic.claims.json",
+      "prediction": "../../evaluation/predictions/mv-hondius/2026-05-04-v046-assembled.json",
+      "gold": "../../evaluation/gold/mv-hondius/2026-05-04-initial-notification.gold.json",
+      "prediction_kind": "v044_atomic_claims_reassembled_v046",
+      "source_code": "ARG_MSAL_NEWS",
+      "source_url": "https://www.argentina.gob.ar/noticias/salud-monitorea-junto-organismos-internacionales-los-casos-de-hantavirus-reportados-en-el"
+    },
+    {
+      "label": "BEN SE17 - 12/05/2026",
+      "status": "adjudicated",
+      "claims": "../../evaluation/predictions/mv-hondius/2026-05-12-ben-se17-v044-atomic-automatic.claims.json",
+      "prediction": "../../evaluation/predictions/mv-hondius/2026-05-12-ben-se17-v046-assembled.json",
+      "gold": "../../evaluation/gold/mv-hondius/2026-05-12-ben-se17.gold.json",
+      "prediction_kind": "v044_atomic_claims_reassembled_v046",
+      "source_code": "ARG_MSAL_NEWS",
+      "source_url": "https://www.argentina.gob.ar/noticias/actualizacion-del-boletin-epidemiologico-nacional-de-la-semana-ndeg-17"
+    },
+    {
+      "label": "BEN SE18 - 19/05/2026",
+      "status": "adjudicated",
+      "claims": "../../evaluation/predictions/mv-hondius/2026-05-19-ben-se18-v044-atomic-automatic.claims.json",
+      "prediction": "../../evaluation/predictions/mv-hondius/2026-05-19-ben-se18-v046-assembled.json",
+      "gold": "../../evaluation/gold/mv-hondius/2026-05-19-ben-se18.gold.json",
+      "prediction_kind": "v044_atomic_claims_reassembled_v046",
+      "source_code": "ARG_MSAL_NEWS",
+      "source_url": "https://www.argentina.gob.ar/node/502023"
+    },
+    {
+      "label": "BEN SE19 - 26/05/2026",
+      "status": "adjudicated",
+      "claims": "../../evaluation/predictions/mv-hondius/2026-05-26-ben-se19-v044-atomic-automatic.claims.json",
+      "prediction": "../../evaluation/predictions/mv-hondius/2026-05-26-ben-se19-v046-assembled.json",
+      "gold": "../../evaluation/gold/mv-hondius/2026-05-26-ben-se19.gold.json",
+      "prediction_kind": "v044_atomic_claims_reassembled_v046",
+      "source_code": "ARG_MSAL_NEWS",
+      "source_url": "https://www.argentina.gob.ar/noticias/actualizacion-del-boletin-epidemiologico-nacional-de-la-semana-ndeg-19"
+    },
+    {
+      "label": "Roedores Tierra del Fuego - evidencia genómica no relacionada - 29/06/2026",
+      "status": "adjudicated",
+      "claims": "../../evaluation/predictions/mv-hondius/2026-06-29-tierra-del-fuego-rodents-v044-atomic-automatic.claims.json",
+      "prediction": "../../evaluation/predictions/mv-hondius/2026-06-29-tierra-del-fuego-rodents-v046-assembled.json",
+      "gold": "../../evaluation/gold/mv-hondius/2026-06-29-tierra-del-fuego-rodents.gold.json",
+      "prediction_kind": "v044_atomic_claims_reassembled_v046",
+      "source_code": "ARG_ANLIS_NEWS",
+      "source_url": "https://www.argentina.gob.ar/noticias/anlis-malbran-identifico-hantavirus-en-roedores-de-tierra-del-fuego-sin-relacion-con-el-0"
+    },
+    {
+      "label": "Roedores Mendoza - evidencia negativa - 08/07/2026",
+      "status": "adjudicated",
+      "claims": "../../evaluation/predictions/mv-hondius/2026-07-08-mendoza-rodents-v044-atomic-automatic.claims.json",
+      "prediction": "../../evaluation/predictions/mv-hondius/2026-07-08-mendoza-rodents-v046-assembled.json",
+      "gold": "../../evaluation/gold/mv-hondius/2026-07-08-mendoza-rodents.gold.json",
+      "prediction_kind": "v044_atomic_claims_reassembled_v046",
+      "source_code": "ARG_ANLIS_NEWS",
+      "source_url": "https://www.argentina.gob.ar/noticias/especialistas-de-la-anlis-malbran-no-identificaron-hantavirus-en-roedores-capturados-en"
+    }
+  ],
+  "evaluation_scope": "Solo señales directamente vinculadas con hantavirus, MV Hondius y vigilancia nacional de hantavirus. En páginas BEN, ignorar influenza, arbovirosis, hepatitis, leptospirosis y otros temas no vinculados al caso.",
+  "release_thresholds": {
+    "mean_signal_f1": 0.9,
+    "mean_evidence_support_f1": 0.9,
+    "mean_signal_role_accuracy": 0.9,
+    "mean_signal_type_accuracy": 0.85
+  },
+  "prediction_architecture": "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.6"
+}
