@@ -3,9 +3,10 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
-from ..extraction.assembly_v045 import assemble_claims_payload
+from ..extraction.assembly_v045 import assemble_claims_payload as assemble_claims_payload_v045
+from ..extraction.assembly_v046 import assemble_claims_payload as assemble_claims_payload_v046
 from ..extraction.normalization import normalize_extraction_payload
 from ..extraction.schema import (
     load_atomic_claims_schema,
@@ -13,6 +14,12 @@ from ..extraction.schema import (
     validate_atomic_claims,
     validate_extraction,
 )
+
+
+def _select_assembler(benchmark_version: str | None) -> tuple[Callable[..., dict[str, Any]], str]:
+    if benchmark_version == "0.4.6":
+        return assemble_claims_payload_v046, "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.6"
+    return assemble_claims_payload_v045, "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.5"
 
 
 def reassemble_evaluation_corpus(*, manifest_path: Path, force: bool = False) -> dict[str, Any]:
@@ -23,6 +30,8 @@ def reassemble_evaluation_corpus(*, manifest_path: Path, force: bool = False) ->
     """
     manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
     base = manifest_path.parent
+    benchmark_version = str(manifest.get("benchmark_version") or "") or None
+    assembler, architecture = _select_assembler(benchmark_version)
     claims_schema = load_atomic_claims_schema()
     signal_schema = load_schema()
     results: list[dict[str, Any]] = []
@@ -58,7 +67,7 @@ def reassemble_evaluation_corpus(*, manifest_path: Path, force: bool = False) ->
 
         claims_payload = json.loads(claims_path.read_text(encoding="utf-8-sig"))
         validate_atomic_claims(claims_payload, claims_schema)
-        payload = normalize_extraction_payload(assemble_claims_payload(claims_payload))
+        payload = normalize_extraction_payload(assembler(claims_payload))
         validate_extraction(payload, signal_schema)
 
         prediction_path.parent.mkdir(parents=True, exist_ok=True)
@@ -74,7 +83,8 @@ def reassemble_evaluation_corpus(*, manifest_path: Path, force: bool = False) ->
 
     return {
         "case_code": manifest.get("case_code"),
-        "architecture": "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.5",
+        "benchmark_version": benchmark_version,
+        "architecture": architecture,
         "llm_invoked": False,
         "results": results,
     }
