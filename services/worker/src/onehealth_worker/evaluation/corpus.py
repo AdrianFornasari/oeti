@@ -5,7 +5,7 @@ from typing import Any
 import copy
 import json
 
-from .scoring import DEFAULT_MATCH_THRESHOLD, evaluate_payloads
+from .scoring_v046 import DEFAULT_MATCH_THRESHOLD, evaluate_payloads
 from ..extraction.schema import load_schema, validate_extraction
 
 
@@ -106,7 +106,6 @@ def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESH
             "mean_signal_f1": avg_signal_f1,
             "mean_evidence_exact_f1": avg_evidence_exact,
             "mean_evidence_support_f1": avg_evidence_support,
-            # Backward-compatible alias: from schema 0.2 evidence_f1 means support equivalence.
             "mean_evidence_f1": avg_evidence_support,
             "mean_signal_role_accuracy": avg_role,
             "mean_signal_type_accuracy": avg_type,
