@@ -12,6 +12,8 @@ const relationTone = (relation: string) => {
   return styles.pillHigh;
 };
 
+const sourceFamilies = new Set(mvHondiusBenchmark.documents.map((doc) => doc.source)).size;
+
 export default function HantavirusThreatPage() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selected = mvHondiusBenchmark.documents[selectedIndex] ?? mvHondiusBenchmark.documents[0];
@@ -42,16 +44,16 @@ export default function HantavirusThreatPage() {
             <div><span className={styles.metricValue}>6</span><div className={styles.metricLabel}>Adjudicated documents</div><small className={styles.muted}>04 May – 08 Jul 2026</small></div>
           </article>
           <article className={`${styles.card} ${styles.metric}`}>
-            <div className={`${styles.metricIcon} ${styles.red}`}>H</div>
-            <div><span className={styles.metricValue}>Human</span><div className={styles.metricLabel}>Outbreak progression</div><small className={styles.muted}>Cases, deaths, transmission</small></div>
+            <div className={`${styles.metricIcon} ${styles.red}`}>11</div>
+            <div><span className={styles.metricValue}>11</span><div className={styles.metricLabel}>Maximum identified cases</div><small className={styles.muted}>Reported by 13 May</small></div>
           </article>
           <article className={`${styles.card} ${styles.metric}`}>
-            <div className={`${styles.metricIcon} ${styles.green}`}>W</div>
-            <div><span className={styles.metricValue}>Wildlife</span><div className={styles.metricLabel}>Field investigation</div><small className={styles.muted}>Ushuaia and Malargüe</small></div>
+            <div className={`${styles.metricIcon} ${styles.green}`}>9</div>
+            <div><span className={styles.metricValue}>9</span><div className={styles.metricLabel}>Confirmed cases</div><small className={styles.muted}>Total reported by 26 May</small></div>
           </article>
           <article className={`${styles.card} ${styles.metric}`}>
-            <div className={`${styles.metricIcon} ${styles.purple}`}>G</div>
-            <div><span className={styles.metricValue}>Genomic</span><div className={styles.metricLabel}>Relationship testing</div><small className={styles.muted}>Includes refuted causal link</small></div>
+            <div className={`${styles.metricIcon} ${styles.purple}`}>2</div>
+            <div><span className={styles.metricValue}>2</span><div className={styles.metricLabel}>Negative-evidence investigations</div><small className={styles.muted}>Ushuaia causal link + Malargüe serology</small></div>
           </article>
         </section>
 
@@ -102,6 +104,36 @@ export default function HantavirusThreatPage() {
 
             <div style={{ marginTop: 16 }}>
               <a className={styles.button} href={selected.sourceUrl} target="_blank" rel="noreferrer">Open official source ↗</a>
+            </div>
+          </section>
+        </div>
+
+        <div className={styles.dashboardMain}>
+          <section className={styles.card}>
+            <h2>Threat summary — adjudicated corpus</h2>
+            <div className={styles.summaryList}>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>Case</div><div>{mvHondiusBenchmark.caseCode}</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>Human outbreak</div><div>Andes-virus hantavirus aboard MV Hondius</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>Peak identified count</div><div>11 cases by 13 May: 8 confirmed, 2 probable, 1 inconclusive</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>Later confirmed total</div><div>9 confirmed + 2 probable by 26 May</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>Transmission assessment</div><div>Person-to-person transmission aboard the vessel adjudicated as probable, not confirmed</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>Wildlife evidence</div><div>Hantavirus detected in Abrothrix rodents in Ushuaia, but the analysed rodents were ruled out as the outbreak source</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>Source families</div><div>{sourceFamilies}: Ministerio de Salud / BEN and ANLIS-Malbrán</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>Benchmark status</div><div><span className={`${styles.pill} ${styles.pillReviewed}`}>6/6 documents adjudicated</span></div></div>
+            </div>
+          </section>
+
+          <section className={styles.card}>
+            <h2>Key insights — evidence evolution</h2>
+            <ul className={styles.insights}>
+              <li><strong>The outbreak signal strengthened over time:</strong> the corpus progresses from one laboratory-confirmed passenger and three deaths to 11 identified cases by 13 May, then nine confirmed and two probable cases by 26 May.</li>
+              <li><strong>Transmission remains qualified:</strong> the 19 May BEN supports probable person-to-person transmission aboard the vessel; OETI should preserve “probable” rather than promote it to confirmed.</li>
+              <li><strong>Positive wildlife evidence did not establish causality:</strong> five Abrothrix rodents in Ushuaia were seropositive and a related Orthohantavirus andesense variant was characterized, yet the analysed rodents were explicitly ruled out as the source of the human outbreak.</li>
+              <li><strong>Negative evidence changes the investigation:</strong> Malargüe rodent serology was negative, so travel history remains contextual evidence rather than a confirmed exposure location.</li>
+              <li><strong>No environmental-domain signal is adjudicated in this six-document corpus:</strong> the One Health value here comes from integrating human, wildlife, genomic and mobility evidence, including negative findings.</li>
+            </ul>
+            <div className={styles.detailPanel}>
+              <strong>OETI analytical principle</strong><br />Positive findings, negative findings, uncertainty and refuted hypotheses must coexist in the same threat model without being flattened into a single causal story.
             </div>
           </section>
         </div>
