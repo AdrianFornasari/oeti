@@ -143,9 +143,10 @@ def _is_generic_investigation_context(claim: dict[str, Any]) -> bool:
 def _merge_current_surveillance_snapshots(claims: list[dict[str, Any]]) -> None:
     """Consolidate compatible weekly/current surveillance facts into one snapshot.
 
-    Historical closed periods remain separate. Claims are merged only when they are
-    surveillance baselines, share domains, and have a compatible surveillance topic.
-    This prevents unrelated diseases from being collapsed into one baseline.
+    Historical closed periods remain separate. Claims are merged only when they share
+    surveillance topic and compatible geographic scope. This allows a weekly national
+    count and the corresponding national seasonal total to form one snapshot without
+    collapsing a regional observation (for example NOA) into the national baseline.
     """
     baselines = [
         claim for claim in claims
@@ -193,9 +194,16 @@ def _surveillance_claims_compatible(left: dict[str, Any], right: dict[str, Any])
 
     left_topic = _surveillance_topic_hint(left)
     right_topic = _surveillance_topic_hint(right)
-    if not left_topic or not right_topic:
+    if not left_topic or not right_topic or left_topic != right_topic:
         return False
-    return left_topic == right_topic
+
+    left_scope = _surveillance_scope_hint(left)
+    right_scope = _surveillance_scope_hint(right)
+    if _is_subnational_scope(left_scope) or _is_subnational_scope(right_scope):
+        return bool(left_scope and right_scope and left_scope == right_scope)
+    if left_scope and right_scope and left_scope != right_scope:
+        return False
+    return True
 
 
 def _surveillance_topic_hint(claim: dict[str, Any]) -> str | None:
@@ -212,6 +220,67 @@ def _surveillance_topic_hint(claim: dict[str, Any]) -> str | None:
     if "hantavirus" in text:
         return "hantavirus"
     return None
+
+
+def _surveillance_scope_hint(claim: dict[str, Any]) -> str | None:
+    for location in claim.get("locations") or []:
+        locality = _folded(location.get("locality"))
+        admin2 = _folded(location.get("admin2"))
+        admin1 = _folded(location.get("admin1"))
+        region = _folded(location.get("region"))
+        if locality:
+            return f"locality:{locality}"
+        if admin2:
+            return f"admin2:{admin2}"
+        if admin1:
+            return f"admin1:{admin1}"
+        if region:
+            return f"region:{region}"
+
+    text = " ".join(
+        [
+            str(claim.get("group_id") or ""),
+            str(claim.get("summary") or ""),
+        ]
+        + [str(ev.get("text") or "") for ev in (claim.get("evidence") or [])]
+    ).casefold()
+
+    regional_markers = {
+        "noa": "region:noa",
+        "nea": "region:nea",
+        "cuyo": "region:cuyo",
+        "patagonia": "region:patagonia",
+        "región centro": "region:centro",
+        "region centro": "region:centro",
+    }
+    for marker, scope in regional_markers.items():
+        if marker in text:
+            return scope
+
+    for location in claim.get("locations") or []:
+        country_iso2 = _folded(location.get("country_iso2"))
+        country = _folded(location.get("country"))
+        if country_iso2:
+            return f"country:{country_iso2}"
+        if country:
+            return f"country:{country}"
+
+    national_markers = (
+        "a nivel nacional",
+        "nivel nacional",
+        "vigilancia nacional",
+        "total de casos de toda la temporada",
+        "argentina",
+    )
+    if any(marker in text for marker in national_markers):
+        return "country:ar"
+    return None
+
+
+def _is_subnational_scope(scope: str | None) -> bool:
+    if not scope:
+        return False
+    return scope.startswith(("region:", "admin1:", "admin2:", "locality:"))
 
 
 def _folded(value: Any) -> str | None:
