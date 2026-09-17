@@ -26,19 +26,7 @@
         "confidence": 0.3
       },
       "hosts": [],
-      "locations": [
-        {
-          "country": null,
-          "country_iso2": null,
-          "admin1": null,
-          "admin2": null,
-          "locality": null,
-          "region": null,
-          "precision": "unknown",
-          "confidence": 0.4,
-          "role": "event_location"
-        }
-      ],
+      "locations": [],
       "event_date": {
         "start": null,
         "end": null,
@@ -50,23 +38,23 @@
           "year": 2026,
           "month": null,
           "precision": "year",
-          "verbatim": "2026"
+          "verbatim": "semana epidemiológica (SE) 17 de 2026"
         },
         "end": {
           "date": null,
           "year": 2026,
           "month": null,
           "precision": "year",
-          "verbatim": "2026"
+          "verbatim": "semana epidemiológica (SE) 17 de 2026"
         },
         "period_type": "surveillance_period",
         "verbatim": "semana epidemiológica (SE) 17 de 2026"
       },
       "metrics": [
         {
-          "name": "cases_total",
+          "name": "cases",
           "value_numeric": 8,
-          "value_text": null,
+          "value_text": "ocho casos",
           "unit": "cases",
           "as_of_date": null,
           "as_of_year": 2026,
@@ -75,9 +63,9 @@
           "as_of_verbatim": "semana epidemiológica (SE) 17 de 2026"
         },
         {
-          "name": "cases_confirmed",
+          "name": "confirmed_cases",
           "value_numeric": 6,
-          "value_text": null,
+          "value_text": "seis confirmados",
           "unit": "cases",
           "as_of_date": null,
           "as_of_year": 2026,
@@ -86,9 +74,9 @@
           "as_of_verbatim": "semana epidemiológica (SE) 17 de 2026"
         },
         {
-          "name": "cases_probable",
+          "name": "probable_cases",
           "value_numeric": 2,
-          "value_text": null,
+          "value_text": "dos probables",
           "unit": "cases",
           "as_of_date": null,
           "as_of_year": 2026,
@@ -99,7 +87,7 @@
         {
           "name": "deaths",
           "value_numeric": 3,
-          "value_text": null,
+          "value_text": "tres fallecieron",
           "unit": "deaths",
           "as_of_date": null,
           "as_of_year": 2026,
@@ -121,28 +109,28 @@
         "test_result": "not_applicable"
       },
       "verification_status": "confirmed",
-      "signal_summary": "Hasta SE 17 de 2026 se identificaron ocho casos de hantavirus a bordo del MV Hondius.",
+      "signal_summary": "BEN SE 17 (2026) identifica 8 casos de hantavirus a bordo del MV Hondius.",
       "evidence": [
         {
-          "type": "text",
+          "type": "excerpt",
           "text": "el Boletín Epidemiológico Nacional (BEN) correspondiente a la semana epidemiológica (SE) 17 de 2026 confirma que, hasta el momento, se identificaron ocho casos a bordo del buque",
           "location_in_document": null,
           "page_number": null
         },
         {
-          "type": "text",
+          "type": "excerpt",
           "text": "se identificaron ocho casos a bordo del buque (seis confirmados y dos probables)",
           "location_in_document": null,
           "page_number": null
         },
         {
-          "type": "text",
+          "type": "excerpt",
           "text": "se identificaron ocho casos a bordo del buque (seis confirmados y dos probables), de los cuales tres fallecieron.",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.7775,
+      "extraction_confidence": 0.77,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -158,7 +146,7 @@
         "human"
       ],
       "signal_role": "primary_event",
-      "signal_type": "laboratory_result",
+      "signal_type": "case_report",
       "disease": {
         "verbatim": "hantavirus",
         "canonical_name": "Hantavirus disease",
@@ -176,7 +164,7 @@
           "verbatim": "los casos",
           "canonical_name": "Homo sapiens",
           "host_type": "human",
-          "confidence": 0.72
+          "confidence": 0.65
         }
       ],
       "locations": [
@@ -188,7 +176,7 @@
           "locality": null,
           "region": null,
           "precision": "country",
-          "confidence": 0.65,
+          "confidence": 0.6,
           "role": "laboratory_location"
         },
         {
@@ -199,7 +187,7 @@
           "locality": null,
           "region": null,
           "precision": "country",
-          "confidence": 0.65,
+          "confidence": 0.6,
           "role": "laboratory_location"
         }
       ],
@@ -214,19 +202,31 @@
           "year": 2026,
           "month": null,
           "precision": "year",
-          "verbatim": "2026"
+          "verbatim": "semana epidemiológica (SE) 17 de 2026"
         },
         "end": {
           "date": null,
           "year": 2026,
           "month": null,
           "precision": "year",
-          "verbatim": "2026"
+          "verbatim": "semana epidemiológica (SE) 17 de 2026"
         },
         "period_type": "surveillance_period",
         "verbatim": "semana epidemiológica (SE) 17 de 2026"
       },
-      "metrics": [],
+      "metrics": [
+        {
+          "name": "confirmed_cases",
+          "value_numeric": 1,
+          "value_text": "los casos",
+          "unit": "persons",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
       "transmission": {
         "human_to_human": "unknown",
         "animal_to_human": "unknown",
@@ -240,20 +240,20 @@
         "test_result": "not_applicable"
       },
       "verification_status": "confirmed",
-      "signal_summary": "PCR realizada en laboratorios de referencia de Sudáfrica y Suiza confirmó que los casos corresponden a la cepa Andes.",
+      "signal_summary": "PCR realizada en laboratorios de referencia de Sudáfrica y Suiza confirmó cepa Andes en los casos.",
       "evidence": [
         {
-          "type": "text",
+          "type": "excerpt",
           "text": "Las pruebas de PCR y secuenciación genómica realizadas en laboratorios de referencia de Sudáfrica y Suiza confirmaron que los casos corresponden a la cepa Andes",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.7,
+      "extraction_confidence": 0.73,
       "diagnostics": {
         "test_reported": true,
         "test_type": "PCR",
-        "method": "PCR",
+        "method": null,
         "target": null,
         "specimen": null,
         "result": "positive"
@@ -284,7 +284,7 @@
           "verbatim": "los casos",
           "canonical_name": "Homo sapiens",
           "host_type": "human",
-          "confidence": 0.72
+          "confidence": 0.65
         }
       ],
       "locations": [
@@ -296,7 +296,7 @@
           "locality": null,
           "region": null,
           "precision": "country",
-          "confidence": 0.65,
+          "confidence": 0.6,
           "role": "laboratory_location"
         },
         {
@@ -307,19 +307,8 @@
           "locality": null,
           "region": null,
           "precision": "country",
-          "confidence": 0.65,
+          "confidence": 0.6,
           "role": "laboratory_location"
-        },
-        {
-          "country": "Argentina",
-          "country_iso2": null,
-          "admin1": "Neuquén",
-          "admin2": null,
-          "locality": null,
-          "region": null,
-          "precision": "admin1",
-          "confidence": 0.66,
-          "role": "unknown"
         }
       ],
       "event_date": {
@@ -333,14 +322,14 @@
           "year": 2026,
           "month": null,
           "precision": "year",
-          "verbatim": "2026"
+          "verbatim": "semana epidemiológica (SE) 17 de 2026"
         },
         "end": {
           "date": null,
           "year": 2026,
           "month": null,
           "precision": "year",
-          "verbatim": "2026"
+          "verbatim": "semana epidemiológica (SE) 17 de 2026"
         },
         "period_type": "surveillance_period",
         "verbatim": "semana epidemiológica (SE) 17 de 2026"
@@ -353,28 +342,22 @@
       },
       "genomics": {
         "sequence_reported": true,
-        "lineage": null,
+        "lineage": "cepa Andes",
         "clade": null,
         "accession": null,
         "test_result": "positive"
       },
       "verification_status": "confirmed",
-      "signal_summary": "Secuenciación genómica en laboratorios de referencia de Sudáfrica y Suiza confirmó que los casos corresponden a la cepa Andes. ANLIS Malbrán determinó que la secuencia del virus del crucero tiene alto grado de parentesco con cepas detectadas en 2018 en Neuquén.",
+      "signal_summary": "Secuenciación genómica confirmó cepa Andes en los casos.",
       "evidence": [
         {
-          "type": "text",
+          "type": "excerpt",
           "text": "Las pruebas de PCR y secuenciación genómica realizadas en laboratorios de referencia de Sudáfrica y Suiza confirmaron que los casos corresponden a la cepa Andes",
-          "location_in_document": null,
-          "page_number": null
-        },
-        {
-          "type": "text",
-          "text": "la ANLIS Malbrán determinó que la secuencia del virus del crucero tiene un alto grado de parentesco con cepas detectadas en 2018 en Neuquén",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.725,
+      "extraction_confidence": 0.72,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -387,21 +370,110 @@
     {
       "local_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-04",
       "domains": [
+        "genomic"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "genomic_observation",
+      "disease": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "pathogen": {
+        "verbatim": "virus del crucero",
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.4
+      },
+      "hosts": [],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": null,
+          "admin1": "Neuquén",
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "admin1",
+          "confidence": 0.58,
+          "role": "unknown"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": null,
+          "year": 2018,
+          "month": null,
+          "precision": "year",
+          "verbatim": "2018"
+        },
+        "end": {
+          "date": null,
+          "year": 2018,
+          "month": null,
+          "precision": "year",
+          "verbatim": "2018"
+        },
+        "period_type": "historical_period",
+        "verbatim": "2018"
+      },
+      "metrics": [],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": true,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "unknown"
+      },
+      "verification_status": "reported",
+      "signal_summary": "ANLIS Malbrán reporta alto parentesco entre la secuencia del virus del crucero y cepas detectadas en 2018 en Neuquén.",
+      "evidence": [
+        {
+          "type": "excerpt",
+          "text": "la ANLIS Malbrán determinó que la secuencia del virus del crucero tiene un alto grado de parentesco con cepas detectadas en 2018 en Neuquén",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.7,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-05",
+      "domains": [
         "human"
       ],
       "signal_role": "primary_event",
       "signal_type": "transmission_observation",
       "disease": {
-        "verbatim": "hantavirus",
-        "canonical_name": "Hantavirus disease",
-        "normalization_status": "resolved",
-        "confidence": 0.82
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
       },
       "pathogen": {
-        "verbatim": "cepa Andes",
-        "canonical_name": "Andes virus",
-        "normalization_status": "resolved",
-        "confidence": 0.9
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
       },
       "hosts": [],
       "locations": [],
@@ -442,113 +514,16 @@
         "test_result": "not_applicable"
       },
       "verification_status": "unknown",
-      "signal_summary": "Aún no es posible confirmar el origen del brote.",
+      "signal_summary": "No es posible confirmar el origen del brote.",
       "evidence": [
         {
-          "type": "text",
+          "type": "excerpt",
           "text": "aún no es posible confirmar el origen del brote",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.67,
-      "diagnostics": {
-        "test_reported": false,
-        "test_type": null,
-        "method": null,
-        "target": null,
-        "specimen": null,
-        "result": "unknown"
-      }
-    },
-    {
-      "local_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-05",
-      "domains": [
-        "mobility",
-        "human"
-      ],
-      "signal_role": "primary_event",
-      "signal_type": "travel_or_mobility",
-      "disease": {
-        "verbatim": "hantavirus",
-        "canonical_name": "Hantavirus disease",
-        "normalization_status": "resolved",
-        "confidence": 0.82
-      },
-      "pathogen": {
-        "verbatim": "cepa Andes",
-        "canonical_name": "Andes virus",
-        "normalization_status": "resolved",
-        "confidence": 0.9
-      },
-      "hosts": [
-        {
-          "verbatim": "el caso testigo",
-          "canonical_name": "Homo sapiens",
-          "host_type": "human",
-          "confidence": 0.66
-        }
-      ],
-      "locations": [
-        {
-          "country": null,
-          "country_iso2": null,
-          "admin1": null,
-          "admin2": null,
-          "locality": null,
-          "region": null,
-          "precision": "unknown",
-          "confidence": 0.3,
-          "role": "travel_history"
-        }
-      ],
-      "event_date": {
-        "start": null,
-        "end": null,
-        "precision": "unknown"
-      },
-      "reference_period": {
-        "start": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
-        },
-        "end": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
-        },
-        "period_type": "unknown",
-        "verbatim": "durante los días que se estima que tuvo lugar el contagio"
-      },
-      "metrics": [],
-      "transmission": {
-        "human_to_human": "unknown",
-        "animal_to_human": "unknown",
-        "vector_borne": "unknown"
-      },
-      "genomics": {
-        "sequence_reported": false,
-        "lineage": null,
-        "clade": null,
-        "accession": null,
-        "test_result": "not_applicable"
-      },
-      "verification_status": "reported",
-      "signal_summary": "El caso testigo no estuvo en zonas endémicas de la cepa Andes durante el período estimado de contagio.",
-      "evidence": [
-        {
-          "type": "text",
-          "text": "el caso testigo no estuvo en zonas endémicas de la cepa Andes durante los días que se estima que tuvo lugar el contagio",
-          "location_in_document": null,
-          "page_number": null
-        }
-      ],
-      "extraction_confidence": 0.68,
+      "extraction_confidence": 0.66,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -587,7 +562,7 @@
           "locality": null,
           "region": null,
           "precision": "country",
-          "confidence": 0.85,
+          "confidence": 0.7,
           "role": "reporting_jurisdiction"
         }
       ],
@@ -602,29 +577,29 @@
           "year": null,
           "month": null,
           "precision": "unknown",
-          "verbatim": "las últimas dos semanas"
+          "verbatim": "en las últimas dos semanas"
         },
         "end": {
           "date": null,
           "year": null,
           "month": null,
           "precision": "unknown",
-          "verbatim": "las últimas dos semanas"
+          "verbatim": "en las últimas dos semanas"
         },
         "period_type": "surveillance_period",
         "verbatim": "en las últimas dos semanas"
       },
       "metrics": [
         {
-          "name": "cases_new",
+          "name": "new_cases_notified",
           "value_numeric": 1,
-          "value_text": null,
+          "value_text": "un caso nuevo",
           "unit": "cases",
           "as_of_date": null,
-          "as_of_year": null,
+          "as_of_year": 2026,
           "as_of_month": null,
-          "as_of_precision": "unknown",
-          "as_of_verbatim": "en las últimas dos semanas"
+          "as_of_precision": "year",
+          "as_of_verbatim": "semana epidemiológica (SE) 17 de 2026"
         }
       ],
       "transmission": {
@@ -640,16 +615,16 @@
         "test_result": "not_applicable"
       },
       "verification_status": "confirmed",
-      "signal_summary": "A nivel nacional, en las últimas dos semanas se notificó un caso nuevo de hantavirus en Argentina.",
+      "signal_summary": "En Argentina, en las últimas dos semanas se notificó 1 caso nuevo de hantavirus.",
       "evidence": [
         {
-          "type": "text",
+          "type": "excerpt",
           "text": "A nivel nacional, el BEN confirma que en las últimas dos semanas sólo se notificó un caso nuevo de hantavirus en el país",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.76,
+      "extraction_confidence": 0.77,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -661,102 +636,6 @@
     },
     {
       "local_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-07",
-      "domains": [
-        "human"
-      ],
-      "signal_role": "primary_event",
-      "signal_type": "case_report",
-      "disease": {
-        "verbatim": "hantavirus",
-        "canonical_name": "Hantavirus disease",
-        "normalization_status": "resolved",
-        "confidence": 0.82
-      },
-      "pathogen": {
-        "verbatim": null,
-        "canonical_name": null,
-        "normalization_status": "unresolved",
-        "confidence": 0.3
-      },
-      "hosts": [
-        {
-          "verbatim": "un caso nuevo",
-          "canonical_name": "Homo sapiens",
-          "host_type": "human",
-          "confidence": 0.55
-        }
-      ],
-      "locations": [
-        {
-          "country": "Argentina",
-          "country_iso2": null,
-          "admin1": "Buenos Aires",
-          "admin2": null,
-          "locality": null,
-          "region": null,
-          "precision": "admin1",
-          "confidence": 0.8,
-          "role": "current_location"
-        }
-      ],
-      "event_date": {
-        "start": null,
-        "end": null,
-        "precision": "unknown"
-      },
-      "reference_period": {
-        "start": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": "las últimas dos semanas"
-        },
-        "end": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": "las últimas dos semanas"
-        },
-        "period_type": "surveillance_period",
-        "verbatim": "en las últimas dos semanas"
-      },
-      "metrics": [],
-      "transmission": {
-        "human_to_human": "unknown",
-        "animal_to_human": "unknown",
-        "vector_borne": "unknown"
-      },
-      "genomics": {
-        "sequence_reported": false,
-        "lineage": null,
-        "clade": null,
-        "accession": null,
-        "test_result": "not_applicable"
-      },
-      "verification_status": "reported",
-      "signal_summary": "El caso nuevo notificado tenía residencia en la provincia de Buenos Aires (PBA).",
-      "evidence": [
-        {
-          "type": "text",
-          "text": "con residencia en la provincia de Buenos Aires (PBA).",
-          "location_in_document": null,
-          "page_number": null
-        }
-      ],
-      "extraction_confidence": 0.7,
-      "diagnostics": {
-        "test_reported": false,
-        "test_type": null,
-        "method": null,
-        "target": null,
-        "specimen": null,
-        "result": "unknown"
-      }
-    },
-    {
-      "local_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-08",
       "domains": [
         "human"
       ],
@@ -784,7 +663,7 @@
           "locality": null,
           "region": null,
           "precision": "country",
-          "confidence": 0.8,
+          "confidence": 0.7,
           "role": "reporting_jurisdiction"
         }
       ],
@@ -808,14 +687,14 @@
           "precision": "year",
           "verbatim": "SE 17 de 2026"
         },
-        "period_type": "surveillance_period",
-        "verbatim": "toda la temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026)"
+        "period_type": "season",
+        "verbatim": "temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026)"
       },
       "metrics": [
         {
-          "name": "cases_confirmed_total",
+          "name": "confirmed_cases",
           "value_numeric": 102,
-          "value_text": null,
+          "value_text": "102 confirmados",
           "unit": "cases",
           "as_of_date": null,
           "as_of_year": 2026,
@@ -837,16 +716,16 @@
         "test_result": "not_applicable"
       },
       "verification_status": "confirmed",
-      "signal_summary": "En la temporada 2025-2026 (SE 27 2025 a SE 17 2026) se registraron 102 casos confirmados de hantavirus en Argentina.",
+      "signal_summary": "En Argentina, la temporada 2025-2026 suma 102 casos confirmados de hantavirus (SE 27 2025 a SE 17 2026).",
       "evidence": [
         {
-          "type": "text",
+          "type": "excerpt",
           "text": "El total de casos de toda la temporada 2025-2026 (que comprende desde la SE 27 de 2025 hasta la SE 17 de 2026) asciende a 102 confirmados.",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.77,
+      "extraction_confidence": 0.78,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -858,7 +737,6 @@
     }
   ],
   "warnings": [
-    "Se ignoraron secciones no vinculadas a hantavirus/MV Hondius según el alcance de evaluación.",
     "Signal 268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-01: se descartó host no biológico 'casos a bordo del buque Homo sapiens'."
   ]
 }
