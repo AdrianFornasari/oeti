@@ -116,3 +116,21 @@ Las predicciones v0.4.3 usan archivos nuevos `evaluation/predictions/...v043-aut
 ## Sprint 1D v0.4.4 - Atomic Claims + Deterministic Signal Assembly
 
 La extracción se divide en dos etapas: el LLM produce claims epidemiológicos atómicos y un assembler determinístico construye las signals canónicas v0.4. Esto reduce la sobre-fragmentación y permite distinguir si un error proviene del modelo o de las reglas de ensamblado. Cada predicción de benchmark conserva además un sidecar `*.claims.json` para auditoría. Ver `docs/sprint-1d-atomic-claims-v0.4.4.md`.
+
+## Sprint 1D v0.4.5 - Evidence + Deterministic Assembly Hardening
+
+La v0.4.5 corrige el artefacto `quote` vs `text` del evaluador y agrega reglas determinísticas para consolidar cluster+mortalidad, casos humanos confirmados, itinerarios, contexto histórico, evidencia wildlife negativa y claims genómicos relacionados. Los sidecars v0.4.4 quedan intactos.
+
+La validación inicial de v0.4.5 debe hacerse **offline**, reensamblando los atomic claims existentes sin volver a invocar al LLM:
+
+```powershell
+python -m onehealth_worker.evaluation.reassembly `
+  --manifest ".\config\evaluation\mv-hondius-gold-standard-v045.json" `
+  --force
+
+python -m onehealth_worker evaluate-corpus `
+  --manifest ".\config\evaluation\mv-hondius-gold-standard-v045.json" `
+  --output ".\tmp\eval-mv-hondius-corpus-v045.json"
+```
+
+Ver `docs/sprint-1d-v0.4.5-evidence-assembler.md`. Los thresholds del release gate no cambian y Sprint 1E continúa bloqueado hasta obtener `event_matcher_ready=true`.

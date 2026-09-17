@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 import copy
 import json
 
-from .scoring import DEFAULT_MATCH_THRESHOLD, evaluate_payloads
+from .scoring import DEFAULT_MATCH_THRESHOLD, evaluate_payloads as evaluate_payloads_v045
+from .scoring_v046 import evaluate_payloads as evaluate_payloads_v046
 from ..extraction.schema import load_schema, validate_extraction
 
 
@@ -17,7 +18,17 @@ DEFAULT_RELEASE_THRESHOLDS = {
 }
 
 
-def evaluate_file(prediction_path: Path, gold_path: Path, threshold: float = DEFAULT_MATCH_THRESHOLD) -> dict[str, Any]:
+def _select_evaluator(benchmark_version: str | None) -> Callable[..., dict[str, Any]]:
+    return evaluate_payloads_v046 if benchmark_version == "0.4.6" else evaluate_payloads_v045
+
+
+def evaluate_file(
+    prediction_path: Path,
+    gold_path: Path,
+    threshold: float = DEFAULT_MATCH_THRESHOLD,
+    *,
+    benchmark_version: str | None = None,
+) -> dict[str, Any]:
     prediction = json.loads(prediction_path.read_text(encoding="utf-8-sig"))
     gold = json.loads(gold_path.read_text(encoding="utf-8-sig"))
     expected = copy.deepcopy(gold.get("expected", gold))
@@ -33,7 +44,9 @@ def evaluate_file(prediction_path: Path, gold_path: Path, threshold: float = DEF
     validate_extraction(expected, schema)
     if prediction_raw_item_id != expected.get("document", {}).get("raw_item_id"):
         raise ValueError("Prediction y gold standard corresponden a raw_item_id diferentes.")
-    return evaluate_payloads(prediction, gold, threshold=threshold)
+
+    evaluator = _select_evaluator(benchmark_version)
+    return evaluator(prediction, gold, threshold=threshold)
 
 
 def _mean(documents: list[dict[str, Any]], getter) -> float:
@@ -45,6 +58,7 @@ def _mean(documents: list[dict[str, Any]], getter) -> float:
 def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESHOLD) -> dict[str, Any]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
     base = manifest_path.parent
+    benchmark_version = str(manifest.get("benchmark_version") or "") or None
     documents = []
     skipped = []
 
@@ -65,7 +79,12 @@ def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESH
         if not gold_path.exists():
             skipped.append({"label": item.get("label"), "reason": "gold_not_found", "path": str(gold_path)})
             continue
-        report = evaluate_file(prediction_path, gold_path, threshold)
+        report = evaluate_file(
+            prediction_path,
+            gold_path,
+            threshold,
+            benchmark_version=benchmark_version,
+        )
         documents.append({"label": item.get("label"), "report": report})
 
     avg_signal_f1 = _mean(documents, lambda r: r["signal_detection"]["f1"])
@@ -106,7 +125,6 @@ def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESH
             "mean_signal_f1": avg_signal_f1,
             "mean_evidence_exact_f1": avg_evidence_exact,
             "mean_evidence_support_f1": avg_evidence_support,
-            # Backward-compatible alias: from schema 0.2 evidence_f1 means support equivalence.
             "mean_evidence_f1": avg_evidence_support,
             "mean_signal_role_accuracy": avg_role,
             "mean_signal_type_accuracy": avg_type,
