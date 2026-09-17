@@ -26,9 +26,9 @@ export default function HantavirusThreatPage() {
         <nav className={styles.nav}>
           <Link className={styles.navLink} href="/demo"><span className={styles.navIcon}>⌂</span><span className={styles.navText}>Dashboard</span></Link>
           <Link className={`${styles.navLink} ${styles.active}`} href="/demo/threats/hantavirus"><span className={styles.navIcon}>◈</span><span className={styles.navText}>Threats</span></Link>
-          <a className={styles.navLink} href="#"><span className={styles.navIcon}>◉</span><span className={styles.navText}>Signals</span></a>
-          <a className={styles.navLink} href="#"><span className={styles.navIcon}>▤</span><span className={styles.navText}>Evidence</span></a>
-          <a className={styles.navLink} href="#"><span className={styles.navIcon}>▥</span><span className={styles.navText}>Evaluation</span></a>
+          <Link className={styles.navLink} href="/demo/signals/asm-01"><span className={styles.navIcon}>◉</span><span className={styles.navText}>Signals</span></Link>
+          <Link className={styles.navLink} href="/demo/evidence/asm-01"><span className={styles.navIcon}>▤</span><span className={styles.navText}>Evidence</span></Link>
+          <Link className={styles.navLink} href="/demo/evaluation"><span className={styles.navIcon}>▥</span><span className={styles.navText}>Evaluation</span></Link>
         </nav>
         <div className={styles.sidebarFooter}>Sponsor demo branch<br />Concept data</div>
       </aside>
@@ -49,7 +49,7 @@ export default function HantavirusThreatPage() {
               <h1>Hantavirus <span className={`${styles.pill} ${styles.pillActive}`}>Active</span></h1>
               <p className={styles.subtitle}>Tierra del Fuego, Argentina · May–September 2026</p>
             </div>
-            <div className={styles.actions}><Link className={styles.button} href="/demo">← Dashboard</Link><button className={`${styles.button} ${styles.buttonPrimary}`}>Export report</button></div>
+            <div className={styles.actions}><Link className={styles.button} href="/demo">← Dashboard</Link><Link className={styles.button} href="/demo/threats/hantavirus/one-health">One Health view</Link><button className={`${styles.button} ${styles.buttonPrimary}`}>Export report</button></div>
           </div>
 
           <div className={styles.filters}>
@@ -110,7 +110,7 @@ export default function HantavirusThreatPage() {
               <section className={styles.card}>
                 <h2>Next step</h2>
                 <p className={`${styles.small} ${styles.muted}`}>Open the laboratory signal to inspect evidence and traceability.</p>
-                <a className={`${styles.button} ${styles.buttonPrimary}`} href="#">Signal Detail →</a>
+                <Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo/signals/asm-01">Signal Detail →</Link>
               </section>
             </aside>
           </div>
