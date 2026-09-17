@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from onehealth_worker.evaluation.scoring import _evidence_support_f1, evidence_support_similarity
+from onehealth_worker.evaluation.scoring_v046 import _evidence_support_f1, evidence_support_similarity
 from onehealth_worker.extraction.assembly_v046 import assemble_claims_payload
 from onehealth_worker.extraction.normalization import normalize_extraction_payload
 from onehealth_worker.extraction.schema import validate_extraction
@@ -33,6 +33,12 @@ def test_v046_evidence_document_text_is_textual_alias():
     assert evidence_support_similarity(gold, pred) == 1.0
 
 
+def test_v046_evidence_aliases_keep_negation_guard():
+    gold = {"type": "text", "text": "no se notificaron casos de hantavirus", "page_number": None}
+    pred = {"type": "document_text", "text": "se notificaron casos de hantavirus", "page_number": None}
+    assert evidence_support_similarity(gold, pred) == 0.0
+
+
 def test_v046_evidence_support_uses_many_to_many_coverage():
     gold = [
         {
@@ -50,6 +56,16 @@ def test_v046_evidence_support_uses_many_to_many_coverage():
     assert {(m.gold_index, m.prediction_index) for m in matches} == {(0, 0), (0, 1)}
 
 
+def test_v046_evidence_coverage_penalizes_unsupported_prediction_fragment():
+    gold = [{"type": "text", "text": "se identificaron ocho casos a bordo del buque", "page_number": None}]
+    pred = [
+        {"type": "text", "text": "se identificaron ocho casos a bordo del buque", "page_number": None},
+        {"type": "text", "text": "la temperatura máxima fue 31 grados", "page_number": None},
+    ]
+    score, _ = _evidence_support_f1(gold, pred)
+    assert score < 1.0
+
+
 def test_v046_initial_notification_keeps_individual_positive_diagnostic_as_case_report():
     prediction = _assemble("2026-05-04-v044-atomic-automatic.claims.json")
     case_signals = [s for s in prediction["signals"] if s["signal_type"] == "case_report"]
@@ -64,7 +80,7 @@ def test_v046_se17_collective_lab_characterization_is_not_case_report():
 
     assert len(prediction["signals"]) == 6
     assert not any(
-        signal["signal_type"] == "case_report" and "PCR" in signal.get("signal_summary", "")
+        signal["signal_type"] == "case_report" and "pcr" in signal.get("signal_summary", "").casefold()
         for signal in prediction["signals"]
     )
 
