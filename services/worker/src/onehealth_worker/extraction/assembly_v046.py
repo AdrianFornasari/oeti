@@ -68,9 +68,6 @@ def _prepare_collective_lab_characterization(group: list[dict[str, Any]]) -> Non
         subject["subject_type"] = "other"
         claim["subject"] = subject
 
-    # Place the genomic observation in the same diagnostic bucket. It retains the
-    # genomic domain and genomics payload, so atomic assembly produces one
-    # laboratory_result carrying both laboratory and genomic evidence.
     for claim in genomics:
         claim["claim_kind"] = "diagnostic_result"
 
@@ -147,8 +144,8 @@ def _merge_current_surveillance_snapshots(claims: list[dict[str, Any]]) -> None:
     """Consolidate compatible weekly/current surveillance facts into one snapshot.
 
     Historical closed periods remain separate. Claims are merged only when they are
-    surveillance baselines, share domains, and have no explicit conflicting disease or
-    pathogen identity. This avoids merging unrelated surveillance topics.
+    surveillance baselines, share domains, and have a compatible surveillance topic.
+    This prevents unrelated diseases from being collapsed into one baseline.
     """
     baselines = [
         claim for claim in claims
@@ -196,9 +193,9 @@ def _surveillance_claims_compatible(left: dict[str, Any], right: dict[str, Any])
 
     left_topic = _surveillance_topic_hint(left)
     right_topic = _surveillance_topic_hint(right)
-    if left_topic and right_topic and left_topic != right_topic:
+    if not left_topic or not right_topic:
         return False
-    return True
+    return left_topic == right_topic
 
 
 def _surveillance_topic_hint(claim: dict[str, Any]) -> str | None:
@@ -206,7 +203,10 @@ def _surveillance_topic_hint(claim: dict[str, Any]) -> str | None:
     if explicit:
         return explicit
     text = " ".join(
-        [str(claim.get("summary") or "")]
+        [
+            str(claim.get("group_id") or ""),
+            str(claim.get("summary") or ""),
+        ]
         + [str(ev.get("text") or "") for ev in (claim.get("evidence") or [])]
     ).casefold()
     if "hantavirus" in text:
