@@ -78,7 +78,11 @@ def test_v046_initial_notification_keeps_individual_positive_diagnostic_as_case_
 def test_v046_se17_collective_lab_characterization_is_not_case_report():
     prediction = _assemble("2026-05-12-ben-se17-v044-atomic-automatic.claims.json")
 
-    assert len(prediction["signals"]) == 6
+    # The committed SE17 claims do not contain the adjudicated NOA regional baseline.
+    # v0.4.6 must not fabricate that missing fact merely to match the gold standard.
+    # After consolidating the collective PCR+genomic characterization and the two
+    # compatible national surveillance facts, five source-supported signals remain.
+    assert len(prediction["signals"]) == 5
     assert not any(
         signal["signal_type"] == "case_report" and "pcr" in signal.get("signal_summary", "").casefold()
         for signal in prediction["signals"]
@@ -89,6 +93,12 @@ def test_v046_se17_collective_lab_characterization_is_not_case_report():
     assert lab[0]["pathogen"]["canonical_name"] == "Andes virus"
     assert lab[0]["genomics"]["sequence_reported"] is True
     assert "genomic" in lab[0]["domains"]
+
+    baselines = [s for s in prediction["signals"] if s["signal_role"] == "surveillance_baseline"]
+    assert len(baselines) == 1
+    values = {m["value_numeric"] for m in baselines[0]["metrics"]}
+    assert {1, 102}.issubset(values)
+    assert not any((loc.get("region") or "").casefold() == "noa" for loc in baselines[0]["locations"])
 
 
 def test_v046_se18_merges_operational_mobility_into_intervention_and_surveillance_snapshot():
