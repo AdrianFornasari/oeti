@@ -15,9 +15,9 @@ export default function AnalystReviewPage() {
   const [decision, setDecision] = useState<Decision>(null);
   const [submitted, setSubmitted] = useState(false);
   const [comment, setComment] = useState("");
-  const [correctedSummary, setCorrectedSummary] = useState(signal.summary);
-  const [correctedType, setCorrectedType] = useState(signal.signalType);
-  const [correctedRole, setCorrectedRole] = useState(signal.signalRole);
+  const [correctedSummary, setCorrectedSummary] = useState<string>(signal.summary);
+  const [correctedType, setCorrectedType] = useState<string>(signal.signalType);
+  const [correctedRole, setCorrectedRole] = useState<string>(signal.signalRole);
 
   const decisionDetails = useMemo(() => ({
     confirm: isSpanish ? {
