@@ -6,6 +6,8 @@ import { useDemoPreferences } from "../../../demo-preferences";
 import { mvHondiusBenchmark } from "../../../mv-hondius-data";
 import styles from "../../../demo.module.css";
 
+type Domain = "human" | "wildlife" | "genomic" | "mobility";
+
 export default function OneHealthConvergencePage() {
   const { isSpanish } = useDemoPreferences();
 
@@ -21,7 +23,18 @@ export default function OneHealthConvergencePage() {
     { domain: "Mobility", tone: styles.pillMedium, evidence: "Travel history in Malargüe retained as contextual exposure history, not as a confirmed infection location.", documents: "08 Jul", status: "Contextual evidence" },
   ];
 
-  const convergenceRows = mvHondiusBenchmark.documents.map((doc) => ({ date: doc.date, label: doc.label, human: doc.domains.includes("human"), wildlife: doc.domains.includes("wildlife"), genomic: doc.domains.includes("genomic"), mobility: doc.domains.includes("mobility"), relation: doc.relation }));
+  const convergenceRows = mvHondiusBenchmark.documents.map((doc) => {
+    const domains = doc.domains as readonly Domain[];
+    return {
+      date: doc.date,
+      label: doc.label,
+      human: domains.includes("human"),
+      wildlife: domains.includes("wildlife"),
+      genomic: domains.includes("genomic"),
+      mobility: domains.includes("mobility"),
+      relation: doc.relation,
+    };
+  });
 
   return (
     <DemoShell active="threats">
