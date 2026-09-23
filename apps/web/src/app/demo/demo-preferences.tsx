@@ -19,7 +19,7 @@ const LANGUAGE_KEY = "oeti-demo-language";
 const THEME_KEY = "oeti-demo-theme";
 
 export function DemoPreferencesProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<DemoLanguage>("en");
+  const [language, setLanguage] = useState<DemoLanguage>("es");
   const [theme, setTheme] = useState<DemoTheme>("light");
 
   useEffect(() => {
