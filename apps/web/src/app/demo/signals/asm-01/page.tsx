@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { DemoShell, PrototypeNote } from "../../demo-shell";
 import { useDemoPreferences } from "../../demo-preferences";
+import { useDemoReviewState } from "../../demo-review-state";
 import { ushuaiaRodentContext, ushuaiaRodentSignal } from "../../mv-hondius-data";
 import styles from "../../demo.module.css";
 
 export default function SignalDetailPage() {
   const signal = ushuaiaRodentSignal;
   const { isSpanish } = useDemoPreferences();
+  const { record, hydrated } = useDemoReviewState(signal.id);
 
   const related = isSpanish ? [
     ["29 jun 2026", "ASM-02", "Los análisis moleculares identificaron una variante de hantavirus no descrita previamente, relacionada con virus Andes y clasificada dentro de Orthohantavirus andesense.", "Fauna silvestre + Genómica", "Observación genómica", "Reportada"],
@@ -20,22 +22,89 @@ export default function SignalDetailPage() {
     ["18–22 May 2026", "ASM-04", ushuaiaRodentContext.samplingSignal.summary, "Wildlife", "Wildlife event", "Reported"],
   ];
 
+  const humanSummary = record?.decision === "correct" && record.correctedSummary ? record.correctedSummary : signal.summary;
+  const humanType = record?.decision === "correct" && record.correctedType ? record.correctedType : signal.signalType;
+  const humanRole = record?.decision === "correct" && record.correctedRole ? record.correctedRole : signal.signalRole;
+  const accepted = record?.decision !== "reject";
+
+  const reviewLabel = !hydrated || !record
+    ? (isSpanish ? "Sin revisión humana" : "No human review")
+    : record.decision === "confirm"
+      ? (isSpanish ? "Confirmada por analista" : "Analyst confirmed")
+      : record.decision === "correct"
+        ? (isSpanish ? "Corregida por analista" : "Analyst corrected")
+        : (isSpanish ? "Rechazada por analista" : "Analyst rejected");
+
   return (
     <DemoShell active="signals">
       <div className={styles.content}>
         <PrototypeNote>{isSpanish
-          ? "Esta pantalla usa una extracción real de OETI v0.4.4 del corpus de evaluación MV Hondius. Las etiquetas de presentación siguen simplificadas para uso con sponsor."
-          : "This screen now uses a real OETI v0.4.4 extraction from the MV Hondius evaluation corpus. Presentation labels remain simplified for sponsor use."}</PrototypeNote>
+          ? "Esta pantalla combina una extracción real de OETI v0.4.4 con un estado de revisión humana guardado solo en este navegador para la demo. La revisión no modifica el backend ni el gold standard."
+          : "This screen combines a real OETI v0.4.4 extraction with browser-local human-review state for the demo. Review does not modify the backend or gold standard."}</PrototypeNote>
+
         <div className={styles.breadcrumb}><Link href="/demo/threats/hantavirus">{isSpanish ? "Amenazas" : "Threats"}</Link> › Hantavirus › {isSpanish ? "Señal" : "Signal"} {signal.shortId}</div>
+
         <div className={styles.pageHead}>
           <div>
             <h1>{isSpanish ? <>5 roedores <em>Abrothrix</em> con anticuerpos específicos contra hantavirus</> : <>5 <em>Abrothrix</em> rodents with hantavirus-specific antibodies</>}</h1>
             <p className={styles.subtitle}>{isSpanish ? `Señal ${signal.shortId} · ${signal.signalType} · ${signal.signalRole} · Fauna silvestre` : `Signal ${signal.shortId} · ${signal.signalType} · ${signal.signalRole} · Wildlife`}</p>
           </div>
-          <div className={styles.actions}><Link className={styles.button} href="/demo/threats/hantavirus">← {isSpanish ? "Amenaza" : "Threat"}</Link><Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo/evidence/asm-01">{isSpanish ? "Trazar esta señal →" : "Trace this signal →"}</Link></div>
+          <div className={styles.actions}>
+            <Link className={styles.button} href="/demo/evidence/asm-01">{isSpanish ? "Evidencia" : "Evidence"}</Link>
+            <Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo/review/asm-01">{isSpanish ? "Revisión del analista →" : "Analyst review →"}</Link>
+          </div>
         </div>
 
-        <div className={styles.threatLayout}>
+        <section className={styles.card} style={{ marginBottom: 14 }}>
+          <div className={styles.pageHead} style={{ marginBottom: 0 }}>
+            <div>
+              <div className={styles.small}>{isSpanish ? "ESTADO DE INTELIGENCIA" : "INTELLIGENCE STATE"}</div>
+              <h2 style={{ marginTop: 4 }}>{reviewLabel}</h2>
+              <p className={`${styles.small} ${styles.muted}`} style={{ marginBottom: 0 }}>
+                {isSpanish ? "La extracción automática original permanece inmutable y trazable." : "The original machine extraction remains immutable and traceable."}
+              </p>
+            </div>
+            <div>
+              <span className={`${styles.pill} ${record ? (accepted ? styles.pillReviewed : styles.pillHigh) : styles.pillActive}`}>
+                {record ? (accepted ? (isSpanish ? "Aceptada en demo" : "Accepted in demo") : (isSpanish ? "Excluida de operación" : "Excluded operationally")) : (isSpanish ? "Machine generated" : "Machine generated")}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <div className={styles.dashboardMain}>
+          <section className={styles.card}>
+            <h2>{isSpanish ? "Propuesta de la máquina" : "Machine-generated signal"}</h2>
+            <div className={styles.summaryList}>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Resumen" : "Summary"}</div><div>{isSpanish ? "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego)." : signal.summary}</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Tipo" : "Type"}</div><div>{signal.signalType}</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Rol" : "Role"}</div><div>{signal.signalRole}</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Confianza de extracción" : "Extraction confidence"}</div><div>{Math.round(signal.extractionConfidence * 100)}%</div></div>
+            </div>
+          </section>
+
+          <section className={styles.card}>
+            <h2>{isSpanish ? "Estado después de revisión humana" : "Human-reviewed state"}</h2>
+            {!record ? (
+              <div className={styles.detailPanel}>{isSpanish ? "Todavía no hay una adjudicación humana guardada en este navegador. La señal mostrada es exclusivamente la propuesta automática." : "No human adjudication is stored in this browser yet. The displayed signal is exclusively the machine proposal."}</div>
+            ) : record.decision === "reject" ? (
+              <>
+                <div className={styles.detailPanel}><strong>{isSpanish ? "Rechazada por analista" : "Analyst rejected"}</strong><br />{isSpanish ? "La señal no se considera inteligencia operativa aceptada en la demo, pero la fuente, el claim y la extracción permanecen disponibles para auditoría." : "The signal is not considered accepted operational intelligence in the demo, but source, claim and extraction remain available for audit."}</div>
+                {record.note && <p className={styles.small}><strong>{isSpanish ? "Nota" : "Note"}:</strong> {record.note}</p>}
+              </>
+            ) : (
+              <div className={styles.summaryList}>
+                <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Estado" : "Status"}</div><div><strong>{record.status}</strong></div></div>
+                <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Resumen operativo" : "Operational summary"}</div><div>{record.decision === "correct" ? humanSummary : (isSpanish ? "Hallazgo de fauna confirmado por analista; no implica causalidad con el brote." : "Wildlife finding confirmed by analyst; does not imply outbreak causation.")}</div></div>
+                <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Tipo" : "Type"}</div><div>{humanType}</div></div>
+                <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Rol" : "Role"}</div><div>{humanRole}</div></div>
+                {record.note && <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Nota del analista" : "Analyst note"}</div><div>{record.note}</div></div>}
+              </div>
+            )}
+          </section>
+        </div>
+
+        <div className={styles.threatLayout} style={{ marginTop: 14 }}>
           <section className={styles.card}>
             <h2>{isSpanish ? "Resumen" : "Summary"}</h2>
             <p>{isSpanish ? "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego)." : signal.summary}</p>
@@ -50,22 +119,20 @@ export default function SignalDetailPage() {
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Fecha del documento" : "Document date"}</div><div>{isSpanish ? "29 jun 2026" : signal.documentDate}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Fecha del evento" : "Event date"}</div><div>{isSpanish ? "No indicada en esta señal" : "Not stated in this signal"}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Ubicación" : "Location"}</div><div>{signal.location.locality}, {signal.location.admin1}, {signal.location.country}</div></div>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Precisión geográfica" : "Geographic precision"}</div><div>{isSpanish ? "localidad" : signal.location.precision}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Dominio" : "Domain"}</div><div><span className={`${styles.pill} ${styles.pillAnimal}`}>{isSpanish ? "Fauna silvestre" : "Wildlife"}</span></div></div>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Verificación" : "Verification"}</div><div>{isSpanish ? "reportada" : signal.verificationStatus}</div></div>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Confianza de extracción" : "Extraction confidence"}</div><div>{Math.round(signal.extractionConfidence * 100)}%</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Verificación fuente" : "Source verification"}</div><div>{isSpanish ? "reportada" : signal.verificationStatus}</div></div>
             </div>
           </section>
 
           <aside className={styles.card}>
-            <h2>{isSpanish ? "Trazabilidad de la señal" : "Signal traceability"}</h2>
+            <h2>{isSpanish ? "Trazabilidad" : "Traceability"}</h2>
             <div className={styles.summaryList}>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>1. {isSpanish ? "Fuente" : "Source"}</div><div>{signal.source.label}</div></div>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>2. {isSpanish ? "Afirmación atómica" : "Atomic claim"}</div><div>{signal.directClaim.id}</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>2. Claim</div><div>{signal.directClaim.id}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>3. {isSpanish ? "Ensamblado" : "Assembly"}</div><div>{isSpanish ? "Determinístico" : "Deterministic"}</div></div>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>4. {isSpanish ? "Señal" : "Signal"}</div><div>{signal.signalType}</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>4. {isSpanish ? "Señal máquina" : "Machine signal"}</div><div>{signal.shortId}</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>5. {isSpanish ? "Revisión humana" : "Human review"}</div><div>{record?.status ?? (isSpanish ? "Pendiente" : "Pending")}</div></div>
             </div>
-            <div style={{ marginTop: 14 }}><Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo/evidence/asm-01">{isSpanish ? "Abrir trazabilidad" : "Open traceability"}</Link></div>
           </aside>
         </div>
 
