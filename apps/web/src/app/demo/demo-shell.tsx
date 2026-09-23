@@ -28,7 +28,7 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
   );
 
   return (
-    <div className={styles.app} data-theme={theme}>
+    <div className={styles.app} data-theme={theme} data-demo-shell>
       <aside className={styles.sidebar}>
         <div className={styles.brand}>
           <div className={styles.logo} />
@@ -51,8 +51,8 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
       </aside>
 
       <main className={styles.main}>
-        <div className={styles.topbar}>
-          <div className={styles.search}>
+        <div className={styles.topbar} data-demo-topbar>
+          <div className={styles.search} data-demo-search>
             <input
               aria-label={isSpanish ? "Buscar" : "Search"}
               placeholder={isSpanish ? "Buscar amenazas, señales, patógenos, ubicaciones o palabras clave…" : "Search threats, signals, pathogens, locations or keywords…"}
@@ -60,13 +60,15 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
           </div>
           <div className={styles.topSpacer} />
 
-          <div className={styles.preferenceControls}>
-            <div className={styles.segmented} aria-label={isSpanish ? "Idioma" : "Language"}>
-              <button className={language === "en" ? styles.segmentedActive : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
-              <button className={language === "es" ? styles.segmentedActive : ""} onClick={() => setLanguage("es")} aria-pressed={language === "es"}>ES</button>
+          <div className={styles.preferenceControls} data-demo-preferences>
+            <div className={styles.segmented} aria-label={isSpanish ? "Idioma" : "Language"} data-demo-language>
+              <button type="button" className={language === "en" ? styles.segmentedActive : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
+              <button type="button" className={language === "es" ? styles.segmentedActive : ""} onClick={() => setLanguage("es")} aria-pressed={language === "es"}>ES</button>
             </div>
             <button
+              type="button"
               className={styles.themeToggle}
+              data-demo-theme-toggle
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               aria-label={isSpanish ? (theme === "light" ? "Activar modo oscuro" : "Activar modo claro") : (theme === "light" ? "Enable dark mode" : "Enable light mode")}
               title={isSpanish ? (theme === "light" ? "Modo oscuro" : "Modo claro") : (theme === "light" ? "Dark mode" : "Light mode")}
