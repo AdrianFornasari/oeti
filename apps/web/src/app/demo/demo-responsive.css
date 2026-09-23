@@ -1,0 +1,48 @@
+@media (max-width: 760px) {
+  [data-demo-shell] [data-demo-topbar] {
+    min-height: 56px;
+    height: auto;
+    padding: 8px 10px;
+    justify-content: flex-end;
+    gap: 0;
+  }
+
+  [data-demo-shell] [data-demo-search] {
+    display: none;
+  }
+
+  [data-demo-shell] [data-demo-preferences] {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  [data-demo-shell] [data-demo-language] {
+    width: 100%;
+    min-width: 0;
+  }
+
+  [data-demo-shell] [data-demo-language] button {
+    flex: 1 1 50%;
+    min-width: 0;
+    min-height: 40px;
+    font-size: 13px;
+    touch-action: manipulation;
+  }
+
+  [data-demo-shell] [data-demo-theme-toggle] {
+    min-width: 44px;
+    min-height: 40px;
+    padding: 8px 10px;
+    justify-content: center;
+    flex: 0 0 auto;
+    touch-action: manipulation;
+  }
+
+  [data-demo-shell] [data-demo-theme-toggle] span:last-child {
+    display: none;
+  }
+}
