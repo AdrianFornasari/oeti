@@ -28,7 +28,7 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
   );
 
   return (
-    <div className={styles.app}>
+    <div className={styles.app} data-theme={theme}>
       <aside className={styles.sidebar}>
         <div className={styles.brand}>
           <div className={styles.logo} />
