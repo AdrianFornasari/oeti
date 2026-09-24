@@ -20,29 +20,29 @@ export default function SponsorDemoPage() {
         : (isSpanish ? "Rechazada" : "Rejected");
 
   const metrics = isSpanish ? [
-    { value: "37", label: "Señales nuevas", detail: "Últimas 24 horas", icon: "●", color: styles.red },
-    { value: "8", label: "Amenazas activas", detail: "Bajo monitoreo", icon: "◈", color: styles.orange },
-    { value: "12", label: "Países / regiones", detail: "Con señales recientes", icon: "◎", color: styles.blue },
-    { value: "3", label: "Convergencia One Health", detail: "Humana · Animal · Ambiente", icon: "△", color: styles.green },
+    { value: "37", label: "Señales nuevas", detail: "Ejemplo visual · últimas 24 horas", icon: "●", color: styles.red },
+    { value: "8", label: "Amenazas activas", detail: "Ejemplo visual · bajo monitoreo", icon: "◈", color: styles.orange },
+    { value: "12", label: "Países / regiones", detail: "Ejemplo visual · señales recientes", icon: "◎", color: styles.blue },
+    { value: "3", label: "Convergencia One Health", detail: "Ejemplo visual · humana · animal · ambiente", icon: "△", color: styles.green },
   ] : [
-    { value: "37", label: "New signals", detail: "Last 24 hours", icon: "●", color: styles.red },
-    { value: "8", label: "Active threats", detail: "Under monitoring", icon: "◈", color: styles.orange },
-    { value: "12", label: "Countries / regions", detail: "With recent signals", icon: "◎", color: styles.blue },
-    { value: "3", label: "One Health convergence", detail: "Human · Animal · Environment", icon: "△", color: styles.green },
+    { value: "37", label: "New signals", detail: "Visual example · last 24 hours", icon: "●", color: styles.red },
+    { value: "8", label: "Active threats", detail: "Visual example · under monitoring", icon: "◈", color: styles.orange },
+    { value: "12", label: "Countries / regions", detail: "Visual example · recent signals", icon: "◎", color: styles.blue },
+    { value: "3", label: "One Health convergence", detail: "Visual example · human · animal · environment", icon: "△", color: styles.green },
   ];
 
   const threats = isSpanish ? [
-    { name: "Hantavirus", region: "Caso adjudicado MV Hondius", domains: "Humana · Fauna silvestre · Genómica · Movilidad", level: "Caso demo", href: "/demo/threats/hantavirus", pill: styles.pillHigh },
-    { name: "Influenza A(H5N1)", region: "Cono Sur", domains: "Animal · Humana", level: "Ilustrativo", href: "/demo", pill: styles.pillHigh },
-    { name: "Oropouche", region: "América del Sur", domains: "Humana · Ambiente", level: "Ilustrativo", href: "/demo", pill: styles.pillMedium },
-    { name: "mpox", region: "África Central", domains: "Humana", level: "Ilustrativo", href: "/demo", pill: styles.pillMedium },
-    { name: "Fiebre del Valle del Rift", region: "África Oriental", domains: "Animal · Ambiente", level: "Ilustrativo", href: "/demo", pill: styles.pillLow },
+    { name: "Hantavirus", region: "Caso real adjudicado MV Hondius", domains: "Humana · Fauna silvestre · Genómica · Movilidad", level: "Caso real", href: "/demo/threats/hantavirus", pill: styles.pillReviewed },
+    { name: "Influenza A(H5N1)", region: "Cono Sur", domains: "Animal · Humana", level: "Ejemplo visual", href: "/demo", pill: "" },
+    { name: "Oropouche", region: "América del Sur", domains: "Humana · Ambiente", level: "Ejemplo visual", href: "/demo", pill: "" },
+    { name: "mpox", region: "África Central", domains: "Humana", level: "Ejemplo visual", href: "/demo", pill: "" },
+    { name: "Fiebre del Valle del Rift", region: "África Oriental", domains: "Animal · Ambiente", level: "Ejemplo visual", href: "/demo", pill: "" },
   ] : [
-    { name: "Hantavirus", region: "MV Hondius adjudicated case", domains: "Human · Wildlife · Genomic · Mobility", level: "Case demo", href: "/demo/threats/hantavirus", pill: styles.pillHigh },
-    { name: "Influenza A(H5N1)", region: "Southern Cone", domains: "Animal · Human", level: "Illustrative", href: "/demo", pill: styles.pillHigh },
-    { name: "Oropouche", region: "South America", domains: "Human · Environment", level: "Illustrative", href: "/demo", pill: styles.pillMedium },
-    { name: "mpox", region: "Central Africa", domains: "Human", level: "Illustrative", href: "/demo", pill: styles.pillMedium },
-    { name: "Rift Valley Fever", region: "East Africa", domains: "Animal · Environment", level: "Illustrative", href: "/demo", pill: styles.pillLow },
+    { name: "Hantavirus", region: "Real adjudicated MV Hondius case", domains: "Human · Wildlife · Genomic · Mobility", level: "Real case", href: "/demo/threats/hantavirus", pill: styles.pillReviewed },
+    { name: "Influenza A(H5N1)", region: "Southern Cone", domains: "Animal · Human", level: "Visual example", href: "/demo", pill: "" },
+    { name: "Oropouche", region: "South America", domains: "Human · Environment", level: "Visual example", href: "/demo", pill: "" },
+    { name: "mpox", region: "Central Africa", domains: "Human", level: "Visual example", href: "/demo", pill: "" },
+    { name: "Rift Valley Fever", region: "East Africa", domains: "Animal · Environment", level: "Visual example", href: "/demo", pill: "" },
   ];
 
   const signals = isSpanish ? [
@@ -61,8 +61,8 @@ export default function SponsorDemoPage() {
     <DemoShell active="dashboard">
       <div className={styles.content}>
         <PrototypeNote>{isSpanish
-          ? "Prototipo de panel ejecutivo — la ruta guiada del caso MV Hondius se basa en datos adjudicados del corpus OETI; las métricas globales y las amenazas no relacionadas con hantavirus siguen siendo ilustrativas. El estado de revisión de ASM-01 proviene únicamente de localStorage de esta demo."
-          : "Executive dashboard prototype — the MV Hondius guided-demo route is grounded in adjudicated OETI corpus data; global portfolio metrics and non-Hantavirus threats remain illustrative. ASM-01 review state comes only from this demo browser localStorage."}
+          ? "Demo para sponsor — el caso MV Hondius y sus señales provienen del corpus adjudicado de OETI. Los indicadores globales, el mapa general y las amenazas distintas de hantavirus son ejemplos visuales de cómo podría verse una operación a escala."
+          : "Sponsor demo — the MV Hondius case and its signals come from the adjudicated OETI corpus. Global indicators, the overview map and non-Hantavirus threats are visual examples of how scaled operations could look."}
         </PrototypeNote>
 
         <div className={styles.pageHead}>
@@ -73,7 +73,12 @@ export default function SponsorDemoPage() {
               ? "Integrando inteligencia de salud humana, animal y ambiental para una detección más temprana y una respuesta más sólida."
               : "Integrating human, animal and environmental intelligence for earlier detection and stronger response."}</p>
           </div>
-          <div className={styles.actions}><Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo/threats/hantavirus">{isSpanish ? "Abrir demo guiada →" : "Open guided demo →"}</Link></div>
+          <div className={styles.actions}><Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo/threats/hantavirus">{isSpanish ? "Abrir caso real MV Hondius →" : "Open real MV Hondius case →"}</Link></div>
+        </div>
+
+        <div className={styles.pageHead} style={{ marginBottom: 8 }}>
+          <div><h2 style={{ margin: 0 }}>{isSpanish ? "Vista conceptual de operación" : "Conceptual operations view"}</h2><p className={`${styles.small} ${styles.muted}`} style={{ marginBottom: 0 }}>{isSpanish ? "Indicadores ilustrativos para mostrar la escala futura de la plataforma." : "Illustrative indicators showing the platform's future operating scale."}</p></div>
+          <span className={styles.pill}>{isSpanish ? "DATOS ILUSTRATIVOS" : "ILLUSTRATIVE DATA"}</span>
         </div>
 
         <section className={styles.grid4}>
@@ -87,7 +92,7 @@ export default function SponsorDemoPage() {
 
         <section className={styles.dashboardMain}>
           <article className={styles.card}>
-            <h2>{isSpanish ? "Panorama geográfico" : "Geographic overview"}</h2>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center" }}><h2>{isSpanish ? "Panorama geográfico" : "Geographic overview"}</h2><span className={styles.pill}>{isSpanish ? "Ilustrativo" : "Illustrative"}</span></div>
             <div className={styles.map} aria-label={isSpanish ? "Mapa conceptual de amenazas" : "Conceptual geographic threat map"}>
               <div className={styles.continent} />
               <span className={`${styles.marker} ${styles.markerHuman}`} style={{ left: "55%", top: "76%" }} />
@@ -99,7 +104,7 @@ export default function SponsorDemoPage() {
           </article>
 
           <article className={styles.card}>
-            <h2>{isSpanish ? "Principales amenazas emergentes" : "Top emerging threats"}</h2>
+            <h2>{isSpanish ? "Amenazas emergentes" : "Emerging threats"}</h2>
             <div className={styles.threatList}>
               {threats.map((threat) => (
                 <Link key={threat.name} className={styles.threatItem} href={threat.href}>
@@ -114,8 +119,8 @@ export default function SponsorDemoPage() {
         <section className={styles.card} style={{ marginTop: 14 }}>
           <div className={styles.pageHead} style={{ marginBottom: 0 }}>
             <div>
-              <h2>{isSpanish ? "Adjudicación humana visible downstream" : "Human adjudication visible downstream"}</h2>
-              <p className={`${styles.small} ${styles.muted}`} style={{ marginBottom: 0 }}>{isSpanish ? "ASM-01 conserva la propuesta automática y agrega una capa separada de revisión humana." : "ASM-01 preserves the machine proposal and adds a separate human-review layer."}</p>
+              <h2>{isSpanish ? "Revisión humana de la señal" : "Human signal review"}</h2>
+              <p className={`${styles.small} ${styles.muted}`} style={{ marginBottom: 0 }}>{isSpanish ? "La señal ASM-01 conserva el resultado automático y, por separado, la decisión del analista." : "ASM-01 preserves the machine result and, separately, the analyst decision."}</p>
             </div>
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
               <span className={`${styles.pill} ${record ? styles.pillReviewed : styles.pillActive}`}>{reviewLabel}</span>
@@ -125,7 +130,7 @@ export default function SponsorDemoPage() {
         </section>
 
         <section className={`${styles.card} ${styles.tableWrap}`}>
-          <h2>{isSpanish ? "Señales recientes de la demo de hantavirus" : "Recent Hantavirus demo signals"}</h2>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center", flexWrap: "wrap" }}><h2>{isSpanish ? "Señales reales del caso MV Hondius" : "Real MV Hondius case signals"}</h2><span className={`${styles.pill} ${styles.pillReviewed}`}>{isSpanish ? "CORPUS ADJUDICADO" : "ADJUDICATED CORPUS"}</span></div>
           <table className={styles.table}>
             <thead><tr><th>{isSpanish ? "Fecha" : "Date"}</th><th>{isSpanish ? "Patógeno / Enfermedad" : "Pathogen / Disease"}</th><th>{isSpanish ? "Ubicación / contexto" : "Location / context"}</th><th>{isSpanish ? "Tipo de señal" : "Signal type"}</th><th>{isSpanish ? "Dominio One Health" : "One Health domain"}</th><th>{isSpanish ? "Fuente" : "Source"}</th><th>{isSpanish ? "Revisión" : "Review"}</th></tr></thead>
             <tbody>{signals.map((signal, rowIndex) => <tr key={`${signal[0]}-${signal[2]}-${signal[3]}`}>{signal.map((cell, index) => <td key={`${cell}-${index}`}>{cell}</td>)}<td>{rowIndex === 0 ? <span className={`${styles.pill} ${record ? styles.pillReviewed : styles.pillActive}`}>{reviewLabel}</span> : "—"}</td></tr>)}</tbody>
