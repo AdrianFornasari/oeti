@@ -34,19 +34,19 @@ export default function OneHealthConvergencePage() {
 
   const wildlifeOperationalText = !record
     ? (isSpanish
-      ? "ASM-01 permanece como propuesta automática pendiente de adjudicación humana."
-      : "ASM-01 remains a machine proposal awaiting human adjudication.")
+      ? "ASM-01 permanece como propuesta automática pendiente de revisión humana."
+      : "ASM-01 remains a machine proposal awaiting human review.")
     : record.decision === "confirm"
       ? (isSpanish
         ? "ASM-01 fue confirmada como señal de laboratorio respaldada por el claim c1."
         : "ASM-01 was confirmed as a laboratory signal supported by claim c1.")
       : record.decision === "correct"
         ? (isSpanish
-          ? "ASM-01 fue corregida mediante un override humano auditable; la extracción original permanece preservada."
-          : "ASM-01 was corrected through an auditable human override; the original extraction remains preserved.")
+          ? "ASM-01 fue corregida mediante una corrección humana auditable; la extracción original permanece preservada."
+          : "ASM-01 was corrected through an auditable human correction; the original extraction remains preserved.")
         : (isSpanish
-          ? "ASM-01 fue rechazada para uso operativo aceptado, pero el hallazgo fuente y los claims siguen formando parte de la evidencia histórica y del corpus."
-          : "ASM-01 was rejected for accepted operational use, but the source finding and claims remain part of the historical evidence and corpus.");
+          ? "ASM-01 fue rechazada para uso operativo, pero el hallazgo fuente y los claims siguen formando parte de la evidencia histórica y del corpus."
+          : "ASM-01 was rejected for operational use, but the source finding and claims remain part of the historical evidence and corpus.");
 
   const domainRows = isSpanish ? [
     { domain: "Humana", tone: styles.pillHuman, evidence: "Cluster, casos confirmados/probables, muertes y transmisión persona-persona probable a bordo del MV Hondius.", documents: "04 may · 12 may · 19 may · 26 may", status: "Evidencia directa sólida" },
@@ -78,15 +78,15 @@ export default function OneHealthConvergencePage() {
     <DemoShell active="threats">
       <div className={styles.content}>
         <PrototypeNote>{isSpanish
-          ? "Vista One Health de caso real — usa únicamente dominios y relaciones adjudicados en los seis documentos del corpus gold standard MV Hondius. La revisión humana de ASM-01 se muestra como una capa operativa separada y no modifica el corpus ni crea un puntaje One Health."
-          : "Real-case One Health view — this screen uses only domains and relationships adjudicated in the six-document MV Hondius gold-standard corpus. ASM-01 human review is shown as a separate operational layer and does not modify the corpus or create a One Health score."}</PrototypeNote>
+          ? "Vista One Health de caso real — usa únicamente dominios y relaciones adjudicados en los seis documentos del corpus MV Hondius. La revisión humana de ASM-01 se muestra como una decisión separada y no modifica el corpus ni crea un puntaje One Health."
+          : "Real-case One Health view — this screen uses only domains and relationships adjudicated in the six-document MV Hondius corpus. ASM-01 human review is shown as a separate decision and does not modify the corpus or create a One Health score."}</PrototypeNote>
 
         <div className={styles.breadcrumb}><Link href="/demo/threats/hantavirus">{isSpanish ? "Amenazas" : "Threats"}</Link> › MV Hondius › {isSpanish ? "Vista One Health" : "One Health View"}</div>
 
         <div className={styles.pageHead}>
           <div>
             <h1>{isSpanish ? "MV Hondius — convergencia de evidencia One Health" : "MV Hondius — One Health evidence convergence"}</h1>
-            <p className={styles.subtitle}>{isSpanish ? "Evidencia humana · fauna silvestre · genómica · movilidad, incluidos hallazgos negativos, refutados y adjudicación humana." : "Human · Wildlife · Genomic · Mobility evidence, including negative, refuted and human-adjudicated findings."}</p>
+            <p className={styles.subtitle}>{isSpanish ? "Evidencia humana · fauna silvestre · genómica · movilidad, incluidos hallazgos negativos, refutados y revisión humana." : "Human · Wildlife · Genomic · Mobility evidence, including negative, refuted and human-reviewed findings."}</p>
           </div>
           <div className={styles.actions}><Link className={styles.button} href="/demo/threats/hantavirus">← {isSpanish ? "Explorador de amenazas" : "Threat Explorer"}</Link><Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo/signals/asm-01">{isSpanish ? "Abrir señal de fauna →" : "Open wildlife signal →"}</Link></div>
         </div>
@@ -133,8 +133,8 @@ export default function OneHealthConvergencePage() {
         <section className={styles.card} style={{ marginTop: 14 }}>
           <div className={styles.pageHead} style={{ marginBottom: 0 }}>
             <div>
-              <h2>{isSpanish ? "Adjudicación humana dentro de la convergencia" : "Human adjudication within convergence"}</h2>
-              <p className={`${styles.small} ${styles.muted}`} style={{ marginBottom: 0 }}>{isSpanish ? "La revisión de ASM-01 modifica su estado operativo, no el significado histórico del documento de fauna ni la evidencia causal negativa independiente." : "ASM-01 review changes its operational state, not the historical meaning of the wildlife document or the independent negative causal evidence."}</p>
+              <h2>{isSpanish ? "Revisión humana dentro de la convergencia" : "Human review within convergence"}</h2>
+              <p className={`${styles.small} ${styles.muted}`} style={{ marginBottom: 0 }}>{isSpanish ? "La revisión de ASM-01 modifica cómo se utiliza la señal, no el significado histórico del documento de fauna ni la evidencia causal negativa independiente." : "ASM-01 review changes how the signal is used, not the historical meaning of the wildlife document or the independent negative causal evidence."}</p>
             </div>
             <span className={`${styles.pill} ${record ? styles.pillReviewed : styles.pillActive}`}>ASM-01 · {reviewLabel}</span>
           </div>
@@ -166,7 +166,7 @@ export default function OneHealthConvergencePage() {
             <li>{isSpanish ? "Una misma investigación puede contener simultáneamente hallazgos positivos verdaderos y hallazgos negativos verdaderos." : "The same investigation can contain simultaneously true positive findings and true negative findings."}</li>
             <li>{isSpanish ? "La proximidad entre dominios no equivale a causalidad: fauna seropositiva en Ushuaia no estableció la fuente del brote humano." : "Cross-domain proximity does not equal causality: seropositive wildlife in Ushuaia did not establish the source of the human outbreak."}</li>
             <li>{isSpanish ? "La genómica ayuda a discriminar relaciones y evita sobreinterpretar coincidencias geográficas." : "Genomics helps discriminate relatedness and prevents overinterpretation of geographic coincidence."}</li>
-            <li>{isSpanish ? "La adjudicación humana se agrega como una capa operativa separada: confirmar o rechazar ASM-01 no borra el hallazgo serológico ni el claim causal negativo." : "Human adjudication is added as a separate operational layer: confirming or rejecting ASM-01 does not erase the serology finding or the negative causal claim."}</li>
+            <li>{isSpanish ? "La revisión humana se agrega como una decisión separada: confirmar o rechazar ASM-01 no borra el hallazgo serológico ni el claim causal negativo." : "Human review is added as a separate decision: confirming or rejecting ASM-01 does not erase the serology finding or the negative causal claim."}</li>
             <li>{isSpanish ? "OETI debe mostrar la incertidumbre de forma explícita en lugar de forzar cada señal dentro de una única narrativa explicativa." : "OETI should surface uncertainty explicitly instead of forcing every signal into a single explanatory narrative."}</li>
           </ul>
         </section>
