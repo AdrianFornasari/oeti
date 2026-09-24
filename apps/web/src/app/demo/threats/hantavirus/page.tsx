@@ -41,30 +41,30 @@ export default function HantavirusThreatPage() {
 
   const reviewExplanation = !record
     ? (isSpanish
-      ? "ASM-01 fue ensamblada automáticamente desde el claim c1 y todavía no tiene una decisión humana registrada en esta demo."
-      : "ASM-01 was automatically assembled from claim c1 and does not yet have a human decision recorded in this demo.")
+      ? "ASM-01 fue generada automáticamente a partir del claim c1 y todavía no tiene una decisión humana registrada en esta demo."
+      : "ASM-01 was automatically generated from claim c1 and does not yet have a human decision recorded in this demo.")
     : record.decision === "confirm"
       ? (isSpanish
         ? "El analista confirmó ASM-01 como señal respaldada por la evidencia citada. Esto no cambia la evidencia causal negativa independiente que descarta a los roedores analizados como fuente del brote."
         : "The analyst confirmed ASM-01 as supported by the cited evidence. This does not change the independent negative causal evidence ruling out the analysed rodents as the outbreak source.")
       : record.decision === "correct"
         ? (isSpanish
-          ? "El analista corrigió ASM-01 mediante una capa separada y auditable. El documento fuente, el claim original y el corpus gold standard permanecen sin cambios."
-          : "The analyst corrected ASM-01 through a separate auditable layer. The source document, original claim and gold-standard corpus remain unchanged.")
+          ? "El analista corrigió ASM-01 mediante una capa separada y auditable. El documento fuente, el claim original y el corpus adjudicado permanecen sin cambios."
+          : "The analyst corrected ASM-01 through a separate auditable layer. The source document, original claim and adjudicated corpus remain unchanged.")
         : (isSpanish
-          ? "El analista rechazó ASM-01 para uso operativo aceptado. El documento del 29 de junio y sus claims permanecen en el corpus para trazabilidad y evaluación."
-          : "The analyst rejected ASM-01 for accepted operational use. The 29 June document and its claims remain in the corpus for traceability and evaluation.");
+          ? "El analista rechazó ASM-01 para uso operativo. El documento del 29 de junio y sus claims permanecen en el corpus para trazabilidad y evaluación."
+          : "The analyst rejected ASM-01 for operational use. The 29 June document and its claims remain in the corpus for traceability and evaluation.");
 
   return (
     <DemoShell active="threats">
       <div className={styles.content}>
         <PrototypeNote>{isSpanish
-          ? "Demo de caso real para sponsor — las seis entradas provienen del corpus gold standard adjudicado del MV Hondius. La revisión humana de ASM-01 se muestra como una capa operativa separada almacenada solo en este navegador; nunca modifica el documento gold standard."
-          : "Real-case sponsor demo — all six entries come from the adjudicated MV Hondius gold-standard corpus. ASM-01 human review is displayed as a separate operational layer stored only in this browser; it never modifies the gold-standard document."}</PrototypeNote>
+          ? "Caso real MV Hondius — las seis entradas provienen del corpus adjudicado de OETI. La revisión humana de ASM-01 se conserva como una decisión separada, guardada solo en este navegador para la demo, y no modifica los documentos de referencia."
+          : "Real MV Hondius case — all six entries come from the adjudicated OETI corpus. ASM-01 human review is preserved as a separate decision stored only in this browser for the demo and does not modify the reference documents."}</PrototypeNote>
 
         <div className={styles.breadcrumb}><Link href="/demo">Dashboard</Link> › {isSpanish ? "Amenazas" : "Threats"} › MV Hondius</div>
         <div className={styles.pageHead}>
-          <div><h1>{isSpanish ? "Investigación de hantavirus MV Hondius" : "MV Hondius hantavirus investigation"} <span className={`${styles.pill} ${styles.pillReviewed}`}>{isSpanish ? "Corpus adjudicado" : "Adjudicated corpus"}</span></h1><p className={styles.subtitle}>{isSpanish ? `Caso ${mvHondiusBenchmark.caseCode} · Benchmark gold standard v${mvHondiusBenchmark.benchmarkVersion} · Seis documentos de fuentes oficiales` : `Case ${mvHondiusBenchmark.caseCode} · Gold-standard benchmark v${mvHondiusBenchmark.benchmarkVersion} · Six official-source documents`}</p></div>
+          <div><h1>{isSpanish ? "Investigación de hantavirus MV Hondius" : "MV Hondius hantavirus investigation"} <span className={`${styles.pill} ${styles.pillReviewed}`}>{isSpanish ? "Caso real · corpus adjudicado" : "Real case · adjudicated corpus"}</span></h1><p className={styles.subtitle}>{isSpanish ? `Caso ${mvHondiusBenchmark.caseCode} · Benchmark v${mvHondiusBenchmark.benchmarkVersion} · Seis documentos de fuentes oficiales` : `Case ${mvHondiusBenchmark.caseCode} · Benchmark v${mvHondiusBenchmark.benchmarkVersion} · Six official-source documents`}</p></div>
           <div className={styles.actions}><Link className={styles.button} href="/demo">← Dashboard</Link><Link className={styles.button} href="/demo/threats/hantavirus/one-health">{isSpanish ? "Vista One Health" : "One Health view"}</Link><Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo/signals/asm-01">{isSpanish ? "Abrir señal de fauna →" : "Open wildlife signal →"}</Link></div>
         </div>
 
@@ -77,8 +77,8 @@ export default function HantavirusThreatPage() {
 
         <div className={styles.dashboardMain}>
           <section className={styles.card}>
-            <h2>{isSpanish ? "Cronología de documentos gold standard" : "Gold-standard document timeline"}</h2>
-            <p className={`${styles.small} ${styles.muted}`}>{isSpanish ? "La secuencia sigue la publicación documental. La adjudicación humana de ASM-01 aparece como metadato de la señal asociada, no como modificación del documento." : "The sequence follows document publication. ASM-01 human adjudication appears as metadata on the associated signal, not as a modification of the document."}</p>
+            <h2>{isSpanish ? "Cronología de documentos adjudicados" : "Adjudicated document timeline"}</h2>
+            <p className={`${styles.small} ${styles.muted}`}>{isSpanish ? "La secuencia sigue la fecha de publicación. La decisión humana sobre ASM-01 se muestra junto a la señal asociada, sin alterar el documento original." : "The sequence follows publication date. The human decision on ASM-01 is shown alongside the associated signal without altering the original document."}</p>
             <div className={styles.timeline}>
               {mvHondiusBenchmark.documents.map((doc, index) => {
                 const es = getEsDoc(doc.id);
@@ -119,7 +119,7 @@ export default function HantavirusThreatPage() {
             {selectedHasAsm01 && (
               <div className={styles.detailPanel}>
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginBottom: 8 }}>
-                  <strong>{isSpanish ? "Capa operativa de ASM-01" : "ASM-01 operational layer"}</strong>
+                  <strong>{isSpanish ? "Revisión humana de ASM-01" : "ASM-01 human review"}</strong>
                   <span className={`${styles.pill} ${record ? styles.pillReviewed : styles.pillActive}`}>{reviewLabel}</span>
                 </div>
                 {reviewExplanation}
@@ -144,7 +144,7 @@ export default function HantavirusThreatPage() {
         </div>
 
         <div className={styles.dashboardMain}>
-          <section className={styles.card}><h2>{isSpanish ? "Resumen de amenaza — corpus adjudicado" : "Threat summary — adjudicated corpus"}</h2><div className={styles.summaryList}>
+          <section className={styles.card}><h2>{isSpanish ? "Resumen del caso — corpus adjudicado" : "Case summary — adjudicated corpus"}</h2><div className={styles.summaryList}>
             <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Caso" : "Case"}</div><div>{mvHondiusBenchmark.caseCode}</div></div>
             <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Brote humano" : "Human outbreak"}</div><div>{isSpanish ? "Hantavirus por virus Andes a bordo del MV Hondius" : "Andes-virus hantavirus aboard MV Hondius"}</div></div>
             <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Pico identificado" : "Peak identified count"}</div><div>{isSpanish ? "11 casos al 13 de mayo: 8 confirmados, 2 probables, 1 inconcluso" : "11 cases by 13 May: 8 confirmed, 2 probable, 1 inconclusive"}</div></div>
@@ -152,11 +152,11 @@ export default function HantavirusThreatPage() {
             <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Evidencia de fauna" : "Wildlife evidence"}</div><div>{isSpanish ? "Hantavirus detectado en Abrothrix de Ushuaia, pero los animales analizados fueron descartados como fuente del brote" : "Hantavirus detected in Abrothrix rodents in Ushuaia, but the analysed rodents were ruled out as the outbreak source"}</div></div>
             <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Familias de fuentes" : "Source families"}</div><div>{sourceFamilies}: Ministerio de Salud / BEN and ANLIS-Malbrán</div></div>
           </div></section>
-          <section className={styles.card}><h2>{isSpanish ? "Principio analítico OETI" : "OETI analytical principle"}</h2><div className={styles.detailPanel}>{isSpanish ? "La adjudicación de una señal cambia su uso operativo, no reescribe la evidencia histórica. Hallazgos positivos, negativos, incertidumbre e hipótesis refutadas permanecen trazables." : "Signal adjudication changes operational use; it does not rewrite historical evidence. Positive findings, negative findings, uncertainty and refuted hypotheses remain traceable."}</div></section>
+          <section className={styles.card}><h2>{isSpanish ? "Principio analítico OETI" : "OETI analytical principle"}</h2><div className={styles.detailPanel}>{isSpanish ? "La decisión del analista cambia cómo se utiliza una señal, pero no reescribe la evidencia histórica. Hallazgos positivos, negativos, incertidumbre e hipótesis refutadas permanecen trazables." : "The analyst decision changes how a signal is used but does not rewrite historical evidence. Positive findings, negative findings, uncertainty and refuted hypotheses remain traceable."}</div></section>
         </div>
 
         <section className={`${styles.card} ${styles.tableWrap}`}>
-          <h2>{isSpanish ? "Resumen del corpus" : "Corpus overview"}</h2>
+          <h2>{isSpanish ? "Resumen de documentos del caso" : "Case document overview"}</h2>
           <table className={styles.table}>
             <thead><tr><th>{isSpanish ? "Fecha" : "Document date"}</th><th>{isSpanish ? "Documento" : "Document"}</th><th>{isSpanish ? "Fuente" : "Source"}</th><th>{isSpanish ? "Rol de evidencia" : "Evidence role"}</th><th>{isSpanish ? "Contexto geográfico" : "Geographic context"}</th><th>{isSpanish ? "Señal revisada" : "Reviewed signal"}</th></tr></thead>
             <tbody>{mvHondiusBenchmark.documents.map((doc) => { const es = getEsDoc(doc.id); const isAsm01Document = doc.id === ASM01_DOCUMENT_ID; return <tr key={doc.id}><td>{doc.date}</td><td>{isSpanish ? es.label : doc.label}</td><td>{doc.sourceLabel}</td><td>{isSpanish ? es.relation : doc.relation}</td><td>{doc.location}</td><td>{isAsm01Document ? <span className={`${styles.pill} ${record ? styles.pillReviewed : styles.pillActive}`}>{reviewLabel}</span> : "—"}</td></tr>; })}</tbody>
