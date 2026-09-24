@@ -21,9 +21,19 @@ const historicalPartial = {
 
 const pct = (value: number) => `${(value * 100).toFixed(1)}%`;
 
+const documentLabelsEs: Record<string, string> = {
+  "Initial notification and national monitoring — 04 May 2026": "Notificación inicial y monitoreo nacional — 04 may 2026",
+  "BEN SE17 — 12 May 2026": "BEN SE17 — 12 may 2026",
+  "BEN SE18 — 19 May 2026": "BEN SE18 — 19 may 2026",
+  "BEN SE19 — 26 May 2026": "BEN SE19 — 26 may 2026",
+  "Tierra del Fuego rodents — 29 Jun 2026": "Roedores Tierra del Fuego — 29 jun 2026",
+  "Mendoza rodents — 08 Jul 2026": "Roedores Mendoza — 08 jul 2026",
+};
+
 export default function SystemEvaluationPage() {
   const { isSpanish } = useDemoPreferences();
   const micro = current.aggregate.microSignalDetection;
+  const documentLabel = (label: string) => isSpanish ? (documentLabelsEs[label] ?? label) : label;
 
   const thresholdRows = [
     [isSpanish ? "F1 medio de señales" : "Mean signal F1", current.aggregate.meanSignalF1, current.releaseGate.thresholds.meanSignalF1],
@@ -61,8 +71,8 @@ export default function SystemEvaluationPage() {
             <h2>{isSpanish ? "Gate de release — evaluación completa de 6 documentos" : "Release gate — full 6-document evaluation"}</h2>
             <div className={styles.summaryList}>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Corpus completo" : "Corpus complete"}</div><div><span className={`${styles.pill} ${styles.pillReviewed}`}>{isSpanish ? "Sí · 6/6" : "Yes · 6/6"}</span></div></div>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Métricas aprobadas" : "Metrics pass"}</div><div><span className={`${styles.pill} ${styles.pillHigh}`}>{isSpanish ? "No" : "No"}</span></div></div>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Event matcher listo" : "Event matcher ready"}</div><div><span className={`${styles.pill} ${styles.pillHigh}`}>{isSpanish ? "No" : "No"}</span></div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Métricas aprobadas" : "Metrics pass"}</div><div><span className={`${styles.pill} ${styles.pillHigh}`}>No</span></div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Event matcher listo" : "Event matcher ready"}</div><div><span className={`${styles.pill} ${styles.pillHigh}`}>No</span></div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Exactitud de rol" : "Signal-role accuracy"}</div><div>{pct(current.aggregate.meanSignalRoleAccuracy)}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Exactitud de tipo" : "Signal-type accuracy"}</div><div>{pct(current.aggregate.meanSignalTypeAccuracy)}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "F1 exacto de evidencia" : "Evidence exact F1"}</div><div>{current.aggregate.meanEvidenceExactF1.toFixed(3)}</div></div>
@@ -109,7 +119,7 @@ export default function SystemEvaluationPage() {
 
         <section className={`${styles.card} ${styles.tableWrap}`}>
           <h2>{isSpanish ? "Detección de señales por documento" : "Signal detection by document"}</h2>
-          <table className={styles.table}><thead><tr><th>{isSpanish ? "Documento" : "Document"}</th><th>TP</th><th>FP</th><th>FN</th><th>Signal F1</th></tr></thead><tbody>{current.documents.map((doc) => <tr key={doc.label}><td><strong>{doc.label}</strong></td><td>{doc.tp}</td><td>{doc.fp}</td><td>{doc.fn}</td><td><strong>{doc.f1.toFixed(3)}</strong></td></tr>)}</tbody></table>
+          <table className={styles.table}><thead><tr><th>{isSpanish ? "Documento" : "Document"}</th><th>TP</th><th>FP</th><th>FN</th><th>Signal F1</th></tr></thead><tbody>{current.documents.map((doc) => <tr key={doc.label}><td><strong>{documentLabel(doc.label)}</strong></td><td>{doc.tp}</td><td>{doc.fp}</td><td>{doc.fn}</td><td><strong>{doc.f1.toFixed(3)}</strong></td></tr>)}</tbody></table>
         </section>
 
         <div className={styles.dashboardMain}>
