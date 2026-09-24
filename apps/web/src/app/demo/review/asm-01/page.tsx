@@ -25,63 +25,63 @@ export default function AnalystReviewPage() {
     confirm: isSpanish ? {
       title: "Confirmar señal",
       status: "analyst_confirmed" as const,
-      summary: "La señal ensamblada se acepta como respaldada por el claim atómico citado.",
+      summary: "La señal se acepta como respaldada por la evidencia citada.",
       effects: [
         "Mantener el claim atómico c1 sin cambios.",
-        "Mantener ASM-01 en el conjunto operativo de señales.",
-        "Registrar la confirmación del analista en el estado demo.",
+        "Mantener ASM-01 como señal aceptada.",
+        "Registrar la confirmación humana como una capa separada.",
         "No inferir causalidad con el brote: el claim c4 sigue refutando ese vínculo para los animales analizados.",
       ],
     } : {
       title: "Confirm signal",
       status: "analyst_confirmed" as const,
-      summary: "The assembled signal is accepted as supported by the cited atomic claim.",
+      summary: "The signal is accepted as supported by the cited evidence.",
       effects: [
         "Keep atomic claim c1 unchanged.",
-        "Keep ASM-01 in the operational signal set.",
-        "Record analyst confirmation in demo state.",
+        "Keep ASM-01 as an accepted signal.",
+        "Record human confirmation as a separate layer.",
         "Do not infer outbreak causation; claim c4 still refutes that link for the analysed rodents.",
       ],
     },
     correct: isSpanish ? {
       title: "Corregir señal",
       status: "analyst_corrected" as const,
-      summary: "La evidencia de origen se conserva y la corrección del analista se aplica como un override auditable.",
+      summary: "La evidencia de origen se conserva y la corrección del analista queda registrada de forma auditable.",
       effects: [
         "Preservar el claim atómico original y el texto fuente.",
         "Guardar la corrección separada de la extracción automática.",
-        "Marcar conceptualmente la señal para reensamblado / actualización downstream.",
+        "Actualizar la representación operativa de la señal en las vistas posteriores.",
         "Mantener intacta la evidencia causal negativa independiente c4.",
       ],
     } : {
       title: "Correct signal",
       status: "analyst_corrected" as const,
-      summary: "The source evidence is retained while analyst-entered corrections are applied as an auditable override.",
+      summary: "The source evidence is retained while the analyst correction is recorded as an auditable layer.",
       effects: [
         "Preserve the original atomic claim and source text.",
         "Store the analyst correction separately from the machine extraction.",
-        "Conceptually flag the signal for reassembly / downstream refresh.",
+        "Update the operational representation shown in later views.",
         "Keep independent negative causal evidence c4 intact.",
       ],
     },
     reject: isSpanish ? {
       title: "Rechazar señal",
       status: "analyst_rejected" as const,
-      summary: "La fuente y el claim extraído siguen siendo trazables, pero la señal no se usaría como inteligencia operativa aceptada.",
+      summary: "La fuente y el claim siguen siendo trazables, pero la señal deja de considerarse inteligencia operativa aceptada.",
       effects: [
-        "Preservar documento fuente y extracción original para auditoría.",
+        "Preservar el documento fuente y la extracción original para auditoría.",
         "Marcar ASM-01 como rechazada por un analista.",
-        "Excluirla de las vistas demo de inteligencia aceptada.",
+        "Excluirla de las vistas de inteligencia aceptada.",
         "No eliminar claims relacionados ni señales independientes del mismo documento.",
       ],
     } : {
       title: "Reject signal",
       status: "analyst_rejected" as const,
-      summary: "The source and extracted claim remain traceable, but this signal would not be used as accepted operational intelligence.",
+      summary: "The source and extracted claim remain traceable, but the signal is no longer treated as accepted operational intelligence.",
       effects: [
         "Preserve the source document and original extraction for auditability.",
         "Mark ASM-01 as analyst rejected.",
-        "Exclude it from demo accepted-intelligence views.",
+        "Exclude it from accepted-intelligence views.",
         "Do not delete related claims or independent signals from the same document.",
       ],
     },
@@ -116,8 +116,8 @@ export default function AnalystReviewPage() {
       <div className={styles.content}>
         <PrototypeNote>
           {isSpanish
-            ? "Demo para sponsor — la decisión del analista se conserva únicamente en localStorage de este navegador para demostrar el flujo máquina → revisión humana. No se escribe en producción ni se modifica el gold standard."
-            : "Sponsor demo — the analyst decision is stored only in this browser localStorage to demonstrate the machine → human-review flow. No production write occurs and the gold standard is not modified."}
+            ? "Demo para sponsor — la decisión del analista se guarda solo en este navegador para poder demostrar el flujo de revisión humana. No modifica el sistema productivo ni el gold standard."
+            : "Sponsor demo — the analyst decision is stored only in this browser to demonstrate the human-review workflow. It does not modify the production system or the gold standard."}
         </PrototypeNote>
 
         <div className={styles.breadcrumb}>
@@ -127,7 +127,7 @@ export default function AnalystReviewPage() {
         <div className={styles.pageHead}>
           <div>
             <h1>{isSpanish ? "Revisión del analista" : "Analyst Review"}</h1>
-            <p className={styles.subtitle}>{isSpanish ? "La máquina propone; la evidencia se conserva; el analista adjudica." : "The machine proposes; evidence is preserved; the analyst adjudicates."}</p>
+            <p className={styles.subtitle}>{isSpanish ? "La máquina propone; la evidencia se conserva; el analista decide." : "The machine proposes; evidence is preserved; the analyst decides."}</p>
           </div>
           <div className={styles.actions}>
             <Link className={styles.button} href="/demo/evidence/asm-01">← {isSpanish ? "Evidencia" : "Evidence"}</Link>
@@ -138,9 +138,9 @@ export default function AnalystReviewPage() {
         <section className={styles.card}>
           <div className={styles.pageHead} style={{ marginBottom: 0 }}>
             <div>
-              <div className={styles.small}>{isSpanish ? "OBJETIVO DE REVISIÓN · SEÑAL" : "REVIEW TARGET · SIGNAL"} {signal.shortId}</div>
+              <div className={styles.small}>{isSpanish ? "SEÑAL EN REVISIÓN" : "SIGNAL UNDER REVIEW"} · {signal.shortId}</div>
               <h2 style={{ marginTop: 4 }}>{isSpanish ? <>5 roedores <em>Abrothrix</em> con anticuerpos específicos contra hantavirus</> : <>5 <em>Abrothrix</em> rodents with hantavirus-specific antibodies</>}</h2>
-              <p className={`${styles.small} ${styles.muted}`}>{isSpanish ? "Ensamblada determinísticamente desde el claim atómico c1." : "Deterministically assembled from atomic claim c1."}</p>
+              <p className={`${styles.small} ${styles.muted}`}>{isSpanish ? "Generada automáticamente a partir del claim atómico c1." : "Automatically generated from atomic claim c1."}</p>
             </div>
             <div>
               <span className={`${styles.pill} ${styles.pillAnimal}`}>{isSpanish ? "Fauna silvestre" : "Wildlife"}</span>{" "}
@@ -153,7 +153,7 @@ export default function AnalystReviewPage() {
 
         <div className={styles.threatLayout} style={{ marginTop: 14 }}>
           <section className={styles.card}>
-            <h2>{isSpanish ? "Propuesta de la máquina" : "Machine proposal"}</h2>
+            <h2>{isSpanish ? "Propuesta automática" : "Machine proposal"}</h2>
             <div className={styles.summaryList}>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Resumen" : "Summary"}</div><div>{isSpanish ? "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego)." : signal.summary}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Tipo" : "Type"}</div><div>{signal.signalType}</div></div>
@@ -173,12 +173,12 @@ export default function AnalystReviewPage() {
           </section>
 
           <aside className={styles.card}>
-            <h2>{isSpanish ? "Estado humano actual" : "Current human state"}</h2>
+            <h2>{isSpanish ? "Estado de revisión" : "Review status"}</h2>
             {record ? (
               <div className={styles.summaryList}>
                 <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Decisión" : "Decision"}</div><div><strong>{record.status}</strong></div></div>
-                <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Backend" : "Backend"}</div><div>{isSpanish ? "No escrito" : "Not written"}</div></div>
-                <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Persistencia" : "Persistence"}</div><div>localStorage</div></div>
+                <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Alcance" : "Scope"}</div><div>{isSpanish ? "Solo esta demo" : "This demo only"}</div></div>
+                <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Guardado" : "Stored"}</div><div>{isSpanish ? "En este navegador" : "In this browser"}</div></div>
               </div>
             ) : <div className={styles.detailPanel}>{isSpanish ? "Aún no existe una decisión humana en este navegador." : "No human decision exists in this browser yet."}</div>}
           </aside>
@@ -209,16 +209,16 @@ export default function AnalystReviewPage() {
             <textarea id="review-comment" value={comment} onChange={(e) => setComment(e.target.value)} placeholder={isSpanish ? "Justificación o aclaración opcional…" : "Optional rationale or clarification…"} style={{ width: "100%", minHeight: 80, marginTop: 6, borderRadius: 9, padding: 10, font: "inherit" }} />
 
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
-              <button disabled={!decision} className={`${styles.button} ${styles.buttonPrimary}`} style={{ opacity: decision ? 1 : .5 }} onClick={applyDecision}>{isSpanish ? "Aplicar decisión demo" : "Apply demo decision"}</button>
+              <button disabled={!decision} className={`${styles.button} ${styles.buttonPrimary}`} style={{ opacity: decision ? 1 : .5 }} onClick={applyDecision}>{isSpanish ? "Aplicar decisión" : "Apply decision"}</button>
               {record && <button className={styles.button} onClick={() => { clearRecord(); setSubmitted(false); }}>{isSpanish ? "Restablecer estado demo" : "Reset demo state"}</button>}
             </div>
           </section>
 
           <section className={styles.card}>
-            <h2>{isSpanish ? "Impacto downstream" : "Downstream impact"}</h2>
+            <h2>{isSpanish ? "Consecuencias de la decisión" : "Decision consequences"}</h2>
             {!selectedDecision && <div className={styles.detailPanel}>{isSpanish ? "Seleccioná una decisión para previsualizar sus consecuencias." : "Select a decision to preview its consequences."}</div>}
             {selectedDecision && <><div className={styles.detailPanel}><strong>{selectedDecision.title}</strong><br />{selectedDecision.summary}</div><ol className={styles.insights}>{selectedDecision.effects.map((effect) => <li key={effect}>{effect}</li>)}</ol></>}
-            {submitted && record && <div className={styles.detailPanel}><strong>{isSpanish ? "Decisión guardada en el navegador" : "Decision saved in browser"}</strong><br />{isSpanish ? "Volvé a Signal Detail para ver cómo cambia el estado operativo mostrado por la demo." : "Return to Signal Detail to see how the demo's displayed operational state changes."}</div>}
+            {submitted && record && <div className={styles.detailPanel}><strong>{isSpanish ? "Decisión aplicada en la demo" : "Decision applied in the demo"}</strong><br />{isSpanish ? "Volvé a la señal para ver cómo cambia su estado operativo en las distintas pantallas." : "Return to the signal to see how its operational state changes across the demo."}</div>}
           </section>
         </div>
       </div>
