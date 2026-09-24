@@ -47,6 +47,10 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
           ))}
         </nav>
         <div className={styles.sidebarFooter}>
+          <Link href="/demo/presentation" style={{ display: "inline-block", marginBottom: 10, fontWeight: 700 }}>
+            {isSpanish ? "▷ Modo presentación" : "▷ Presentation mode"}
+          </Link>
+          <br />
           {isSpanish ? <>Rama demo sponsor<br />Datos conceptuales</> : <>Sponsor demo branch<br />Concept data</>}
         </div>
       </aside>
