@@ -7,6 +7,7 @@ import json
 
 from .scoring import DEFAULT_MATCH_THRESHOLD, evaluate_payloads as evaluate_payloads_v045
 from .scoring_v046 import evaluate_payloads as evaluate_payloads_v046
+from .scoring_v047 import evaluate_payloads as evaluate_payloads_v047
 from ..extraction.schema import load_schema, validate_extraction
 
 
@@ -19,7 +20,11 @@ DEFAULT_RELEASE_THRESHOLDS = {
 
 
 def _select_evaluator(benchmark_version: str | None) -> Callable[..., dict[str, Any]]:
-    return evaluate_payloads_v046 if benchmark_version == "0.4.6" else evaluate_payloads_v045
+    if benchmark_version == "0.4.7":
+        return evaluate_payloads_v047
+    if benchmark_version == "0.4.6":
+        return evaluate_payloads_v046
+    return evaluate_payloads_v045
 
 
 def evaluate_file(
