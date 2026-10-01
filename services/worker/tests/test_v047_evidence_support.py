@@ -464,3 +464,17 @@ def test_v047_related_causal_inference_is_not_automatic_evidence_equivalence():
 
     assert score == 0.0
     assert matches == []
+
+def test_v047_reassembly_router_preserves_v046_assembler():
+    from onehealth_worker.evaluation import reassembly
+    from onehealth_worker.extraction.assembly_v046 import (
+        assemble_claims_payload as assemble_claims_payload_v046,
+    )
+
+    assembler, architecture = reassembly._select_assembler("0.4.7")
+
+    assert assembler is assemble_claims_payload_v046
+    assert (
+        architecture
+        == "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.6"
+    )

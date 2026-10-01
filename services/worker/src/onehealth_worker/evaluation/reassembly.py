@@ -16,10 +16,19 @@ from ..extraction.schema import (
 )
 
 
-def _select_assembler(benchmark_version: str | None) -> tuple[Callable[..., dict[str, Any]], str]:
-    if benchmark_version == "0.4.6":
-        return assemble_claims_payload_v046, "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.6"
-    return assemble_claims_payload_v045, "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.5"
+def _select_assembler(
+    benchmark_version: str | None,
+) -> tuple[Callable[..., dict[str, Any]], str]:
+    if benchmark_version in {"0.4.6", "0.4.7"}:
+        return (
+            assemble_claims_payload_v046,
+            "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.6",
+        )
+
+    return (
+        assemble_claims_payload_v045,
+        "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.5",
+    )
 
 
 def reassemble_evaluation_corpus(*, manifest_path: Path, force: bool = False) -> dict[str, Any]:
