@@ -30,7 +30,7 @@
           "verbatim": "roedores silvestres capturados en zonas aledañas a Malargüe, Mendoza",
           "canonical_name": null,
           "host_type": "wildlife",
-          "confidence": 0.72
+          "confidence": 0.76
         }
       ],
       "locations": [
@@ -41,107 +41,11 @@
           "admin2": null,
           "locality": "Malargüe",
           "region": null,
-          "precision": "admin2",
-          "confidence": 0.74,
+          "precision": "locality",
+          "confidence": 0.8,
           "role": "sampling_location"
         }
       ],
-      "event_date": {
-        "start": null,
-        "end": null,
-        "precision": "unknown"
-      },
-      "reference_period": {
-        "start": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
-        },
-        "end": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
-        },
-        "period_type": "unknown",
-        "verbatim": null
-      },
-      "metrics": [
-        {
-          "name": "serology positive (antibodies specific against hantavirus disease)",
-          "value_numeric": 0,
-          "value_text": null,
-          "unit": "specimens",
-          "as_of_date": null,
-          "as_of_year": null,
-          "as_of_month": null,
-          "as_of_precision": "unknown",
-          "as_of_verbatim": null
-        }
-      ],
-      "transmission": {
-        "human_to_human": "unknown",
-        "animal_to_human": "unknown",
-        "vector_borne": "unknown"
-      },
-      "genomics": {
-        "sequence_reported": false,
-        "lineage": null,
-        "clade": null,
-        "accession": null,
-        "test_result": "not_applicable"
-      },
-      "verification_status": "reported",
-      "signal_summary": "Serología en roedores silvestres capturados cerca de Malargüe (Mendoza) no detectó anticuerpos específicos.",
-      "evidence": [
-        {
-          "type": "quote",
-          "text": "Los estudios serológicos determinaron que los ejemplares no presentaron anticuerpos específicos contra la enfermedad.",
-          "location_in_document": null,
-          "page_number": null
-        }
-      ],
-      "extraction_confidence": 0.74,
-      "diagnostics": {
-        "test_reported": true,
-        "test_type": "serología",
-        "method": null,
-        "target": "anticuerpos específicos",
-        "specimen": null,
-        "result": "negative"
-      }
-    },
-    {
-      "local_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-02",
-      "domains": [
-        "wildlife"
-      ],
-      "signal_role": "primary_event",
-      "signal_type": "intervention",
-      "disease": {
-        "verbatim": "hantavirus",
-        "canonical_name": "Hantavirus disease",
-        "normalization_status": "resolved",
-        "confidence": 0.82
-      },
-      "pathogen": {
-        "verbatim": null,
-        "canonical_name": null,
-        "normalization_status": "unresolved",
-        "confidence": 0.3
-      },
-      "hosts": [
-        {
-          "verbatim": null,
-          "canonical_name": null,
-          "host_type": "wildlife",
-          "confidence": 0.4
-        }
-      ],
-      "locations": [],
       "event_date": {
         "start": null,
         "end": null,
@@ -153,31 +57,19 @@
           "year": 2026,
           "month": 6,
           "precision": "day",
-          "verbatim": "8 de junio"
+          "verbatim": "entre el 8 y el 12 de junio"
         },
         "end": {
           "date": "2026-06-12",
           "year": 2026,
           "month": 6,
           "precision": "day",
-          "verbatim": "12 de junio"
+          "verbatim": "entre el 8 y el 12 de junio"
         },
         "period_type": "observation_window",
-        "verbatim": "entre el 8 y el 12 de junio"
+        "verbatim": "Los operativos sanitarios se llevaron a cabo entre el 8 y el 12 de junio."
       },
-      "metrics": [
-        {
-          "name": "traps installed",
-          "value_numeric": 250,
-          "value_text": "más de 250",
-          "unit": "trampas",
-          "as_of_date": null,
-          "as_of_year": null,
-          "as_of_month": null,
-          "as_of_precision": "unknown",
-          "as_of_verbatim": null
-        }
-      ],
+      "metrics": [],
       "transmission": {
         "human_to_human": "unknown",
         "animal_to_human": "unknown",
@@ -190,34 +82,28 @@
         "accession": null,
         "test_result": "not_applicable"
       },
-      "verification_status": "reported",
-      "signal_summary": "Durante el operativo de campo se instalaron más de 250 trampas (8-12 de junio).",
+      "verification_status": "confirmed",
+      "signal_summary": "Serología en roedores silvestres capturados cerca de Malargüe: no presentaron anticuerpos específicos (resultado negativo).",
       "evidence": [
         {
-          "type": "quote",
-          "text": "Los operativos sanitarios se llevaron a cabo entre el 8 y el 12 de junio.",
-          "location_in_document": null,
-          "page_number": null
-        },
-        {
-          "type": "quote",
-          "text": "Las acciones incluyeron la instalación de más de 250 trampas bajo estrictos protocolos de bioseguridad.",
+          "type": "text",
+          "text": "Los estudios serológicos determinaron que los ejemplares no presentaron anticuerpos específicos contra la enfermedad.",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.66,
+      "extraction_confidence": 0.78,
       "diagnostics": {
-        "test_reported": false,
-        "test_type": null,
+        "test_reported": true,
+        "test_type": "serología",
         "method": null,
-        "target": null,
+        "target": "anticuerpos específicos",
         "specimen": null,
-        "result": "unknown"
+        "result": "negative"
       }
     },
     {
-      "local_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-03",
+      "local_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-02",
       "domains": [
         "wildlife"
       ],
@@ -240,10 +126,28 @@
           "verbatim": "Oligoryzomys longicaudatus",
           "canonical_name": null,
           "host_type": "wildlife",
-          "confidence": 0.83
+          "confidence": 0.86
+        },
+        {
+          "verbatim": "roedores de otras especies, entre ellas Abrothrix olivacea",
+          "canonical_name": null,
+          "host_type": "wildlife",
+          "confidence": 0.7
         }
       ],
-      "locations": [],
+      "locations": [
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.2,
+          "role": "sampling_location"
+        }
+      ],
       "event_date": {
         "start": null,
         "end": null,
@@ -251,28 +155,135 @@
       },
       "reference_period": {
         "start": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
+          "date": "2026-06-08",
+          "year": 2026,
+          "month": 6,
+          "precision": "day",
+          "verbatim": "entre el 8 y el 12 de junio"
         },
         "end": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
+          "date": "2026-06-12",
+          "year": 2026,
+          "month": 6,
+          "precision": "day",
+          "verbatim": "entre el 8 y el 12 de junio"
         },
-        "period_type": "unknown",
-        "verbatim": null
+        "period_type": "observation_window",
+        "verbatim": "Los operativos sanitarios se llevaron a cabo entre el 8 y el 12 de junio."
       },
       "metrics": [
         {
-          "name": "identified individuals",
+          "name": "count",
           "value_numeric": 0,
-          "value_text": null,
-          "unit": "ejemplares",
+          "value_text": "no se identificaron ejemplares",
+          "unit": "animals",
+          "as_of_date": null,
+          "as_of_year": null,
+          "as_of_month": null,
+          "as_of_precision": "unknown",
+          "as_of_verbatim": null
+        }
+      ],
+      "transmission": {
+        "human_to_human": "unknown",
+        "animal_to_human": "unknown",
+        "vector_borne": "unknown"
+      },
+      "genomics": {
+        "sequence_reported": false,
+        "lineage": null,
+        "clade": null,
+        "accession": null,
+        "test_result": "not_applicable"
+      },
+      "verification_status": "confirmed",
+      "signal_summary": "En las capturas no se identificaron ejemplares de Oligoryzomys longicaudatus (reservorio mencionado del virus Andes). Se recolectaron roedores de otras especies, incluyendo Abrothrix olivacea, durante el operativo.",
+      "evidence": [
+        {
+          "type": "text",
+          "text": "En las actividades de captura no se identificaron ejemplares de la especie Oligoryzomys longicaudatus , principal reservorio del virus Andes en gran parte de la región patagónica.",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "text",
+          "text": "Sin embargo, se recolectaron roedores de otras especies, entre ellas Abrothrix olivacea , para la que existen antecedentes de infección, aunque se desconoce su posible rol como reservorio de hantavirus.",
+          "location_in_document": null,
+          "page_number": null
+        }
+      ],
+      "extraction_confidence": 0.72,
+      "diagnostics": {
+        "test_reported": false,
+        "test_type": null,
+        "method": null,
+        "target": null,
+        "specimen": null,
+        "result": "unknown"
+      }
+    },
+    {
+      "local_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-03",
+      "domains": [
+        "wildlife"
+      ],
+      "signal_role": "primary_event",
+      "signal_type": "intervention",
+      "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
+      },
+      "pathogen": {
+        "verbatim": null,
+        "canonical_name": null,
+        "normalization_status": "unresolved",
+        "confidence": 0.3
+      },
+      "hosts": [],
+      "locations": [
+        {
+          "country": "Argentina",
+          "country_iso2": "AR",
+          "admin1": "Mendoza",
+          "admin2": null,
+          "locality": "Malargüe",
+          "region": null,
+          "precision": "locality",
+          "confidence": 0.75,
+          "role": "sampling_location"
+        }
+      ],
+      "event_date": {
+        "start": null,
+        "end": null,
+        "precision": "unknown"
+      },
+      "reference_period": {
+        "start": {
+          "date": "2026-06-08",
+          "year": 2026,
+          "month": 6,
+          "precision": "day",
+          "verbatim": "entre el 8 y el 12 de junio"
+        },
+        "end": {
+          "date": "2026-06-12",
+          "year": 2026,
+          "month": 6,
+          "precision": "day",
+          "verbatim": "entre el 8 y el 12 de junio"
+        },
+        "period_type": "observation_window",
+        "verbatim": "Los operativos sanitarios se llevaron a cabo entre el 8 y el 12 de junio."
+      },
+      "metrics": [
+        {
+          "name": "traps_installed",
+          "value_numeric": 250,
+          "value_text": "más de 250 trampas",
+          "unit": "traps",
           "as_of_date": null,
           "as_of_year": null,
           "as_of_month": null,
@@ -293,16 +304,16 @@
         "test_result": "not_applicable"
       },
       "verification_status": "reported",
-      "signal_summary": "En capturas no se identificaron ejemplares de Oligoryzomys longicaudatus (reservorio principal del virus Andes en gran parte de la región patagónica).",
+      "signal_summary": "Se instalaron más de 250 trampas como parte de las acciones del operativo.",
       "evidence": [
         {
-          "type": "quote",
-          "text": "En las actividades de captura no se identificaron ejemplares de la especie Oligoryzomys longicaudatus , principal reservorio del virus Andes en gran parte de la región patagónica.",
+          "type": "text",
+          "text": "Las acciones incluyeron la instalación de más de 250 trampas bajo estrictos protocolos de bioseguridad.",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.77,
+      "extraction_confidence": 0.72,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -315,8 +326,8 @@
     {
       "local_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-04",
       "domains": [
-        "human",
-        "mobility"
+        "mobility",
+        "human"
       ],
       "signal_role": "primary_event",
       "signal_type": "travel_or_mobility",
@@ -348,8 +359,19 @@
           "admin2": null,
           "locality": "Malargüe",
           "region": null,
-          "precision": "admin2",
-          "confidence": 0.75,
+          "precision": "locality",
+          "confidence": 0.8,
+          "role": "travel_history"
+        },
+        {
+          "country": null,
+          "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": null,
+          "precision": "unknown",
+          "confidence": 0.3,
           "role": "travel_history"
         }
       ],
@@ -390,16 +412,16 @@
         "test_result": "not_applicable"
       },
       "verification_status": "reported",
-      "signal_summary": "Pareja de turistas neerlandeses que enfermó había permanecido en Malargüe antes de abordar el crucero MV Hondius.",
+      "signal_summary": "La pareja de turistas neerlandeses que enfermó había permanecido en Malargüe antes de abordar el crucero.",
       "evidence": [
         {
-          "type": "quote",
+          "type": "text",
           "text": "la reconstrucción epidemiológica indicó que la pareja de turistas neerlandeses que enfermó había permanecido allí durante su recorrido por la Argentina antes de abordar el crucero.",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.72,
+      "extraction_confidence": 0.66,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -410,5 +432,7 @@
       }
     }
   ],
-  "warnings": []
+  "warnings": [
+    "Hay menciones de lugares específicos del trabajo de campo (Reserva Natural Humedal Llancanelo, Bardas Blancas, Las Loicas, Reserva Natural Caverna de las Brujas), pero el texto no afirma de forma contigua que el muestreo/captura haya ocurrido en cada uno; por evidencia mínima se omitieron como ubicaciones en los claims."
+  ]
 }

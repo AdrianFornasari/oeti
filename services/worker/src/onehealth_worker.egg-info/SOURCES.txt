@@ -11,8 +11,10 @@ src/onehealth_worker.egg-info/top_level.txt
 src/onehealth_worker/evaluation/__init__.py
 src/onehealth_worker/evaluation/corpus.py
 src/onehealth_worker/evaluation/extraction.py
+src/onehealth_worker/evaluation/reassembly.py
 src/onehealth_worker/evaluation/scoring.py
 src/onehealth_worker/extraction/__init__.py
+src/onehealth_worker/extraction/assembly_v045.py
 src/onehealth_worker/extraction/atomic_claims.py
 src/onehealth_worker/extraction/file_pipeline.py
 src/onehealth_worker/extraction/matching.py
@@ -40,3 +42,4 @@ tests/test_extraction_semantics_v03.py
 tests/test_extraction_semantics_v04.py
 tests/test_html_parser.py
 tests/test_openai_provider.py
+tests/test_v045_evidence_assembler.py

@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: onehealth-worker
-Version: 0.4.4
+Version: 0.4.5
 Summary: Ingestion and structured epidemiological extraction worker for One Health Emerging Threat Intelligence
 Requires-Python: >=3.12
 Requires-Dist: beautifulsoup4<5,>=4.13

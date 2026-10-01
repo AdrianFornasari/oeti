@@ -35,96 +35,7 @@
           "locality": null,
           "region": null,
           "precision": "country",
-          "confidence": 0.6,
-          "role": "current_location"
-        }
-      ],
-      "event_date": {
-        "start": "2026-05-02",
-        "end": null,
-        "precision": "day"
-      },
-      "reference_period": {
-        "start": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
-        },
-        "end": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
-        },
-        "period_type": "unknown",
-        "verbatim": null
-      },
-      "metrics": [],
-      "transmission": {
-        "human_to_human": "unknown",
-        "animal_to_human": "unknown",
-        "vector_borne": "unknown"
-      },
-      "genomics": {
-        "sequence_reported": false,
-        "lineage": null,
-        "clade": null,
-        "accession": null,
-        "test_result": "not_applicable"
-      },
-      "verification_status": "reported",
-      "signal_summary": "Notificación de un conglomerado de enfermedades respiratorias agudas graves a bordo del crucero MV Hondius.",
-      "evidence": [
-        {
-          "type": "text",
-          "text": "El 2 de mayo, el Centro Nacional de Epidemiología de nuestro país recibió la notificación de un conglomerado de enfermedades respiratorias agudas graves a bordo del crucero",
-          "location_in_document": null,
-          "page_number": null
-        }
-      ],
-      "extraction_confidence": 0.74,
-      "diagnostics": {
-        "test_reported": false,
-        "test_type": null,
-        "method": null,
-        "target": null,
-        "specimen": null,
-        "result": "unknown"
-      }
-    },
-    {
-      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-02",
-      "domains": [
-        "human"
-      ],
-      "signal_role": "primary_event",
-      "signal_type": "mortality_event",
-      "disease": {
-        "verbatim": null,
-        "canonical_name": null,
-        "normalization_status": "unresolved",
-        "confidence": 0.3
-      },
-      "pathogen": {
-        "verbatim": null,
-        "canonical_name": null,
-        "normalization_status": "unresolved",
-        "confidence": 0.3
-      },
-      "hosts": [],
-      "locations": [
-        {
-          "country": "Cabo Verde",
-          "country_iso2": null,
-          "admin1": null,
-          "admin2": null,
-          "locality": null,
-          "region": null,
-          "precision": "country",
-          "confidence": 0.6,
+          "confidence": 0.74,
           "role": "current_location"
         }
       ],
@@ -177,16 +88,22 @@
         "test_result": "not_applicable"
       },
       "verification_status": "reported",
-      "signal_summary": "Se reportaron tres fallecimientos en el conglomerado a bordo del crucero.",
+      "signal_summary": "Notificación de un conglomerado de enfermedades respiratorias agudas graves a bordo del crucero MV Hondius. Se informaron tres fallecimientos en el conglomerado a bordo del crucero.",
       "evidence": [
         {
           "type": "text",
-          "text": "incluyendo tres fallecimientos",
+          "text": "El 2 de mayo, el Centro Nacional de Epidemiología de nuestro país recibió la notificación de un conglomerado de enfermedades respiratorias agudas graves a bordo del crucero",
+          "location_in_document": null,
+          "page_number": null
+        },
+        {
+          "type": "text",
+          "text": "El 2 de mayo, el Centro Nacional de Epidemiología de nuestro país recibió la notificación de un conglomerado de enfermedades respiratorias agudas graves a bordo del crucero, incluyendo tres fallecimientos",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.76,
+      "extraction_confidence": 0.735,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -197,17 +114,17 @@
       }
     },
     {
-      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-03",
+      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-02",
       "domains": [
         "human"
       ],
       "signal_role": "primary_event",
-      "signal_type": "laboratory_result",
+      "signal_type": "case_report",
       "disease": {
-        "verbatim": null,
-        "canonical_name": null,
-        "normalization_status": "unresolved",
-        "confidence": 0.3
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
       },
       "pathogen": {
         "verbatim": "hantavirus",
@@ -220,22 +137,10 @@
           "verbatim": "un pasajero",
           "canonical_name": "Homo sapiens",
           "host_type": "human",
-          "confidence": 0.7
+          "confidence": 0.76
         }
       ],
-      "locations": [
-        {
-          "country": "Cabo Verde",
-          "country_iso2": null,
-          "admin1": null,
-          "admin2": null,
-          "locality": null,
-          "region": null,
-          "precision": "country",
-          "confidence": 0.6,
-          "role": "current_location"
-        }
-      ],
+      "locations": [],
       "event_date": {
         "start": "2026-05-02",
         "end": null,
@@ -259,7 +164,19 @@
         "period_type": "unknown",
         "verbatim": null
       },
-      "metrics": [],
+      "metrics": [
+        {
+          "name": "confirmed_cases",
+          "value_numeric": 1,
+          "value_text": "un pasajero",
+          "unit": "persons",
+          "as_of_date": "2026-05-02",
+          "as_of_year": 2026,
+          "as_of_month": 5,
+          "as_of_precision": "day",
+          "as_of_verbatim": null
+        }
+      ],
       "transmission": {
         "human_to_human": "unknown",
         "animal_to_human": "unknown",
@@ -273,7 +190,7 @@
         "test_result": "not_applicable"
       },
       "verification_status": "confirmed",
-      "signal_summary": "Un pasajero tuvo confirmación laboratorial de hantavirus en el crucero.",
+      "signal_summary": "Un pasajero tuvo confirmación laboratorial de hantavirus.",
       "evidence": [
         {
           "type": "text",
@@ -282,7 +199,7 @@
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.8,
+      "extraction_confidence": 0.76,
       "diagnostics": {
         "test_reported": true,
         "test_type": "confirmación laboratorial",
@@ -293,17 +210,17 @@
       }
     },
     {
-      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-04",
+      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-03",
       "domains": [
         "human"
       ],
       "signal_role": "primary_event",
       "signal_type": "transmission_observation",
       "disease": {
-        "verbatim": null,
-        "canonical_name": null,
-        "normalization_status": "unresolved",
-        "confidence": 0.3
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
       },
       "pathogen": {
         "verbatim": "hantavirus",
@@ -312,19 +229,7 @@
         "confidence": 0.78
       },
       "hosts": [],
-      "locations": [
-        {
-          "country": "Cabo Verde",
-          "country_iso2": null,
-          "admin1": null,
-          "admin2": null,
-          "locality": null,
-          "region": null,
-          "precision": "country",
-          "confidence": 0.6,
-          "role": "current_location"
-        }
-      ],
+      "locations": [],
       "event_date": {
         "start": null,
         "end": null,
@@ -362,7 +267,7 @@
         "test_result": "not_applicable"
       },
       "verification_status": "unknown",
-      "signal_summary": "Se desconoce la ruta de transmisión del evento reportado en el crucero.",
+      "signal_summary": "Se desconoce la ruta de transmisión del brote reportado.",
       "evidence": [
         {
           "type": "text",
@@ -371,7 +276,7 @@
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.77,
+      "extraction_confidence": 0.7,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -382,7 +287,7 @@
       }
     },
     {
-      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-05",
+      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-04",
       "domains": [
         "genomic",
         "human"
@@ -390,10 +295,10 @@
       "signal_role": "primary_event",
       "signal_type": "laboratory_investigation",
       "disease": {
-        "verbatim": null,
-        "canonical_name": null,
-        "normalization_status": "unresolved",
-        "confidence": 0.3
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
       },
       "pathogen": {
         "verbatim": "hantavirus",
@@ -411,7 +316,7 @@
           "locality": null,
           "region": null,
           "precision": "country",
-          "confidence": 0.6,
+          "confidence": 0.7,
           "role": "laboratory_location"
         }
       ],
@@ -452,7 +357,7 @@
         "test_result": "not_applicable"
       },
       "verification_status": "reported",
-      "signal_summary": "Se realizan pruebas adicionales en un laboratorio de referencia en Sudáfrica para identificar la cepa y el origen del brote.",
+      "signal_summary": "Se continúan realizando pruebas adicionales en Sudáfrica para identificar la cepa y origen del brote.",
       "evidence": [
         {
           "type": "text",
@@ -461,18 +366,18 @@
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.75,
+      "extraction_confidence": 0.72,
       "diagnostics": {
         "test_reported": true,
         "test_type": "pruebas adicionales",
         "method": null,
-        "target": "identificar la cepa y origen del brote",
+        "target": null,
         "specimen": null,
         "result": "pending"
       }
     },
     {
-      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-06",
+      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-05",
       "domains": [
         "mobility"
       ],
@@ -500,7 +405,7 @@
           "locality": "Montevideo",
           "region": null,
           "precision": "locality",
-          "confidence": 0.55,
+          "confidence": 0.66,
           "role": "travel_history"
         },
         {
@@ -511,7 +416,7 @@
           "locality": "Ushuaia",
           "region": null,
           "precision": "locality",
-          "confidence": 0.6,
+          "confidence": 0.7,
           "role": "travel_history"
         },
         {
@@ -522,7 +427,7 @@
           "locality": null,
           "region": "el sector antártico",
           "precision": "region",
-          "confidence": 0.6,
+          "confidence": 0.62,
           "role": "travel_history"
         },
         {
@@ -533,7 +438,7 @@
           "locality": null,
           "region": "islas del Atlántico Sur",
           "precision": "region",
-          "confidence": 0.6,
+          "confidence": 0.62,
           "role": "travel_history"
         },
         {
@@ -548,14 +453,14 @@
           "role": "travel_history"
         },
         {
-          "country": null,
+          "country": "Santa Elena",
           "country_iso2": null,
           "admin1": null,
           "admin2": null,
-          "locality": "Santa Elena",
+          "locality": null,
           "region": null,
-          "precision": "locality",
-          "confidence": 0.55,
+          "precision": "country",
+          "confidence": 0.58,
           "role": "travel_history"
         },
         {
@@ -566,13 +471,13 @@
           "locality": null,
           "region": "otros puntos del Atlántico Sur",
           "precision": "region",
-          "confidence": 0.5,
+          "confidence": 0.52,
           "role": "travel_history"
         }
       ],
       "event_date": {
         "start": "2025-11-16",
-        "end": null,
+        "end": "2026-04-01",
         "precision": "day"
       },
       "reference_period": {
@@ -590,8 +495,8 @@
           "precision": "unknown",
           "verbatim": null
         },
-        "period_type": "unknown",
-        "verbatim": null
+        "period_type": "observation_window",
+        "verbatim": "La embarcación, proveniente de Montevideo, ingresó al puerto de Ushuaia el 16 de noviembre de 2025. Desde allí realizó diferentes viajes de cabotaje entre Ushuaia, el sector antártico e islas del Atlántico Sur el 1 de abril de 2026 zarpó con destino a Georgias y Sandwich del Sur, Santa Elena y otros puntos del Atlántico Sur."
       },
       "metrics": [],
       "transmission": {
@@ -607,7 +512,7 @@
         "test_result": "not_applicable"
       },
       "verification_status": "reported",
-      "signal_summary": "El buque provenía de Montevideo e ingresó al puerto de Ushuaia el 16 de noviembre de 2025. El buque realizó viajes de cabotaje entre Ushuaia, el sector antártico e islas del Atlántico Sur. El buque zarpó el 1 de abril de 2026 con destino a Georgias y Sandwich del Sur, Santa Elena y otros puntos del Atlántico Sur.",
+      "signal_summary": "La embarcación proveniente de Montevideo ingresó al puerto de Ushuaia el 16 de noviembre de 2025. La embarcación realizó viajes de cabotaje entre Ushuaia, el sector antártico e islas del Atlántico Sur. El 1 de abril de 2026 la embarcación zarpó con destino a Georgias y Sandwich del Sur, Santa Elena y otros puntos del Atlántico Sur.",
       "evidence": [
         {
           "type": "text",
@@ -623,12 +528,12 @@
         },
         {
           "type": "text",
-          "text": "y el 1 de abril de 2026 zarpó con destino a Georgias y Sandwich del Sur, Santa Elena y otros puntos del Atlántico Sur.",
+          "text": "el 1 de abril de 2026 zarpó con destino a Georgias y Sandwich del Sur, Santa Elena y otros puntos del Atlántico Sur.",
           "location_in_document": null,
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.7533,
+      "extraction_confidence": 0.6667,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -639,112 +544,23 @@
       }
     },
     {
-      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-07",
+      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-06",
       "domains": [
         "human"
       ],
-      "signal_role": "surveillance_baseline",
+      "signal_role": "background_context",
       "signal_type": "case_report",
       "disease": {
+        "verbatim": "hantavirus",
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+        "confidence": 0.82
+      },
+      "pathogen": {
         "verbatim": null,
         "canonical_name": null,
         "normalization_status": "unresolved",
         "confidence": 0.3
-      },
-      "pathogen": {
-        "verbatim": "hantavirus",
-        "canonical_name": "Hantavirus",
-        "normalization_status": "resolved",
-        "confidence": 0.78
-      },
-      "hosts": [],
-      "locations": [
-        {
-          "country": "Argentina",
-          "country_iso2": null,
-          "admin1": "Tierra del Fuego",
-          "admin2": null,
-          "locality": null,
-          "region": null,
-          "precision": "admin1",
-          "confidence": 0.66,
-          "role": "reporting_jurisdiction"
-        }
-      ],
-      "event_date": {
-        "start": null,
-        "end": null,
-        "precision": "unknown"
-      },
-      "reference_period": {
-        "start": {
-          "date": null,
-          "year": 1996,
-          "month": null,
-          "precision": "year",
-          "verbatim": "en el año 1996"
-        },
-        "end": {
-          "date": null,
-          "year": null,
-          "month": null,
-          "precision": "unknown",
-          "verbatim": null
-        },
-        "period_type": "historical_period",
-        "verbatim": "desde que esta enfermedad se incorporó a los eventos de notificación obligatoria en nuestro país, en el año 1996"
-      },
-      "metrics": [],
-      "transmission": {
-        "human_to_human": "unknown",
-        "animal_to_human": "unknown",
-        "vector_borne": "unknown"
-      },
-      "genomics": {
-        "sequence_reported": false,
-        "lineage": null,
-        "clade": null,
-        "accession": null,
-        "test_result": "not_applicable"
-      },
-      "verification_status": "reported",
-      "signal_summary": "Se indica que Tierra del Fuego no tiene presencia de hantavirus y no ha registrado casos desde 1996.",
-      "evidence": [
-        {
-          "type": "text",
-          "text": "Tierra del Fuego no tiene presencia de hantavirus y que no ha registrado casos desde que esta enfermedad se incorporó a los eventos de notificación obligatoria en nuestro país, en el año 1996.",
-          "location_in_document": null,
-          "page_number": null
-        }
-      ],
-      "extraction_confidence": 0.78,
-      "diagnostics": {
-        "test_reported": false,
-        "test_type": null,
-        "method": null,
-        "target": null,
-        "specimen": null,
-        "result": "unknown"
-      }
-    },
-    {
-      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-08",
-      "domains": [
-        "human"
-      ],
-      "signal_role": "surveillance_baseline",
-      "signal_type": "case_report",
-      "disease": {
-        "verbatim": null,
-        "canonical_name": null,
-        "normalization_status": "unresolved",
-        "confidence": 0.3
-      },
-      "pathogen": {
-        "verbatim": "hantavirus",
-        "canonical_name": "Hantavirus",
-        "normalization_status": "resolved",
-        "confidence": 0.78
       },
       "hosts": [],
       "locations": [
@@ -756,14 +572,14 @@
           "locality": null,
           "region": null,
           "precision": "admin1",
-          "confidence": 0.66,
+          "confidence": 0.78,
           "role": "reporting_jurisdiction"
         }
       ],
       "event_date": {
         "start": null,
         "end": null,
-        "precision": "unknown"
+        "precision": "year"
       },
       "reference_period": {
         "start": {
@@ -771,14 +587,14 @@
           "year": 2004,
           "month": null,
           "precision": "year",
-          "verbatim": "en 2004"
+          "verbatim": "2004"
         },
         "end": {
           "date": null,
           "year": 2004,
           "month": null,
           "precision": "year",
-          "verbatim": "en 2004"
+          "verbatim": "2004"
         },
         "period_type": "historical_period",
         "verbatim": "en 2004"
@@ -809,11 +625,11 @@
         "test_result": "not_applicable"
       },
       "verification_status": "reported",
-      "signal_summary": "Se reporta que Santa Cruz registró un caso en 2004.",
+      "signal_summary": "Santa Cruz registró un caso de hantavirus en 2004.",
       "evidence": [
         {
           "type": "text",
-          "text": "Santa Cruz, solo registró un caso en 2004.",
+          "text": "Su provincia vecina, Santa Cruz, solo registró un caso en 2004.",
           "location_in_document": null,
           "page_number": null
         }
@@ -829,7 +645,7 @@
       }
     },
     {
-      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-09",
+      "local_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-07",
       "domains": [
         "human"
       ],
@@ -852,12 +668,23 @@
         {
           "country": "Argentina",
           "country_iso2": null,
+          "admin1": null,
+          "admin2": null,
+          "locality": null,
+          "region": "región Sur",
+          "precision": "region",
+          "confidence": 0.62,
+          "role": "reporting_jurisdiction"
+        },
+        {
+          "country": "Argentina",
+          "country_iso2": null,
           "admin1": "Neuquén",
           "admin2": null,
           "locality": null,
           "region": null,
           "precision": "admin1",
-          "confidence": 0.62,
+          "confidence": 0.74,
           "role": "reporting_jurisdiction"
         },
         {
@@ -868,7 +695,7 @@
           "locality": null,
           "region": null,
           "precision": "admin1",
-          "confidence": 0.62,
+          "confidence": 0.74,
           "role": "reporting_jurisdiction"
         },
         {
@@ -879,7 +706,7 @@
           "locality": null,
           "region": null,
           "precision": "admin1",
-          "confidence": 0.62,
+          "confidence": 0.74,
           "role": "reporting_jurisdiction"
         }
       ],
@@ -890,7 +717,7 @@
       },
       "reference_period": {
         "start": {
-          "date": null,
+          "date": "2025-07-29",
           "year": 2025,
           "month": 7,
           "precision": "day",
@@ -898,10 +725,10 @@
         },
         "end": {
           "date": null,
-          "year": 2026,
+          "year": null,
           "month": null,
-          "precision": "year",
-          "verbatim": "durante la temporada 2025-2026"
+          "precision": "unknown",
+          "verbatim": null
         },
         "period_type": "season",
         "verbatim": "durante la temporada 2025-2026, iniciada el 29 de julio del año pasado"
@@ -932,7 +759,7 @@
         "test_result": "not_applicable"
       },
       "verification_status": "reported",
-      "signal_summary": "Se informan 10 casos notificados en Neuquén, Río Negro y Chubut durante la temporada 2025-2026.",
+      "signal_summary": "En la región Sur se notificaron 10 casos (Neuquén, Río Negro y Chubut) durante la temporada 2025-2026.",
       "evidence": [
         {
           "type": "text",
@@ -941,7 +768,7 @@
           "page_number": null
         }
       ],
-      "extraction_confidence": 0.72,
+      "extraction_confidence": 0.75,
       "diagnostics": {
         "test_reported": false,
         "test_type": null,
@@ -953,6 +780,6 @@
     }
   ],
   "warnings": [
-    "Se menciona que \"la provincia de Tierra del Fuego no reportó eventos de importancia sanitaria\", pero no se especifica que sea sobre hantavirus; no se extrajo como claim por el alcance."
+    "Algunas ubicaciones (p. ej., 'Georgias y Sandwich del Sur', 'el sector antártico', 'islas del Atlántico Sur') se registran como 'region' por falta de granularidad geográfica explícita en el texto."
   ]
 }
