@@ -20,6 +20,7 @@ _EVIDENCE_STOPWORDS = {
     "unas", "y", "ya", "the", "of", "and", "in", "to", "for", "with", "was", "were",
 }
 _NEGATION_TOKENS = {"no", "sin", "ningun", "ninguna", "ninguno", "negativo", "negativa", "negativos", "negativas"}
+_TEXTUAL_EVIDENCE_TYPES = {"text", "quote"}
 
 
 @dataclass(frozen=True)
@@ -41,6 +42,13 @@ def _norm_text(value: Any) -> str | None:
         return None
     text = re.sub(r"\s+", " ", str(value)).strip().casefold()
     return text or None
+
+
+def _canonical_evidence_type(value: Any) -> str | None:
+    normalized = _norm_text(value)
+    if normalized in _TEXTUAL_EVIDENCE_TYPES:
+        return "text"
+    return normalized
 
 
 def _set_f1(gold: Iterable[Any], pred: Iterable[Any]) -> float:
@@ -115,7 +123,7 @@ def _host_key(host: dict[str, Any]) -> tuple[Any, ...]:
 
 def _evidence_key(evidence: dict[str, Any]) -> tuple[Any, ...]:
     return (
-        _norm_text(evidence.get("type")),
+        _canonical_evidence_type(evidence.get("type")),
         _norm_text(evidence.get("text")),
         evidence.get("page_number"),
     )
@@ -149,7 +157,7 @@ def evidence_support_similarity(gold: dict[str, Any], pred: dict[str, Any]) -> f
     penalising two different contiguous quotations from the same source when one is a
     sufficient subspan of the other or when they have strong content-token overlap.
     """
-    if _norm_text(gold.get("type")) != _norm_text(pred.get("type")):
+    if _canonical_evidence_type(gold.get("type")) != _canonical_evidence_type(pred.get("type")):
         return 0.0
     gold_page = gold.get("page_number")
     pred_page = pred.get("page_number")

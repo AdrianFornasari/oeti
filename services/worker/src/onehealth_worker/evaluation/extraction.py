@@ -41,7 +41,7 @@ def extract_evaluation_corpus(
         raise ValueError(f"Provider no soportado para benchmark: {provider_name!r}")
 
     # Lazy imports keep offline evaluation/tests independent from DB/provider packages.
-    from ..extraction.atomic_claims import assemble_claims_payload
+    from ..extraction.assembly_v045 import assemble_claims_payload
     from ..extraction.normalization import normalize_extraction_payload
     from ..extraction.openai_provider import OpenAIResponsesProvider
     from ..extraction.prompt import SYSTEM_INSTRUCTIONS
@@ -122,6 +122,6 @@ def extract_evaluation_corpus(
         "case_code": manifest.get("case_code"),
         "provider": provider_name,
         "model": model_name,
-        "architecture": "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.4",
+        "architecture": "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.5",
         "results": results,
     }

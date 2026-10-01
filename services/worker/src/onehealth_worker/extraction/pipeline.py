@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .atomic_claims import assemble_claims_payload
+from .assembly_v046 import assemble_claims_payload
 from .normalization import normalize_extraction_payload
 from .openai_provider import OpenAIResponsesProvider
 from .prompt import SYSTEM_INSTRUCTIONS, build_document_input
