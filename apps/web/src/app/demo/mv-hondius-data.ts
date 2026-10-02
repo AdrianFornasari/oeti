@@ -1,0 +1,42 @@
+export const mvHondiusBenchmark = {
+  caseCode: "ARG-HANTA-MV-HONDIUS-2026",
+  benchmarkVersion: "0.4",
+  architecture: "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.4",
+  documentCount: 6,
+  releaseThresholds: {
+    meanSignalF1: 0.9,
+    meanEvidenceSupportF1: 0.9,
+    meanSignalRoleAccuracy: 0.9,
+    meanSignalTypeAccuracy: 0.85,
+  },
+  documents: [
+    { id: "doc-2026-05-04", date: "04 May 2026", eventDate: "02 May 2026", label: "Initial notification and national monitoring", source: "ARG_MSAL_NEWS", sourceLabel: "Ministerio de Salud de la Nación", sourceUrl: "https://www.argentina.gob.ar/noticias/salud-monitorea-junto-organismos-internacionales-los-casos-de-hantavirus-reportados-en-el", documentClass: "outbreak", domains: ["human"], location: "Cabo Verde", locationRole: "Current location of the vessel", relation: "Primary outbreak evidence", summary: "Official monitoring after the 2 May notification of a severe acute respiratory disease cluster aboard MV Hondius, including three deaths; one passenger had laboratory-confirmed hantavirus.", keyFacts: ["3 deaths reported", "1 laboratory-confirmed hantavirus case", "Transmission route still unknown"] },
+    { id: "doc-2026-05-12", date: "12 May 2026", eventDate: "May 2026", label: "BEN epidemiological bulletin — SE17", source: "ARG_MSAL_NEWS", sourceLabel: "Boletín Epidemiológico Nacional", sourceUrl: "https://www.argentina.gob.ar/noticias/actualizacion-del-boletin-epidemiologico-nacional-de-la-semana-ndeg-17", documentClass: "outbreak", domains: ["human", "genomic"], location: "MV Hondius / international investigation", locationRole: "Outbreak monitoring", relation: "Outbreak update", summary: "The BEN updated the event to eight identified cases: six confirmed, two probable and three deaths. Genomic findings were monitored without interpreting genetic similarity as proof of outbreak origin.", keyFacts: ["8 identified cases", "6 confirmed", "2 probable", "3 deaths"] },
+    { id: "doc-2026-05-19", date: "19 May 2026", eventDate: "13 May 2026", label: "BEN epidemiological bulletin — SE18", source: "ARG_MSAL_NEWS", sourceLabel: "Boletín Epidemiológico Nacional", sourceUrl: "https://www.argentina.gob.ar/node/502023", documentClass: "transmission", domains: ["human", "genomic", "wildlife"], location: "MV Hondius / Tierra del Fuego investigation", locationRole: "Outbreak and field investigation", relation: "Transmission hypothesis", summary: "By 13 May, 11 cases had been identified: eight confirmed Andes-virus cases, two probable and one inconclusive. The evidence suggested infection on land followed by probable person-to-person transmission aboard the vessel.", keyFacts: ["11 identified cases", "8 confirmed Andes-virus cases", "2 probable", "1 inconclusive", "Human-to-human transmission adjudicated as probable"] },
+    { id: "doc-2026-05-26", date: "26 May 2026", eventDate: "May 2026", label: "BEN epidemiological bulletin — SE19", source: "ARG_MSAL_NEWS", sourceLabel: "Boletín Epidemiológico Nacional", sourceUrl: "https://www.argentina.gob.ar/noticias/actualizacion-del-boletin-epidemiologico-nacional-de-la-semana-ndeg-19", documentClass: "outbreak", domains: ["human", "genomic"], location: "MV Hondius / national monitoring", locationRole: "Outbreak monitoring", relation: "Outbreak update", summary: "A new Andes-virus case was confirmed among passengers, bringing the total to nine confirmed and two probable cases.", keyFacts: ["1 new confirmed case", "9 confirmed cases total", "2 probable cases"] },
+    { id: "doc-2026-06-29", date: "29 Jun 2026", eventDate: "18–22 May 2026 field operations", label: "Tierra del Fuego rodents — genomic evidence not related to the outbreak", source: "ARG_ANLIS_NEWS", sourceLabel: "ANLIS-Malbrán", sourceUrl: "https://www.argentina.gob.ar/noticias/anlis-malbran-identifico-hantavirus-en-roedores-de-tierra-del-fuego-sin-relacion-con-el-0", documentClass: "negative-causal", domains: ["wildlife", "genomic", "human"], location: "Ushuaia, Tierra del Fuego", locationRole: "Wildlife sampling location", relation: "Negative causal evidence", summary: "Five Abrothrix rodents captured in Ushuaia had specific antibodies against hantavirus. A previously undescribed Orthohantavirus andesense variant was identified, but the analysed rodents were ruled out as the source of infection linked to the MV Hondius event.", keyFacts: ["144 wild rodents captured during field operations", "5 Abrothrix rodents seropositive", "Novel variant related to Andes virus", "Animal-to-human link refuted for the analysed rodents"] },
+    { id: "doc-2026-07-08", date: "08 Jul 2026", eventDate: "Not resolved in source", label: "Mendoza rodents — negative evidence", source: "ARG_ANLIS_NEWS", sourceLabel: "ANLIS-Malbrán", sourceUrl: "https://www.argentina.gob.ar/noticias/especialistas-de-la-anlis-malbran-no-identificaron-hantavirus-en-roedores-capturados-en", documentClass: "negative-evidence", domains: ["wildlife", "human", "mobility"], location: "Malargüe, Mendoza", locationRole: "Sampling location and travel history", relation: "Negative evidence / hypothesis testing", summary: "Wild rodents captured near Malargüe did not show specific antibodies against hantavirus. The Dutch couple who became ill had stayed in the area before boarding the vessel, but Malargüe is treated as travel history rather than a confirmed exposure location.", keyFacts: ["Rodent serology negative", "Malargüe retained as travel history", "No confirmed exposure location inferred"] },
+  ],
+  geographicContext: [
+    { place: "Cabo Verde", role: "Current vessel location", note: "Location at the initial notification; not treated as the origin of infection." },
+    { place: "South Africa", role: "Laboratory location", note: "Additional laboratory investigation; not treated as an outbreak location." },
+    { place: "Ushuaia, Tierra del Fuego", role: "Wildlife sampling", note: "Hantavirus evidence in Abrothrix was real, but the causal link to the human outbreak was refuted for the analysed rodents." },
+    { place: "Malargüe, Mendoza", role: "Sampling + travel history", note: "Negative rodent serology; travel history is not equivalent to confirmed exposure." },
+  ],
+} as const;
+
+export const ushuaiaRodentSignal = {
+  id: "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-01", shortId: "ASM-01", schemaVersion: "0.4", documentDate: "29 Jun 2026", signalRole: "primary_event", signalType: "laboratory_result", domains: ["wildlife"], pathogen: "Hantavirus", host: "Abrothrix",
+  location: { country: "Argentina", admin1: "Tierra del Fuego", locality: "Ushuaia", precision: "locality", confidence: 0.86, role: "sampling_location" },
+  eventDate: null, metric: { name: "seropositive_animals", value: 5, unit: "animals" }, diagnostics: { testType: "serología", target: "anticuerpos específicos", result: "positive" }, verificationStatus: "reported", extractionConfidence: 0.8,
+  summary: "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego).",
+  evidence: "Los resultados obtenidos mostraron que cinco ejemplares pertenecientes al género Abrothrix presentaron anticuerpos específicos contra hantavirus.",
+  source: { code: "ARG_ANLIS_NEWS", label: "ANLIS-Malbrán — official news", url: "https://www.argentina.gob.ar/noticias/anlis-malbran-identifico-hantavirus-en-roedores-de-tierra-del-fuego-sin-relacion-con-el-0" },
+  directClaim: { id: "c1", kind: "diagnostic_result", polarity: "positive", confidence: 0.8 },
+} as const;
+
+export const ushuaiaRodentContext = {
+  genomicSignal: { id: "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-02", type: "genomic_observation", summary: "Molecular analyses identified a previously undescribed hantavirus variant related to Andes virus and classified within Orthohantavirus andesense." },
+  causalNegativeSignal: { id: "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-03", role: "negative_evidence", type: "transmission_observation", summary: "The investigation ruled out the analysed rodents as the source of infection linked to the MV Hondius event.", evidence: "De esta manera, la investigación permitió descartar que los roedores analizados hayan sido la fuente de infección vinculada a ese evento.", animalToHuman: "refuted", claimId: "c4" },
+  samplingSignal: { id: "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04", type: "wildlife_event", start: "18 May 2026", end: "22 May 2026", capturedRodents: 144, summary: "During field operations between 18 and 22 May, 144 wild rodents were captured.", claimId: "c5" },
+} as const;
