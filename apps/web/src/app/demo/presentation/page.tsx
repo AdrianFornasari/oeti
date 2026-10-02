@@ -61,10 +61,19 @@ export default function PresentationGuidePage() {
       href: "/demo/review/asm-01",
       action: "Demostrar la supervisión humana confirmando, corrigiendo o rechazando una señal.",
       message: "La máquina propone; la evidencia se conserva; el analista decide. Una corrección o rechazo no reescribe retrospectivamente la fuente.",
-      focus: "Para una demo fluida, usar Confirmar. Reservar Corregir/Rechazar para preguntas o una segunda pasada.",
+      focus: "Para el ensayo principal: elegir Confirmar y luego Aplicar decisión.",
     },
     {
       n: "7",
+      time: "1 min",
+      title: "Comprobar propagación de la decisión",
+      href: "/demo/signals/asm-01",
+      action: "Volver a la señal y luego al Explorador de amenazas para comprobar que la decisión humana aparece en las vistas posteriores.",
+      message: "La revisión no queda aislada en una pantalla: modifica el estado operativo visible de ASM-01 sin alterar la evidencia histórica.",
+      focus: "Ver Confirmada por analista en ASM-01; después abrir Amenazas y seleccionar el documento del 29 de junio para comprobar el mismo estado.",
+    },
+    {
+      n: "8",
       time: "2 min",
       title: "Evaluación del sistema",
       href: "/demo/evaluation",
@@ -107,10 +116,16 @@ export default function PresentationGuidePage() {
       n: "6", time: "2 min", title: "Analyst review", href: "/demo/review/asm-01",
       action: "Demonstrate human oversight by confirming, correcting or rejecting a signal.",
       message: "The machine proposes; evidence is preserved; the analyst decides. A correction or rejection does not retrospectively rewrite the source.",
-      focus: "For a smooth demo, use Confirm. Reserve Correct/Reject for questions or a second pass.",
+      focus: "For the primary rehearsal, choose Confirm and then Apply decision.",
     },
     {
-      n: "7", time: "2 min", title: "System evaluation", href: "/demo/evaluation",
+      n: "7", time: "1 min", title: "Verify decision propagation", href: "/demo/signals/asm-01",
+      action: "Return to the signal and then Threat Explorer to verify that the human decision appears in subsequent views.",
+      message: "Review is not isolated to one screen: it changes ASM-01's visible operational state without altering historical evidence.",
+      focus: "See Analyst confirmed on ASM-01; then open Threats and select the 29 June document to verify the same state.",
+    },
+    {
+      n: "8", time: "2 min", title: "System evaluation", href: "/demo/evaluation",
       action: "Close by showing that OETI measures its own performance against an adjudicated corpus.",
       message: "The platform does not only produce intelligence: it also quantifies when it is not yet reliable enough to enable the next automated stage.",
       focus: "Show 6/6 coverage, 0.90 recall, 14 extra signals and the event matcher still disabled.",
@@ -128,7 +143,7 @@ export default function PresentationGuidePage() {
           <div>
             <div className={styles.breadcrumb}><Link href="/demo">Dashboard</Link> › {isSpanish ? "Modo presentación" : "Presentation mode"}</div>
             <h1>{isSpanish ? "Ruta guiada para sponsor" : "Guided sponsor route"}</h1>
-            <p className={styles.subtitle}>{isSpanish ? "Duración objetivo: 12–14 minutos · Caso conductor: MV Hondius · Cierre: evaluación objetiva del sistema" : "Target duration: 12–14 minutes · Lead case: MV Hondius · Close: objective system evaluation"}</p>
+            <p className={styles.subtitle}>{isSpanish ? "Duración objetivo: 13–15 minutos · Caso conductor: MV Hondius · Cierre: evaluación objetiva del sistema" : "Target duration: 13–15 minutes · Lead case: MV Hondius · Close: objective system evaluation"}</p>
           </div>
           <div className={styles.actions}><Link className={`${styles.button} ${styles.buttonPrimary}`} href="/demo">{isSpanish ? "Comenzar presentación →" : "Start presentation →"}</Link></div>
         </div>
@@ -164,8 +179,9 @@ export default function PresentationGuidePage() {
           <ul className={styles.insights}>
             <li>{isSpanish ? "Usar español y modo claro salvo que el contexto de la sala justifique otra opción." : "Use Spanish and light mode unless the room context calls for another choice."}</li>
             <li>{isSpanish ? "Comprobar que /demo carga y que la navegación móvil/PC funciona antes de comenzar." : "Verify that /demo loads and that desktop/mobile navigation works before starting."}</li>
-            <li>{isSpanish ? "Restablecer el estado de revisión de ASM-01 si querés demostrar el paso de Pendiente → Confirmada durante la presentación." : "Reset ASM-01 review state if you want to demonstrate Pending → Confirmed during the presentation."}</li>
+            <li>{isSpanish ? "Restablecer el estado de revisión de ASM-01 para demostrar en vivo el paso Pendiente → Confirmada." : "Reset ASM-01 review state to demonstrate Pending → Confirmed live."}</li>
             <li>{isSpanish ? "No dedicar tiempo a explicar nombres internos como signal_role, arquitectura v0.4.4 o rutas de archivos salvo que te lo pregunten." : "Do not spend time explaining internal names such as signal_role, architecture v0.4.4 or file paths unless asked."}</li>
+            <li>{isSpanish ? "Después de confirmar ASM-01, comprobar su propagación antes de pasar a Evaluation." : "After confirming ASM-01, verify its propagation before moving to Evaluation."}</li>
             <li>{isSpanish ? "Cerrar en Evaluation: transmite que OETI conoce sus límites y no habilita automatización adicional cuando los criterios aún no se cumplen." : "Close on Evaluation: it shows that OETI knows its limits and does not enable further automation while criteria are unmet."}</li>
           </ul>
         </section>
