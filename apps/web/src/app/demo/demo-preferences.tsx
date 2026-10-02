@@ -21,25 +21,35 @@ const THEME_KEY = "oeti-demo-theme";
 export function DemoPreferencesProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<DemoLanguage>("es");
   const [theme, setTheme] = useState<DemoTheme>("light");
+  const [preferencesLoaded, setPreferencesLoaded] = useState(false);
 
   useEffect(() => {
     const storedLanguage = window.localStorage.getItem(LANGUAGE_KEY);
     const storedTheme = window.localStorage.getItem(THEME_KEY);
 
-    if (storedLanguage === "en" || storedLanguage === "es") setLanguage(storedLanguage);
-    if (storedTheme === "light" || storedTheme === "dark") setTheme(storedTheme);
+    const initialLanguage: DemoLanguage = storedLanguage === "en" || storedLanguage === "es" ? storedLanguage : "es";
+    const initialTheme: DemoTheme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : "light";
+
+    setLanguage(initialLanguage);
+    setTheme(initialTheme);
+    document.documentElement.lang = initialLanguage === "es" ? "es" : "en";
+    document.documentElement.dataset.demoTheme = initialTheme;
+    document.documentElement.style.colorScheme = initialTheme;
+    setPreferencesLoaded(true);
   }, []);
 
   useEffect(() => {
+    if (!preferencesLoaded) return;
     window.localStorage.setItem(LANGUAGE_KEY, language);
     document.documentElement.lang = language === "es" ? "es" : "en";
-  }, [language]);
+  }, [language, preferencesLoaded]);
 
   useEffect(() => {
+    if (!preferencesLoaded) return;
     window.localStorage.setItem(THEME_KEY, theme);
     document.documentElement.dataset.demoTheme = theme;
     document.documentElement.style.colorScheme = theme;
-  }, [theme]);
+  }, [theme, preferencesLoaded]);
 
   const value = useMemo(
     () => ({ language, theme, setLanguage, setTheme, isSpanish: language === "es" }),
