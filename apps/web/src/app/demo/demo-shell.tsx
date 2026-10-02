@@ -57,10 +57,11 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
 
       <main className={styles.main}>
         <div className={`${styles.topbar} ${mobileStyles.topbar}`} data-demo-topbar>
-          <div className={`${styles.search} ${mobileStyles.search}`} data-demo-search>
+          <div className={`${styles.search} ${mobileStyles.search}`} data-demo-search title={isSpanish ? "Búsqueda ilustrativa en esta demo" : "Illustrative search in this demo"}>
             <input
-              aria-label={isSpanish ? "Buscar" : "Search"}
-              placeholder={isSpanish ? "Buscar amenazas, señales, patógenos, ubicaciones o palabras clave…" : "Search threats, signals, pathogens, locations or keywords…"}
+              aria-label={isSpanish ? "Búsqueda ilustrativa" : "Illustrative search"}
+              placeholder={isSpanish ? "Búsqueda ilustrativa — no activa en esta demo" : "Illustrative search — not active in this demo"}
+              disabled
             />
           </div>
           <div className={`${styles.topSpacer} ${mobileStyles.spacer}`} />
@@ -84,7 +85,7 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
           </div>
 
           <div className={`${styles.date} ${mobileStyles.date}`}>{formattedDate}</div>
-          <div className={`${styles.analyst} ${mobileStyles.analyst}`}><div className={styles.avatar}>AR</div>{isSpanish ? "Analista" : "Analyst"} ▾</div>
+          <div className={`${styles.analyst} ${mobileStyles.analyst}`} title={isSpanish ? "Identidad ilustrativa de la demo" : "Illustrative demo identity"}><div className={styles.avatar}>AR</div>{isSpanish ? "Analista demo" : "Demo analyst"}</div>
         </div>
         {children}
       </main>
