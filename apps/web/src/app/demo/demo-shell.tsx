@@ -77,7 +77,7 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
           <div className={`${styles.topSpacer} ${mobileStyles.spacer}`} />
 
           <div className={`${styles.preferenceControls} ${mobileStyles.preferences}`} data-demo-preferences>
-            <div className={`${styles.segmented} ${styles.fontScaleControls} ${mobileStyles.fontScale}`} aria-label={isSpanish ? "Tamaño de fuente" : "Font size"}>
+            <div className={styles.segmented} data-demo-font-scale aria-label={isSpanish ? "Tamaño de fuente" : "Font size"}>
               <button type="button" onClick={decreaseFont} disabled={fontScaleIndex <= 0} aria-label={isSpanish ? "Disminuir tamaño de fuente" : "Decrease font size"}>A−</button>
               <button type="button" onClick={increaseFont} disabled={fontScaleIndex >= DEMO_FONT_SCALES.length - 1} aria-label={isSpanish ? "Aumentar tamaño de fuente" : "Increase font size"}>A+</button>
             </div>
@@ -101,7 +101,7 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
           <div className={`${styles.date} ${mobileStyles.date}`}>{formattedDate}</div>
           <div className={`${styles.analyst} ${mobileStyles.analyst}`} title={isSpanish ? "Identidad ilustrativa de la demo" : "Illustrative demo identity"}><div className={styles.avatar}>AR</div>{isSpanish ? "Analista demo" : "Demo analyst"}</div>
         </div>
-        <div className={styles.scalableContent} style={{ fontSize: `${fontScale}em` }}>
+        <div data-demo-scalable-content style={{ fontSize: `${fontScale}em` }}>
           {children}
         </div>
       </main>
