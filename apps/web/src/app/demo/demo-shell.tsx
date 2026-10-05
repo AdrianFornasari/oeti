@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, type ReactNode } from "react";
-import { useDemoPreferences } from "./demo-preferences";
+import { DEMO_FONT_SCALES, useDemoPreferences } from "./demo-preferences";
 import styles from "./demo.module.css";
 import mobileStyles from "./demo-mobile.module.css";
 
@@ -17,7 +17,7 @@ const navItems: Array<{ key: DemoSection; en: string; es: string; icon: string; 
 ];
 
 export function DemoShell({ active, children }: { active: DemoSection; children: ReactNode }) {
-  const { language, theme, setLanguage, setTheme, isSpanish } = useDemoPreferences();
+  const { language, theme, fontScale, setLanguage, setTheme, setFontScale, isSpanish } = useDemoPreferences();
 
   const formattedDate = useMemo(
     () => new Intl.DateTimeFormat(isSpanish ? "es-AR" : "en-GB", {
@@ -27,6 +27,16 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
     }).format(new Date()),
     [isSpanish],
   );
+
+  const fontScaleIndex = DEMO_FONT_SCALES.indexOf(fontScale);
+  const decreaseFont = () => {
+    if (fontScaleIndex <= 0) return;
+    setFontScale(DEMO_FONT_SCALES[fontScaleIndex - 1]);
+  };
+  const increaseFont = () => {
+    if (fontScaleIndex < 0 || fontScaleIndex >= DEMO_FONT_SCALES.length - 1) return;
+    setFontScale(DEMO_FONT_SCALES[fontScaleIndex + 1]);
+  };
 
   return (
     <div className={styles.app} data-theme={theme} data-demo-shell>
@@ -67,6 +77,10 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
           <div className={`${styles.topSpacer} ${mobileStyles.spacer}`} />
 
           <div className={`${styles.preferenceControls} ${mobileStyles.preferences}`} data-demo-preferences>
+            <div className={`${styles.segmented} ${styles.fontScaleControls} ${mobileStyles.fontScale}`} aria-label={isSpanish ? "Tamaño de fuente" : "Font size"}>
+              <button type="button" onClick={decreaseFont} disabled={fontScaleIndex <= 0} aria-label={isSpanish ? "Disminuir tamaño de fuente" : "Decrease font size"}>A−</button>
+              <button type="button" onClick={increaseFont} disabled={fontScaleIndex >= DEMO_FONT_SCALES.length - 1} aria-label={isSpanish ? "Aumentar tamaño de fuente" : "Increase font size"}>A+</button>
+            </div>
             <div className={`${styles.segmented} ${mobileStyles.language}`} aria-label={isSpanish ? "Idioma" : "Language"} data-demo-language>
               <button type="button" className={language === "en" ? styles.segmentedActive : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
               <button type="button" className={language === "es" ? styles.segmentedActive : ""} onClick={() => setLanguage("es")} aria-pressed={language === "es"}>ES</button>
@@ -87,7 +101,9 @@ export function DemoShell({ active, children }: { active: DemoSection; children:
           <div className={`${styles.date} ${mobileStyles.date}`}>{formattedDate}</div>
           <div className={`${styles.analyst} ${mobileStyles.analyst}`} title={isSpanish ? "Identidad ilustrativa de la demo" : "Illustrative demo identity"}><div className={styles.avatar}>AR</div>{isSpanish ? "Analista demo" : "Demo analyst"}</div>
         </div>
-        {children}
+        <div className={styles.scalableContent} style={{ fontSize: `${fontScale}em` }}>
+          {children}
+        </div>
       </main>
     </div>
   );
