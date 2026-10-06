@@ -12,14 +12,14 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="onehealth-worker", description="OETI ingestion and extraction worker")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    ingest = sub.add_parser("ingest-url", help="Descarga y persiste una página HTML como raw_item")
+    ingest = sub.add_parser("ingest-url", help="Descarga y persiste una pÃ¡gina HTML como raw_item")
     ingest.add_argument("--source-code", required=True)
     ingest.add_argument("--url", required=True)
 
     case = sub.add_parser("ingest-case", help="Procesa todos los targets HTML de un manifiesto de caso")
     case.add_argument("--manifest", required=True, type=Path)
 
-    extract = sub.add_parser("extract-raw-item", help="Extrae señales estructuradas desde un raw_item")
+    extract = sub.add_parser("extract-raw-item", help="Extrae seÃ±ales estructuradas desde un raw_item")
     extract.add_argument("--raw-item-id", required=True)
     extract.add_argument("--provider", default=None, help="Default: LLM_PROVIDER")
     extract.add_argument("--model", default=None, help="Default: LLM_MODEL")
@@ -27,30 +27,45 @@ def _parser() -> argparse.ArgumentParser:
     extract.add_argument("--no-persist", action="store_true", help="Valida y muestra JSON sin escribir signals")
     extract.add_argument("--output", type=Path, default=None, help="Guarda una copia del JSON estructurado")
 
-    validate = sub.add_parser("validate-extraction", help="Valida un JSON de extracción contra el contrato")
+    validate = sub.add_parser("validate-extraction", help="Valida un JSON de extracciÃ³n contra el contrato")
     validate.add_argument("--file", required=True, type=Path)
     validate.add_argument("--schema", type=Path, default=None)
 
-    persist = sub.add_parser("persist-extraction", help="Persiste un JSON de extracción previamente validado")
+    persist = sub.add_parser("persist-extraction", help="Persiste un JSON de extracciÃ³n previamente validado")
     persist.add_argument("--file", required=True, type=Path)
     persist.add_argument("--schema", type=Path, default=None)
     persist.add_argument("--provider", default="manual_json")
     persist.add_argument("--model", default="manual_or_fixture")
 
-    evaluate = sub.add_parser("evaluate-extraction", help="Compara una extracción contra un gold standard adjudicado")
+    evaluate = sub.add_parser("evaluate-extraction", help="Compara una extracciÃ³n contra un gold standard adjudicado")
     evaluate.add_argument("--prediction", required=True, type=Path)
     evaluate.add_argument("--gold", required=True, type=Path)
     evaluate.add_argument("--threshold", type=float, default=0.55)
     evaluate.add_argument("--output", type=Path, default=None)
 
-    evaluate_set = sub.add_parser("evaluate-corpus", help="Evalúa un conjunto de extracciones contra un manifiesto gold")
+    evaluate_set = sub.add_parser("evaluate-corpus", help="EvalÃºa un conjunto de extracciones contra un manifiesto gold")
     evaluate_set.add_argument("--manifest", required=True, type=Path)
     evaluate_set.add_argument("--threshold", type=float, default=0.55)
     evaluate_set.add_argument("--output", type=Path, default=None)
 
+    evaluate_event = sub.add_parser(
+        "evaluate-event-matching",
+        help="Evalúa el Event Matcher contra pares gold adjudicados",
+    )
+    evaluate_event.add_argument(
+        "--manifest",
+        required=True,
+        type=Path,
+    )
+    evaluate_event.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help="Guarda el reporte JSON reproducible",
+    )
     extract_eval = sub.add_parser(
         "extract-evaluation-corpus",
-        help="Genera predicciones automáticas no persistentes para un corpus gold adjudicado",
+        help="Genera predicciones automÃ¡ticas no persistentes para un corpus gold adjudicado",
     )
     extract_eval.add_argument("--manifest", required=True, type=Path)
     extract_eval.add_argument("--provider", default=None, help="Default: LLM_PROVIDER")
@@ -85,6 +100,37 @@ def main() -> None:
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return
 
+    if args.command == "evaluate-event-matching":
+        from .evaluation.event_matching_v048 import (
+            evaluate_event_matching_benchmark,
+        )
+
+        report = evaluate_event_matching_benchmark(
+            args.manifest
+        )
+
+        if args.output:
+            args.output.parent.mkdir(
+                parents=True,
+                exist_ok=True,
+            )
+            args.output.write_text(
+                json.dumps(
+                    report,
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+
+        print(
+            json.dumps(
+                report,
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return
     from .config import Settings
     settings = Settings()
 

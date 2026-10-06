@@ -1,0 +1,567 @@
+{
+  "evaluation_schema_version": "0.1",
+  "benchmark_kind": "event_matching",
+  "benchmark_version": "0.4.8",
+  "case_code": "ARG-HANTA-MV-HONDIUS-2026",
+  "evaluated_pairs": 14,
+  "eligible_pairs": 11,
+  "ineligible_pairs": 3,
+  "expected_hard_conflicts": 2,
+  "predicted_auto_links": 5,
+  "aggregate": {
+    "ineligible_gate_accuracy": 1.0,
+    "hard_conflict_recall": 1.0,
+    "hard_conflict_false_auto_links": 0,
+    "auto_link_precision": 1.0,
+    "pair_decision_accuracy": 1.0,
+    "relation_accuracy": 1.0,
+    "order_invariance": true
+  },
+  "release_gate": {
+    "metrics_pass": true,
+    "event_matcher_validated": true,
+    "thresholds": {
+      "ineligible_gate_accuracy": 1.0,
+      "hard_conflict_recall": 1.0,
+      "hard_conflict_false_auto_links": 0,
+      "auto_link_precision": 1.0,
+      "pair_decision_accuracy": 0.9,
+      "relation_accuracy": 0.9,
+      "order_invariance": true
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "EM-V048-001",
+      "family": "positive_continuity",
+      "source_signal_id": "GS-MVH-20260504-02",
+      "target_signal_id": "GS-MVH-20260512-01",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260504-02",
+        "target_signal_id": "GS-MVH-20260512-01",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.983333,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 1.0,
+          "geography": null,
+          "temporality": null,
+          "host": 1.0,
+          "epidemiology": 0.9,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-002",
+      "family": "positive_continuity",
+      "source_signal_id": "GS-MVH-20260512-01",
+      "target_signal_id": "GS-MVH-20260519-01",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260512-01",
+        "target_signal_id": "GS-MVH-20260519-01",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.934375,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 0.8875,
+          "geography": null,
+          "temporality": null,
+          "host": 1.0,
+          "epidemiology": 1.0,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-003",
+      "family": "positive_continuity",
+      "source_signal_id": "GS-MVH-20260519-01",
+      "target_signal_id": "GS-MVH-20260526-01",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260519-01",
+        "target_signal_id": "GS-MVH-20260526-01",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 1.0,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 1.0,
+          "geography": null,
+          "temporality": null,
+          "host": 1.0,
+          "epidemiology": 1.0,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-004",
+      "family": "semantic_refinement",
+      "source_signal_id": "GS-MVH-20260504-04",
+      "target_signal_id": "GS-MVH-20260512-02",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260504-04",
+        "target_signal_id": "GS-MVH-20260512-02",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.827083,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 0.8,
+          "geography": null,
+          "temporality": null,
+          "host": 1.0,
+          "epidemiology": 0.95,
+          "shared_context": 0.425
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-005",
+      "family": "semantic_refinement",
+      "source_signal_id": "GS-MVH-20260504-03",
+      "target_signal_id": "GS-MVH-20260519-02",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "review_required",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260504-03",
+        "target_signal_id": "GS-MVH-20260519-02",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.883333,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 0.8,
+          "geography": null,
+          "temporality": null,
+          "host": 1.0,
+          "epidemiology": 1.0,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "review_required",
+        "merge_allowed": true
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-006",
+      "family": "semantic_refinement",
+      "source_signal_id": "GS-MVH-20260512-03",
+      "target_signal_id": "GS-MVH-20260526-02",
+      "expected": {
+        "gate": "eligible",
+        "relation": "duplicates",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260512-03",
+        "target_signal_id": "GS-MVH-20260526-02",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 1.0,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 1.0,
+          "geography": null,
+          "temporality": null,
+          "host": 1.0,
+          "epidemiology": 1.0,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "duplicates",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-007",
+      "family": "one_health_investigation",
+      "source_signal_id": "GS-MVH-20260519-04",
+      "target_signal_id": "GS-MVH-20260629-01",
+      "expected": {
+        "gate": "eligible",
+        "relation": "possibly_related",
+        "decision": "review_required",
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260519-04",
+        "target_signal_id": "GS-MVH-20260629-01",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.771324,
+        "information_coverage": 0.85,
+        "component_scores": {
+          "etiology": 0.8875,
+          "geography": 0.8,
+          "temporality": null,
+          "host": 0.5,
+          "epidemiology": 0.7,
+          "shared_context": 0.5
+        },
+        "gate": "eligible",
+        "relation": "possibly_related",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "review_required",
+        "merge_allowed": false
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-008",
+      "family": "one_health_investigation",
+      "source_signal_id": "GS-MVH-20260504-05",
+      "target_signal_id": "GS-MVH-20260708-02",
+      "expected": {
+        "gate": "eligible",
+        "relation": "possibly_related",
+        "decision": "review_required",
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260504-05",
+        "target_signal_id": "GS-MVH-20260708-02",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.891667,
+        "information_coverage": 0.15,
+        "component_scores": {
+          "etiology": null,
+          "geography": null,
+          "temporality": null,
+          "host": null,
+          "epidemiology": 1.0,
+          "shared_context": 0.675
+        },
+        "gate": "eligible",
+        "relation": "possibly_related",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "review_required",
+        "merge_allowed": false
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-009",
+      "family": "one_health_investigation",
+      "source_signal_id": "GS-MVH-20260708-02",
+      "target_signal_id": "GS-MVH-20260708-03",
+      "expected": {
+        "gate": "eligible",
+        "relation": "supports",
+        "decision": "review_required",
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260708-02",
+        "target_signal_id": "GS-MVH-20260708-03",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.84,
+        "information_coverage": 0.5,
+        "component_scores": {
+          "etiology": 1.0,
+          "geography": null,
+          "temporality": null,
+          "host": null,
+          "epidemiology": 0.7,
+          "shared_context": 0.0
+        },
+        "gate": "eligible",
+        "relation": "supports",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "review_required",
+        "merge_allowed": false
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-010",
+      "family": "hard_conflict",
+      "source_signal_id": "GS-MVH-20260526-02",
+      "target_signal_id": "GS-MVH-20260629-03",
+      "expected": {
+        "gate": "eligible",
+        "relation": "contradicts",
+        "decision": "rejected",
+        "merge_allowed": false,
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_genomic_incompatibility"
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260526-02",
+        "target_signal_id": "GS-MVH-20260629-03",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.764931,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 0.8875,
+          "geography": null,
+          "temporality": null,
+          "host": 0.5,
+          "epidemiology": 0.65,
+          "shared_context": 0.666667
+        },
+        "gate": "eligible",
+        "relation": "contradicts",
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_genomic_incompatibility",
+        "decision": "rejected",
+        "merge_allowed": false
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-011",
+      "family": "hard_conflict",
+      "source_signal_id": "GS-MVH-20260519-03",
+      "target_signal_id": "GS-MVH-20260629-03",
+      "expected": {
+        "gate": "eligible",
+        "relation": "contradicts",
+        "decision": "rejected",
+        "merge_allowed": false,
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_genomic_incompatibility"
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260519-03",
+        "target_signal_id": "GS-MVH-20260629-03",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.764931,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 0.8875,
+          "geography": null,
+          "temporality": null,
+          "host": 0.5,
+          "epidemiology": 0.65,
+          "shared_context": 0.666667
+        },
+        "gate": "eligible",
+        "relation": "contradicts",
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_genomic_incompatibility",
+        "decision": "rejected",
+        "merge_allowed": false
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-012",
+      "family": "ineligible_control",
+      "source_signal_id": "GS-MVH-20260504-07",
+      "target_signal_id": "GS-MVH-20260512-01",
+      "expected": {
+        "gate": "ineligible",
+        "relation": null,
+        "decision": null,
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260504-07",
+        "target_signal_id": "GS-MVH-20260512-01",
+        "eligible": false,
+        "source_eligible": false,
+        "target_eligible": true,
+        "score": null,
+        "information_coverage": 0.0,
+        "component_scores": {
+          "etiology": null,
+          "host": null,
+          "shared_context": null,
+          "geography": null,
+          "epidemiology": null,
+          "temporality": null
+        },
+        "gate": "ineligible",
+        "relation": null,
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": null,
+        "merge_allowed": false
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-013",
+      "family": "ineligible_control",
+      "source_signal_id": "GS-MVH-20260512-05",
+      "target_signal_id": "GS-MVH-20260519-01",
+      "expected": {
+        "gate": "ineligible",
+        "relation": null,
+        "decision": null,
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260512-05",
+        "target_signal_id": "GS-MVH-20260519-01",
+        "eligible": false,
+        "source_eligible": false,
+        "target_eligible": true,
+        "score": null,
+        "information_coverage": 0.0,
+        "component_scores": {
+          "etiology": null,
+          "host": null,
+          "shared_context": null,
+          "geography": null,
+          "epidemiology": null,
+          "temporality": null
+        },
+        "gate": "ineligible",
+        "relation": null,
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": null,
+        "merge_allowed": false
+      },
+      "order_invariant": true
+    },
+    {
+      "pair_id": "EM-V048-014",
+      "family": "ineligible_control",
+      "source_signal_id": "GS-MVH-20260504-06",
+      "target_signal_id": "GS-MVH-20260526-01",
+      "expected": {
+        "gate": "ineligible",
+        "relation": null,
+        "decision": null,
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "GS-MVH-20260504-06",
+        "target_signal_id": "GS-MVH-20260526-01",
+        "eligible": false,
+        "source_eligible": false,
+        "target_eligible": true,
+        "score": null,
+        "information_coverage": 0.0,
+        "component_scores": {
+          "etiology": null,
+          "host": null,
+          "shared_context": null,
+          "geography": null,
+          "epidemiology": null,
+          "temporality": null
+        },
+        "gate": "ineligible",
+        "relation": null,
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": null,
+        "merge_allowed": false
+      },
+      "order_invariant": true
+    }
+  ]
+}

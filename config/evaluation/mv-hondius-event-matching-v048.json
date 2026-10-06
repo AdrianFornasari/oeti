@@ -1,0 +1,256 @@
+{
+    "case_code":  "ARG-HANTA-MV-HONDIUS-2026",
+    "benchmark_version":  "0.4.8",
+    "benchmark_kind":  "event_matching",
+    "signal_source":  "adjudicated_gold",
+    "architecture":  "deterministic_pairwise_event_matching_v0.4.8",
+    "source_gold_documents":  [
+                                  "../../evaluation/gold/mv-hondius/2026-05-04-initial-notification.gold.json",
+                                  "../../evaluation/gold/mv-hondius/2026-05-12-ben-se17.gold.json",
+                                  "../../evaluation/gold/mv-hondius/2026-05-19-ben-se18.gold.json",
+                                  "../../evaluation/gold/mv-hondius/2026-05-26-ben-se19.gold.json",
+                                  "../../evaluation/gold/mv-hondius/2026-06-29-tierra-del-fuego-rodents.gold.json",
+                                  "../../evaluation/gold/mv-hondius/2026-07-08-mendoza-rodents.gold.json"
+                              ],
+    "eligibility":  {
+                        "eligible_signal_roles":  [
+                                                      "primary_event",
+                                                      "negative_evidence"
+                                                  ],
+                        "ineligible_signal_roles":  [
+                                                        "background_context",
+                                                        "surveillance_baseline"
+                                                    ],
+                        "short_circuit_ineligible":  true,
+                        "notes":  [
+                                      "Eligibility is evaluated before compatibility scoring.",
+                                      "Negative evidence remains eligible because it can refine or contradict an event hypothesis.",
+                                      "Background context and surveillance baselines must not create or merge events automatically."
+                                  ],
+                        "ineligible_signal_types":  [
+                                                        "official_alert"
+                                                    ]
+                    },
+    "scoring":  {
+                    "weights":  {
+                                    "etiology":  0.35,
+                                    "geography":  0.25,
+                                    "temporality":  0.15,
+                                    "host":  0.10,
+                                    "epidemiology":  0.10,
+                                    "shared_context":  0.05
+                                },
+                    "thresholds":  {
+                                       "auto_link_min":  0.80,
+                                       "review_min":  0.60
+                                   },
+                    "decision_rules":  {
+                                           "score_gte_auto_link_min":  "auto_linked",
+                                           "score_gte_review_min_and_lt_auto_link_min":  "review_required",
+                                           "score_lt_review_min":  "rejected",
+                                           "hard_conflict_blocks_auto_link":  true,
+                                           "hard_conflict_forces_rejected_merge":  true
+                                       }
+                },
+    "hard_conflict_policy":  {
+                                 "explicit_genomic_incompatibility":  true,
+                                 "explicit_official_non_relation":  true,
+                                 "explicit_source_refutation":  true,
+                                 "host_difference_alone":  false,
+                                 "domain_difference_alone":  false,
+                                 "geographic_difference_alone":  false,
+                                 "notes":  [
+                                               "A wildlife-human comparison is not a hard conflict by itself.",
+                                               "A genomic result explicitly stating that two signals are not related blocks automatic event fusion even when other dimensions are compatible."
+                                           ]
+                             },
+    "adjudicated_pairs":  [
+                              {
+                                  "pair_id":  "EM-V048-001",
+                                  "family":  "positive_continuity",
+                                  "source_signal_id":  "GS-MVH-20260504-02",
+                                  "target_signal_id":  "GS-MVH-20260512-01",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "refines",
+                                  "expected_merge_allowed":  true,
+                                  "expected_decision":  "auto_linked",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "The initial confirmed hantavirus case aboard MV Hondius is incorporated into the subsequent outbreak update."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-002",
+                                  "family":  "positive_continuity",
+                                  "source_signal_id":  "GS-MVH-20260512-01",
+                                  "target_signal_id":  "GS-MVH-20260519-01",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "refines",
+                                  "expected_merge_allowed":  true,
+                                  "expected_decision":  "auto_linked",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "The later outbreak count is a longitudinal update of the same MV Hondius outbreak."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-003",
+                                  "family":  "positive_continuity",
+                                  "source_signal_id":  "GS-MVH-20260519-01",
+                                  "target_signal_id":  "GS-MVH-20260526-01",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "refines",
+                                  "expected_merge_allowed":  true,
+                                  "expected_decision":  "auto_linked",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "The new confirmed case and updated cumulative counts continue the same outbreak."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-004",
+                                  "family":  "semantic_refinement",
+                                  "source_signal_id":  "GS-MVH-20260504-04",
+                                  "target_signal_id":  "GS-MVH-20260512-02",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "refines",
+                                  "expected_merge_allowed":  true,
+                                  "expected_decision":  "auto_linked",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "A pending laboratory investigation is later refined by PCR and genomic confirmation of Andes virus."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-005",
+                                  "family":  "semantic_refinement",
+                                  "source_signal_id":  "GS-MVH-20260504-03",
+                                  "target_signal_id":  "GS-MVH-20260519-02",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "refines",
+                                  "expected_merge_allowed":  true,
+                                  "expected_decision":  "review_required",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "Unknown transmission is later refined by evidence suggesting person-to-person transmission; sparse initial structured data warrants conservative review."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-006",
+                                  "family":  "semantic_refinement",
+                                  "source_signal_id":  "GS-MVH-20260512-03",
+                                  "target_signal_id":  "GS-MVH-20260526-02",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "duplicates",
+                                  "expected_merge_allowed":  true,
+                                  "expected_decision":  "auto_linked",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "Both signals report the same genomic relationship between the cruise virus and Neuquen 2018 strains."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-007",
+                                  "family":  "one_health_investigation",
+                                  "source_signal_id":  "GS-MVH-20260519-04",
+                                  "target_signal_id":  "GS-MVH-20260629-01",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "possibly_related",
+                                  "expected_merge_allowed":  false,
+                                  "expected_decision":  "review_required",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "The Tierra del Fuego wildlife finding arises in the investigation context but must not automatically become part of the human outbreak."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-008",
+                                  "family":  "one_health_investigation",
+                                  "source_signal_id":  "GS-MVH-20260504-05",
+                                  "target_signal_id":  "GS-MVH-20260708-02",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "possibly_related",
+                                  "expected_merge_allowed":  false,
+                                  "expected_decision":  "review_required",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "Both describe mobility relevant to the investigation, but ship itinerary and individual travel history are not sufficient alone for automatic event fusion."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-009",
+                                  "family":  "one_health_investigation",
+                                  "source_signal_id":  "GS-MVH-20260708-02",
+                                  "target_signal_id":  "GS-MVH-20260708-03",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "supports",
+                                  "expected_merge_allowed":  false,
+                                  "expected_decision":  "review_required",
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "The Malargue travel history motivates the environmental and wildlife investigation but does not prove exposure."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-010",
+                                  "family":  "hard_conflict",
+                                  "source_signal_id":  "GS-MVH-20260526-02",
+                                  "target_signal_id":  "GS-MVH-20260629-03",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "contradicts",
+                                  "expected_merge_allowed":  false,
+                                  "expected_decision":  "rejected",
+                                  "expected_hard_conflict":  true,
+                                  "expected_hard_conflict_reason":  "explicit_genomic_incompatibility",
+                                  "rationale":  "The rodent variant is explicitly reported as different from the variant observed in the human outbreak."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-011",
+                                  "family":  "hard_conflict",
+                                  "source_signal_id":  "GS-MVH-20260519-03",
+                                  "target_signal_id":  "GS-MVH-20260629-03",
+                                  "expected_gate":  "eligible",
+                                  "expected_relation":  "contradicts",
+                                  "expected_merge_allowed":  false,
+                                  "expected_decision":  "rejected",
+                                  "expected_hard_conflict":  true,
+                                  "expected_hard_conflict_reason":  "explicit_genomic_incompatibility",
+                                  "rationale":  "Similarity among human-case sequences must not override explicit evidence that the Tierra del Fuego rodent variant is different from the human outbreak variant."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-012",
+                                  "family":  "ineligible_control",
+                                  "source_signal_id":  "GS-MVH-20260504-07",
+                                  "target_signal_id":  "GS-MVH-20260512-01",
+                                  "expected_gate":  "ineligible",
+                                  "expected_relation":  null,
+                                  "expected_merge_allowed":  false,
+                                  "expected_decision":  null,
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "A surveillance baseline must be excluded before event compatibility scoring."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-013",
+                                  "family":  "ineligible_control",
+                                  "source_signal_id":  "GS-MVH-20260512-05",
+                                  "target_signal_id":  "GS-MVH-20260519-01",
+                                  "expected_gate":  "ineligible",
+                                  "expected_relation":  null,
+                                  "expected_merge_allowed":  false,
+                                  "expected_decision":  null,
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "National seasonal surveillance must not be fused with the MV Hondius outbreak."
+                              },
+                              {
+                                  "pair_id":  "EM-V048-014",
+                                  "family":  "ineligible_control",
+                                  "source_signal_id":  "GS-MVH-20260504-06",
+                                  "target_signal_id":  "GS-MVH-20260526-01",
+                                  "expected_gate":  "ineligible",
+                                  "expected_relation":  null,
+                                  "expected_merge_allowed":  false,
+                                  "expected_decision":  null,
+                                  "expected_hard_conflict":  false,
+                                  "rationale":  "Historical background context is excluded from automatic event matching."
+                              }
+                          ],
+    "release_thresholds":  {
+                               "ineligible_gate_accuracy":  1.0,
+                               "hard_conflict_recall":  1.0,
+                               "hard_conflict_false_auto_links":  0,
+                               "auto_link_precision":  1.0,
+                               "pair_decision_accuracy":  0.90,
+                               "relation_accuracy":  0.90,
+                               "order_invariance":  true
+                           },
+    "development_constraints":  [
+                                    "Do not modify extraction gold standards to improve event-matching metrics.",
+                                    "Do not modify extraction prompt or assembler semantics during the initial event-matcher benchmark.",
+                                    "Do not invoke an LLM for gold-on-gold event matching.",
+                                    "Do not persist benchmark event links to Supabase.",
+                                    "Do not lower release thresholds to obtain a pass.",
+                                    "Hard conflicts take precedence over compatibility score."
+                                ]
+}
