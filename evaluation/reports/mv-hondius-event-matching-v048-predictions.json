@@ -1,0 +1,900 @@
+{
+  "evaluation_schema_version": "0.1",
+  "benchmark_kind": "event_matching",
+  "benchmark_version": "0.4.8",
+  "case_code": "ARG-HANTA-MV-HONDIUS-2026",
+  "evaluated_pairs": 14,
+  "eligible_pairs": 11,
+  "ineligible_pairs": 3,
+  "expected_hard_conflicts": 2,
+  "predicted_auto_links": 5,
+  "aggregate": {
+    "ineligible_gate_accuracy": 1.0,
+    "hard_conflict_recall": 1.0,
+    "hard_conflict_reason_accuracy": 0.0,
+    "hard_conflict_false_auto_links": 0,
+    "auto_link_precision": 1.0,
+    "pair_decision_accuracy": 1.0,
+    "relation_accuracy": 1.0,
+    "order_invariance": true
+  },
+  "release_gate": {
+    "metrics_pass": true,
+    "event_matcher_validated": true,
+    "thresholds": {
+      "ineligible_gate_accuracy": 1.0,
+      "hard_conflict_recall": 1.0,
+      "hard_conflict_false_auto_links": 0,
+      "auto_link_precision": 1.0,
+      "pair_decision_accuracy": 0.9,
+      "relation_accuracy": 0.9,
+      "order_invariance": true
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "EM-V048-001",
+      "family": "positive_continuity",
+      "source_signal_id": "GS-MVH-20260504-02",
+      "target_signal_id": "GS-MVH-20260512-01",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-02",
+        "target_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-01",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.876923,
+        "information_coverage": 0.65,
+        "component_scores": {
+          "etiology": 0.8,
+          "geography": null,
+          "temporality": 1.0,
+          "host": null,
+          "epidemiology": 0.9,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-02",
+      "prediction_target_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-01",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-002",
+      "family": "positive_continuity",
+      "source_signal_id": "GS-MVH-20260512-01",
+      "target_signal_id": "GS-MVH-20260519-01",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-01",
+        "target_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-01",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.892308,
+        "information_coverage": 0.65,
+        "component_scores": {
+          "etiology": 0.8,
+          "geography": null,
+          "temporality": 1.0,
+          "host": null,
+          "epidemiology": 1.0,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-01",
+      "prediction_target_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-01",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-003",
+      "family": "positive_continuity",
+      "source_signal_id": "GS-MVH-20260519-01",
+      "target_signal_id": "GS-MVH-20260526-01",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-01",
+        "target_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-01",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.883333,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 0.8,
+          "geography": null,
+          "temporality": null,
+          "host": 1.0,
+          "epidemiology": 1.0,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-01",
+      "prediction_target_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-01",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-004",
+      "family": "semantic_refinement",
+      "source_signal_id": "GS-MVH-20260504-04",
+      "target_signal_id": "GS-MVH-20260512-02",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-04",
+        "target_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-02",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.87875,
+        "information_coverage": 0.5,
+        "component_scores": {
+          "etiology": 0.8875,
+          "geography": null,
+          "temporality": null,
+          "host": null,
+          "epidemiology": 0.95,
+          "shared_context": 0.675
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-04",
+      "prediction_target_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-02",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-005",
+      "family": "semantic_refinement",
+      "source_signal_id": "GS-MVH-20260504-03",
+      "target_signal_id": "GS-MVH-20260519-02",
+      "expected": {
+        "gate": "eligible",
+        "relation": "refines",
+        "decision": "review_required",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-03",
+        "target_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-03",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.86,
+        "information_coverage": 0.5,
+        "component_scores": {
+          "etiology": 0.8,
+          "geography": null,
+          "temporality": null,
+          "host": null,
+          "epidemiology": 1.0,
+          "shared_context": 1.0
+        },
+        "gate": "eligible",
+        "relation": "refines",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "review_required",
+        "merge_allowed": true
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-03",
+      "prediction_target_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-03",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-006",
+      "family": "semantic_refinement",
+      "source_signal_id": "GS-MVH-20260512-03",
+      "target_signal_id": "GS-MVH-20260526-02",
+      "expected": {
+        "gate": "eligible",
+        "relation": "duplicates",
+        "decision": "auto_linked",
+        "merge_allowed": true,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-03",
+        "target_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-02",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.916667,
+        "information_coverage": 0.3,
+        "component_scores": {
+          "etiology": null,
+          "geography": null,
+          "temporality": 1.0,
+          "host": null,
+          "epidemiology": 1.0,
+          "shared_context": 0.5
+        },
+        "gate": "eligible",
+        "relation": "duplicates",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "auto_linked",
+        "merge_allowed": true
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-03",
+      "prediction_target_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-02",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-007",
+      "family": "one_health_investigation",
+      "source_signal_id": "GS-MVH-20260519-04",
+      "target_signal_id": "GS-MVH-20260629-01",
+      "expected": {
+        "gate": "eligible",
+        "relation": "possibly_related",
+        "decision": "review_required",
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-04",
+        "target_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-01",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.796389,
+        "information_coverage": 0.75,
+        "component_scores": {
+          "etiology": 0.8875,
+          "geography": 0.8,
+          "temporality": null,
+          "host": null,
+          "epidemiology": 0.7,
+          "shared_context": 0.333333
+        },
+        "gate": "eligible",
+        "relation": "possibly_related",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "review_required",
+        "merge_allowed": false
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-04",
+      "prediction_target_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-01",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-008",
+      "family": "one_health_investigation",
+      "source_signal_id": "GS-MVH-20260504-05",
+      "target_signal_id": "GS-MVH-20260708-02",
+      "expected": {
+        "gate": "eligible",
+        "relation": "possibly_related",
+        "decision": "review_required",
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-05",
+        "target_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-04",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.75,
+        "information_coverage": 0.15,
+        "component_scores": {
+          "etiology": null,
+          "geography": null,
+          "temporality": null,
+          "host": null,
+          "epidemiology": 1.0,
+          "shared_context": 0.25
+        },
+        "gate": "eligible",
+        "relation": "possibly_related",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "review_required",
+        "merge_allowed": false
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-05",
+      "prediction_target_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-04",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-009",
+      "family": "one_health_investigation",
+      "source_signal_id": "GS-MVH-20260708-02",
+      "target_signal_id": "GS-MVH-20260708-03",
+      "expected": {
+        "gate": "eligible",
+        "relation": "supports",
+        "decision": "review_required",
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-04",
+        "target_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-03",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.7,
+        "information_coverage": 0.5,
+        "component_scores": {
+          "etiology": 0.8,
+          "geography": null,
+          "temporality": null,
+          "host": null,
+          "epidemiology": 0.7,
+          "shared_context": 0.0
+        },
+        "gate": "eligible",
+        "relation": "supports",
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": "review_required",
+        "merge_allowed": false
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-04",
+      "prediction_target_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-03",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-010",
+      "family": "hard_conflict",
+      "source_signal_id": "GS-MVH-20260526-02",
+      "target_signal_id": "GS-MVH-20260629-03",
+      "expected": {
+        "gate": "eligible",
+        "relation": "contradicts",
+        "decision": "rejected",
+        "merge_allowed": false,
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_genomic_incompatibility"
+      },
+      "actual": {
+        "source_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-02",
+        "target_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.544444,
+        "information_coverage": 0.15,
+        "component_scores": {
+          "etiology": null,
+          "geography": null,
+          "temporality": null,
+          "host": null,
+          "epidemiology": 0.65,
+          "shared_context": 0.333333
+        },
+        "gate": "eligible",
+        "relation": "contradicts",
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_official_non_relation",
+        "decision": "rejected",
+        "merge_allowed": false
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-02",
+      "prediction_target_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04",
+      "different_fields": [
+        "hard_conflict_reason"
+      ]
+    },
+    {
+      "pair_id": "EM-V048-011",
+      "family": "hard_conflict",
+      "source_signal_id": "GS-MVH-20260519-03",
+      "target_signal_id": "GS-MVH-20260629-03",
+      "expected": {
+        "gate": "eligible",
+        "relation": "contradicts",
+        "decision": "rejected",
+        "merge_allowed": false,
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_genomic_incompatibility"
+      },
+      "actual": {
+        "source_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-02",
+        "target_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04",
+        "eligible": true,
+        "source_eligible": true,
+        "target_eligible": true,
+        "score": 0.737153,
+        "information_coverage": 0.6,
+        "component_scores": {
+          "etiology": 0.8875,
+          "geography": null,
+          "temporality": null,
+          "host": 0.5,
+          "epidemiology": 0.65,
+          "shared_context": 0.333333
+        },
+        "gate": "eligible",
+        "relation": "contradicts",
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_official_non_relation",
+        "decision": "rejected",
+        "merge_allowed": false
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-02",
+      "prediction_target_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04",
+      "different_fields": [
+        "hard_conflict_reason"
+      ]
+    },
+    {
+      "pair_id": "EM-V048-012",
+      "family": "ineligible_control",
+      "source_signal_id": "GS-MVH-20260504-07",
+      "target_signal_id": "GS-MVH-20260512-01",
+      "expected": {
+        "gate": "ineligible",
+        "relation": null,
+        "decision": null,
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-07",
+        "target_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-01",
+        "eligible": false,
+        "source_eligible": false,
+        "target_eligible": true,
+        "score": null,
+        "information_coverage": 0.0,
+        "component_scores": {
+          "temporality": null,
+          "shared_context": null,
+          "host": null,
+          "geography": null,
+          "epidemiology": null,
+          "etiology": null
+        },
+        "gate": "ineligible",
+        "relation": null,
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": null,
+        "merge_allowed": false
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-07",
+      "prediction_target_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-01",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-013",
+      "family": "ineligible_control",
+      "source_signal_id": "GS-MVH-20260512-05",
+      "target_signal_id": "GS-MVH-20260519-01",
+      "expected": {
+        "gate": "ineligible",
+        "relation": null,
+        "decision": null,
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-05",
+        "target_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-01",
+        "eligible": false,
+        "source_eligible": false,
+        "target_eligible": true,
+        "score": null,
+        "information_coverage": 0.0,
+        "component_scores": {
+          "temporality": null,
+          "shared_context": null,
+          "host": null,
+          "geography": null,
+          "epidemiology": null,
+          "etiology": null
+        },
+        "gate": "ineligible",
+        "relation": null,
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": null,
+        "merge_allowed": false
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-05",
+      "prediction_target_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-01",
+      "different_fields": []
+    },
+    {
+      "pair_id": "EM-V048-014",
+      "family": "ineligible_control",
+      "source_signal_id": "GS-MVH-20260504-06",
+      "target_signal_id": "GS-MVH-20260526-01",
+      "expected": {
+        "gate": "ineligible",
+        "relation": null,
+        "decision": null,
+        "merge_allowed": false,
+        "hard_conflict": false,
+        "hard_conflict_reason": null
+      },
+      "actual": {
+        "source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-06",
+        "target_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-01",
+        "eligible": false,
+        "source_eligible": false,
+        "target_eligible": true,
+        "score": null,
+        "information_coverage": 0.0,
+        "component_scores": {
+          "temporality": null,
+          "shared_context": null,
+          "host": null,
+          "geography": null,
+          "epidemiology": null,
+          "etiology": null
+        },
+        "gate": "ineligible",
+        "relation": null,
+        "hard_conflict": false,
+        "hard_conflict_reason": null,
+        "decision": null,
+        "merge_allowed": false
+      },
+      "order_invariant": true,
+      "prediction_source_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-06",
+      "prediction_target_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-01",
+      "different_fields": []
+    }
+  ],
+  "benchmark_mode": "automatic_predictions_v047_on_v048_event_matcher",
+  "source_corpus_benchmark_version": "0.4.7",
+  "source_prediction_architecture": "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.6",
+  "deterministic_reassembly": {
+    "architecture": "atomic_claims_v0.1+deterministic_signal_assembly_v0.4.6",
+    "llm_invoked": false
+  },
+  "mapping_summary": {
+    "mapped_gold_signals": 29,
+    "pair_reference_gold_signals": 20,
+    "missing_pair_gold_signals": [],
+    "unmatched_gold_count": 1,
+    "unmatched_prediction_count": 0,
+    "unmatched_gold": [
+      {
+        "gold_signal_id": "GS-MVH-20260512-06",
+        "signal_role": "surveillance_baseline",
+        "signal_type": "case_report",
+        "summary": "El NOA registraba la mayor incidencia, 0,60 por 100.000 habitantes, con 36 casos confirmados.",
+        "gold_path": "evaluation\\gold\\mv-hondius\\2026-05-12-ben-se17.gold.json"
+      }
+    ],
+    "unmatched_prediction": [],
+    "documents": [
+      {
+        "label": "Notificación inicial y monitoreo nacional - 04/05/2026",
+        "gold_signals": 7,
+        "predicted_signals": 7,
+        "matched_signals": 7,
+        "matches": [
+          {
+            "gold_signal_id": "GS-MVH-20260504-01",
+            "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-01",
+            "match_score": 0.78
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260504-02",
+            "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-02",
+            "match_score": 1.0
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260504-03",
+            "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-03",
+            "match_score": 0.9
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260504-04",
+            "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-04",
+            "match_score": 0.753333
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260504-05",
+            "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-05",
+            "match_score": 0.893333
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260504-06",
+            "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-06",
+            "match_score": 0.74
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260504-07",
+            "predicted_signal_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3-asm-07",
+            "match_score": 0.74
+          }
+        ]
+      },
+      {
+        "label": "BEN SE17 - 12/05/2026",
+        "gold_signals": 6,
+        "predicted_signals": 5,
+        "matched_signals": 5,
+        "matches": [
+          {
+            "gold_signal_id": "GS-MVH-20260512-01",
+            "predicted_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-01",
+            "match_score": 0.8
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260512-02",
+            "predicted_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-02",
+            "match_score": 0.82
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260512-03",
+            "predicted_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-03",
+            "match_score": 0.633333
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260512-04",
+            "predicted_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-04",
+            "match_score": 0.78
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260512-05",
+            "predicted_signal_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9-asm-05",
+            "match_score": 0.72
+          }
+        ]
+      },
+      {
+        "label": "BEN SE18 - 19/05/2026",
+        "gold_signals": 5,
+        "predicted_signals": 5,
+        "matched_signals": 5,
+        "matches": [
+          {
+            "gold_signal_id": "GS-MVH-20260519-01",
+            "predicted_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-01",
+            "match_score": 0.64
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260519-02",
+            "predicted_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-03",
+            "match_score": 0.76
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260519-03",
+            "predicted_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-02",
+            "match_score": 0.82
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260519-04",
+            "predicted_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-04",
+            "match_score": 0.896
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260519-05",
+            "predicted_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-05",
+            "match_score": 0.64
+          }
+        ]
+      },
+      {
+        "label": "BEN SE19 - 26/05/2026",
+        "gold_signals": 4,
+        "predicted_signals": 4,
+        "matched_signals": 4,
+        "matches": [
+          {
+            "gold_signal_id": "GS-MVH-20260526-01",
+            "predicted_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-01",
+            "match_score": 0.82
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260526-02",
+            "predicted_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-02",
+            "match_score": 0.64
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260526-03",
+            "predicted_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-03",
+            "match_score": 0.9
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260526-04",
+            "predicted_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-04",
+            "match_score": 0.9
+          }
+        ]
+      },
+      {
+        "label": "Roedores Tierra del Fuego - evidencia genómica no relacionada - 29/06/2026",
+        "gold_signals": 4,
+        "predicted_signals": 4,
+        "matched_signals": 4,
+        "matches": [
+          {
+            "gold_signal_id": "GS-MVH-20260629-01",
+            "predicted_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-01",
+            "match_score": 0.84
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260629-02",
+            "predicted_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-02",
+            "match_score": 0.86
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260629-03",
+            "predicted_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04",
+            "match_score": 0.796
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260629-04",
+            "predicted_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-03",
+            "match_score": 0.66
+          }
+        ]
+      },
+      {
+        "label": "Roedores Mendoza - evidencia negativa - 08/07/2026",
+        "gold_signals": 4,
+        "predicted_signals": 4,
+        "matched_signals": 4,
+        "matches": [
+          {
+            "gold_signal_id": "GS-MVH-20260708-01",
+            "predicted_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-01",
+            "match_score": 0.82
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260708-02",
+            "predicted_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-04",
+            "match_score": 0.866667
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260708-03",
+            "predicted_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-03",
+            "match_score": 0.793333
+          },
+          {
+            "gold_signal_id": "GS-MVH-20260708-04",
+            "predicted_signal_id": "335b3e67-b4b0-4b75-a99a-e3100ab2a080-asm-02",
+            "match_score": 0.64
+          }
+        ]
+      }
+    ]
+  },
+  "mismatch_summary": {
+    "total": 2,
+    "functional": 0,
+    "explanation_only": 2
+  },
+  "mismatches": [
+    {
+      "pair_id": "EM-V048-010",
+      "family": "hard_conflict",
+      "mismatch_scope": "explanation_only",
+      "gold_source_signal_id": "GS-MVH-20260526-02",
+      "gold_target_signal_id": "GS-MVH-20260629-03",
+      "predicted_source_signal_id": "8a4b21d0-b93c-4339-9193-d1e4817e9c7b-asm-02",
+      "predicted_target_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04",
+      "score": 0.544444,
+      "information_coverage": 0.15,
+      "different_fields": [
+        "hard_conflict_reason"
+      ],
+      "expected": {
+        "gate": "eligible",
+        "relation": "contradicts",
+        "decision": "rejected",
+        "merge_allowed": false,
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_genomic_incompatibility"
+      },
+      "actual": {
+        "gate": "eligible",
+        "relation": "contradicts",
+        "decision": "rejected",
+        "merge_allowed": false,
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_official_non_relation"
+      }
+    },
+    {
+      "pair_id": "EM-V048-011",
+      "family": "hard_conflict",
+      "mismatch_scope": "explanation_only",
+      "gold_source_signal_id": "GS-MVH-20260519-03",
+      "gold_target_signal_id": "GS-MVH-20260629-03",
+      "predicted_source_signal_id": "bf2deabc-a495-431c-89cf-e86ca9720db9-asm-02",
+      "predicted_target_signal_id": "8b333d10-4ef2-4aa3-b61b-ccd1f2ab3784-asm-04",
+      "score": 0.737153,
+      "information_coverage": 0.6,
+      "different_fields": [
+        "hard_conflict_reason"
+      ],
+      "expected": {
+        "gate": "eligible",
+        "relation": "contradicts",
+        "decision": "rejected",
+        "merge_allowed": false,
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_genomic_incompatibility"
+      },
+      "actual": {
+        "gate": "eligible",
+        "relation": "contradicts",
+        "decision": "rejected",
+        "merge_allowed": false,
+        "hard_conflict": true,
+        "hard_conflict_reason": "explicit_official_non_relation"
+      }
+    }
+  ]
+}
