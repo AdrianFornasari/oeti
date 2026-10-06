@@ -571,7 +571,7 @@ def test_v048_event_geography_ignores_laboratory_locations():
         ],
         "locations": [
             {
-                "country": "SudÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡frica",
+                "country": "SudÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡frica",
                 "country_iso2": "ZA",
                 "role": "laboratory_location",
             }
@@ -1059,6 +1059,13 @@ def test_v048_aggregate_metrics_are_perfect_on_adjudicated_pairs():
     assert (
         aggregate[
             "hard_conflict_recall"
+        ]
+        == 1.0
+    )
+
+    assert (
+        aggregate[
+            "hard_conflict_reason_accuracy"
         ]
         == 1.0
     )

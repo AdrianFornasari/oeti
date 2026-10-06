@@ -1943,7 +1943,7 @@ def score_signal_pair_components(
     }
 
 _NON_RELATION_TEXT_MARKERS = (
-    "sin relaciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n",
+    "sin relaciÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³n",
     "sin relacion",
     "no relacionado",
     "no relacionada",
@@ -1951,7 +1951,7 @@ _NON_RELATION_TEXT_MARKERS = (
     "no relacionadas",
     "diferente de",
     "descartar",
-    "descartÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³",
+    "descartÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³",
     "descarto",
     "not related",
     "unrelated",
@@ -2626,6 +2626,8 @@ def evaluate_event_matching_benchmark(
 
     expected_hard_conflicts = 0
     detected_hard_conflicts = 0
+    expected_hard_conflict_reasons = 0
+    correct_hard_conflict_reasons = 0
     hard_conflict_false_auto_links = 0
 
     predicted_auto_links = 0
@@ -2698,6 +2700,19 @@ def evaluate_event_matching_benchmark(
             if result["hard_conflict"]:
                 detected_hard_conflicts += 1
 
+            expected_reason = pair.get(
+                "expected_hard_conflict_reason"
+            )
+
+            if expected_reason is not None:
+                expected_hard_conflict_reasons += 1
+
+                if (
+                    result["hard_conflict_reason"]
+                    == expected_reason
+                ):
+                    correct_hard_conflict_reasons += 1
+
             if result["decision"] == "auto_linked":
                 hard_conflict_false_auto_links += 1
 
@@ -2765,6 +2780,11 @@ def evaluate_event_matching_benchmark(
         expected_hard_conflicts,
     )
 
+    hard_conflict_reason_accuracy = _ratio(
+        correct_hard_conflict_reasons,
+        expected_hard_conflict_reasons,
+    )
+
     auto_link_precision = _ratio(
         correct_auto_links,
         predicted_auto_links,
@@ -2793,6 +2813,9 @@ def evaluate_event_matching_benchmark(
         ),
         "hard_conflict_recall": (
             hard_conflict_recall
+        ),
+        "hard_conflict_reason_accuracy": (
+            hard_conflict_reason_accuracy
         ),
         "hard_conflict_false_auto_links": (
             hard_conflict_false_auto_links
