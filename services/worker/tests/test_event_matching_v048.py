@@ -571,7 +571,7 @@ def test_v048_event_geography_ignores_laboratory_locations():
         ],
         "locations": [
             {
-                "country": "SudÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡frica",
+                "country": "SudÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡frica",
                 "country_iso2": "ZA",
                 "role": "laboratory_location",
             }
@@ -1362,6 +1362,136 @@ def test_v048_cli_writes_reproducible_event_matching_report(
             "metrics_pass"
         ]
         is True
+    )
+
+    assert (
+        written[
+            "release_gate"
+        ][
+            "event_matcher_validated"
+        ]
+        is True
+    )
+
+def test_v048_predictions_cli_writes_reproducible_report(
+    tmp_path,
+    monkeypatch,
+    capsys,
+):
+    import sys
+
+    from onehealth_worker.__main__ import main
+
+    output = (
+        tmp_path
+        / "event-matching-v048-predictions.json"
+    )
+
+    corpus_manifest = (
+        MANIFEST.parent
+        / "mv-hondius-gold-standard-v047.json"
+    )
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "onehealth-worker",
+            "evaluate-event-matching-predictions",
+            "--event-manifest",
+            str(MANIFEST),
+            "--corpus-manifest",
+            str(corpus_manifest),
+            "--output",
+            str(output),
+        ],
+    )
+
+    main()
+
+    assert output.exists()
+
+    written = json.loads(
+        output.read_text(
+            encoding="utf-8"
+        )
+    )
+
+    printed = json.loads(
+        capsys.readouterr().out
+    )
+
+    assert written == printed
+
+    assert (
+        written[
+            "benchmark_mode"
+        ]
+        == (
+            "automatic_predictions_v047_"
+            "on_v048_event_matcher"
+        )
+    )
+
+    assert (
+        written[
+            "evaluated_pairs"
+        ]
+        == 14
+    )
+
+    assert (
+        written[
+            "mapping_summary"
+        ][
+            "mapped_gold_signals"
+        ]
+        == 29
+    )
+
+    assert (
+        written[
+            "mapping_summary"
+        ][
+            "missing_pair_gold_signals"
+        ]
+        == []
+    )
+
+    assert (
+        written[
+            "aggregate"
+        ][
+            "hard_conflict_recall"
+        ]
+        == 1.0
+    )
+
+    assert (
+        written[
+            "aggregate"
+        ][
+            "hard_conflict_reason_accuracy"
+        ]
+        == 0.0
+    )
+
+    assert (
+        written[
+            "mismatch_summary"
+        ][
+            "functional"
+        ]
+        == 0
+    )
+
+    assert (
+        written[
+            "mismatch_summary"
+        ][
+            "explanation_only"
+        ]
+        == 2
     )
 
     assert (
