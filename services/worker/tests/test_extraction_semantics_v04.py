@@ -51,7 +51,68 @@ def test_literal_evidence_rejects_ellipsis_or_paraphrase():
 
 
 def test_event_matching_gate_is_deterministic():
-    assert event_matching_eligible({"signal_type":"official_alert","signal_role":"primary_event"}) is False
-    assert event_matching_eligible({"signal_type":"case_report","signal_role":"surveillance_baseline"}) is False
-    assert event_matching_eligible({"signal_type":"laboratory_result","signal_role":"primary_event"}) is True
-    assert event_matching_eligible({"signal_type":"pathogen_detection","signal_role":"negative_evidence"}) is True
+    resolved_disease = {
+        "canonical_name": "Hantavirus disease",
+        "normalization_status": "resolved",
+    }
+
+    resolved_pathogen = {
+        "canonical_name": "Andes virus",
+        "normalization_status": "resolved",
+    }
+
+    assert event_matching_eligible(
+        {
+            "signal_type": "official_alert",
+            "signal_role": "primary_event",
+            "disease": resolved_disease,
+        }
+    ) is False
+
+    assert event_matching_eligible(
+        {
+            "signal_type": "case_report",
+            "signal_role": "surveillance_baseline",
+            "disease": resolved_disease,
+        }
+    ) is False
+
+    assert event_matching_eligible(
+        {
+            "signal_type": "laboratory_result",
+            "signal_role": "primary_event",
+            "disease": resolved_disease,
+        }
+    ) is True
+
+    assert event_matching_eligible(
+        {
+            "signal_type": "pathogen_detection",
+            "signal_role": "negative_evidence",
+            "pathogen": resolved_pathogen,
+        }
+    ) is True
+
+
+def test_event_matching_gate_blocks_unresolved_etiology():
+    assert event_matching_eligible(
+        {
+            "signal_type": "outbreak",
+            "signal_role": "primary_event",
+            "disease": {
+                "canonical_name": None,
+                "normalization_status": "unresolved",
+            },
+            "pathogen": {
+                "canonical_name": None,
+                "normalization_status": "unresolved",
+            },
+        }
+    ) is False
+
+    assert event_matching_eligible(
+        {
+            "signal_type": "outbreak",
+            "signal_role": "primary_event",
+        }
+    ) is False

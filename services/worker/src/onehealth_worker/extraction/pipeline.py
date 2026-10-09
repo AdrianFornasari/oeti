@@ -6,6 +6,7 @@ from typing import Any
 
 from .assembly_v046 import assemble_claims_payload
 from .normalization import normalize_extraction_payload
+from .signal_semantics_v049 import harden_signal_semantics_v049
 from .openai_provider import OpenAIResponsesProvider
 from .prompt import SYSTEM_INSTRUCTIONS, build_document_input
 from .repository import ExtractionRepository
@@ -73,6 +74,7 @@ def extract_raw_item(
 
         payload = assemble_claims_payload(claims_payload)
         payload = normalize_extraction_payload(payload)
+        payload = harden_signal_semantics_v049(payload)
         validate_extraction(payload, signal_schema)
         _validate_document_binding(payload, document.raw_item_id)
         validate_literal_evidence(payload, document.raw_text)
