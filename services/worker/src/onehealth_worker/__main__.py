@@ -4,6 +4,7 @@ import argparse
 import json
 from dataclasses import asdict
 from pathlib import Path
+from uuid import UUID
 
 from .evaluation.corpus import evaluate_corpus, evaluate_file
 
@@ -94,6 +95,13 @@ def _parser() -> argparse.ArgumentParser:
     extract_eval.add_argument("--provider", default=None, help="Default: LLM_PROVIDER")
     extract_eval.add_argument("--model", default=None, help="Default: LLM_MODEL")
     extract_eval.add_argument("--force", action="store_true", help="Regenera predicciones ya existentes")
+
+    plan_cohorts = sub.add_parser(
+        "plan-event-creation-cohorts",
+        help="Planifica cohortes desde relaciones persistidas, sin escribir en la base",
+    )
+    plan_cohorts.add_argument("--relation-id", required=True, action="append", type=UUID)
+    plan_cohorts.add_argument("--output", type=Path, default=None)
 
     return parser
 
@@ -188,6 +196,18 @@ def main() -> None:
         return
     from .config import Settings
     settings = Settings()
+
+    if args.command == "plan-event-creation-cohorts":
+        from .evaluation.event_creation_command_v049 import plan_event_creation_cohorts
+        report = plan_event_creation_cohorts(
+            settings.database_url, [str(identifier) for identifier in args.relation_id],
+        )
+        serialized = json.dumps(report, ensure_ascii=False, indent=2)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(serialized, encoding="utf-8")
+        print(serialized)
+        return
 
     if args.command == "ingest-url":
         from .ingestion.pipeline import ingest_html_url
