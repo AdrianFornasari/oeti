@@ -84,6 +84,39 @@ def counts(repo):
         return conn.execute("select (select count(*) from public.events) as events, (select count(*) from public.event_signals) as memberships").fetchone()
 
 
+def test_postgres_cohort_command_is_read_only_and_uses_repeatable_read(cohort, monkeypatch):
+    from onehealth_worker.evaluation import event_creation_command_v049 as command
+    repo, _, _, relation_ids = cohort
+    before = snapshot(repo)
+    original = command.EventCreationPlanner.plan_cohorts
+
+    def inspect_transaction(planner, identifiers):
+        with planner.repository.connection() as conn:
+            row = conn.execute("select current_setting('transaction_read_only') as ro, current_setting('transaction_isolation') as iso").fetchone()
+            assert row == {'ro': 'on', 'iso': 'repeatable read'}
+        return original(planner, identifiers)
+
+    monkeypatch.setattr(command.EventCreationPlanner, 'plan_cohorts', inspect_transaction)
+    report = command.plan_event_creation_cohorts(repo.database_url, [str(i) for i in relation_ids])
+    assert report['summary']['ready_to_create'] == 1
+    assert snapshot(repo) == before
+
+
+def test_postgres_cohort_command_database_rejects_accidental_write(cohort, monkeypatch):
+    from onehealth_worker.evaluation import event_creation_command_v049 as command
+    repo, _, _, relation_ids = cohort
+    before = snapshot(repo)
+
+    def unexpected_write(planner, identifiers):
+        with planner.repository.connection() as conn:
+            conn.execute("delete from public.events")
+
+    monkeypatch.setattr(command.EventCreationPlanner, 'plan_cohorts', unexpected_write)
+    with pytest.raises(psycopg.errors.ReadOnlySqlTransaction):
+        command.plan_event_creation_cohorts(repo.database_url, [str(i) for i in relation_ids])
+    assert snapshot(repo) == before
+
+
 def snapshot(repo):
     with repo.connection() as conn:
         return conn.execute("select (select jsonb_agg(e order by id) from public.events e) as events, (select jsonb_agg(es order by signal_id) from public.event_signals es) as memberships").fetchone()
