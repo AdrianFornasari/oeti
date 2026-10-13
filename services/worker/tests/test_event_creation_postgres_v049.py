@@ -122,6 +122,74 @@ def snapshot(repo):
         return conn.execute("select (select jsonb_agg(e order by id) from public.events e) as events, (select jsonb_agg(es order by signal_id) from public.event_signals es) as memberships").fetchone()
 
 
+def test_postgres_executor_creates_and_replays_reviewed_plan(cohort):
+    from onehealth_worker.evaluation.event_creation_executor_v049 import EventCreationExecutor
+    repo, seed, _, relation_ids = cohort
+    report = EventCreationPlanner(repo).plan_cohorts([str(i) for i in relation_ids])
+    executor = EventCreationExecutor(repo)
+    before = snapshot(repo)
+    assert executor.execute_planned_cohort(report=report, expected_event_code=seed['event_code'])['status'] == 'ready_to_create'
+    assert snapshot(repo) == before
+    created = executor.execute_planned_cohort(report=report, expected_event_code=seed['event_code'], dry_run=False)
+    assert created['status'] == 'created'
+    assert list(counts(repo).values()) == [1, 5]
+    after = snapshot(repo)
+    replay = executor.execute_planned_cohort(report=report, expected_event_code=seed['event_code'], dry_run=False)
+    assert replay['status'] == 'already_exists'
+    assert replay['event_id'] == created['event_id']
+    assert snapshot(repo) == after
+    existing_report = EventCreationPlanner(repo).plan_cohorts([str(i) for i in relation_ids])
+    assert executor.execute_planned_cohort(report=existing_report, expected_event_code=seed['event_code'], dry_run=False)['status'] == 'already_exists'
+    assert snapshot(repo) == after
+
+
+@pytest.mark.parametrize('change', ['signal', 'manual_membership'])
+def test_postgres_executor_revalidates_obsolete_plan(cohort, change):
+    from onehealth_worker.evaluation.event_creation_executor_v049 import EventCreationExecutor
+    repo, seed, ids, relation_ids = cohort
+    report = EventCreationPlanner(repo).plan_cohorts([str(i) for i in relation_ids])
+    with repo.connection() as conn:
+        if change == 'signal':
+            conn.execute('update public.signals set event_matching_eligible=false where id=%s', (ids[0],))
+        else:
+            event_id = conn.execute("insert into public.events(event_code,title) values('manual','test') returning id").fetchone()['id']
+            conn.execute("insert into public.event_signals(event_id,signal_id,match_decision) values(%s,%s,'manual_linked')", (event_id, ids[0]))
+    before = snapshot(repo)
+    result = EventCreationExecutor(repo).execute_planned_cohort(report=report, expected_event_code=seed['event_code'], dry_run=False)
+    assert result['status'] == 'blocked'
+    assert snapshot(repo) == before
+
+
+def test_postgres_executor_rolls_back_partial_failure(cohort):
+    from onehealth_worker.evaluation.event_creation_executor_v049 import EventCreationExecutor
+    repo, seed, _, relation_ids = cohort
+    report = EventCreationPlanner(repo).plan_cohorts([str(i) for i in relation_ids])
+    with repo.connection() as conn:
+        conn.execute("""create function public.fail_executor_membership() returns trigger language plpgsql as $$
+            begin
+              if (select count(*) from public.event_signals) >= 2 then
+                raise exception 'executor membership failure';
+              end if;
+              return new;
+            end $$;
+            create trigger test_executor_failure before insert on public.event_signals
+            for each row execute function public.fail_executor_membership();""")
+    with pytest.raises(psycopg.errors.RaiseException, match='executor membership failure'):
+        EventCreationExecutor(repo).execute_planned_cohort(report=report, expected_event_code=seed['event_code'], dry_run=False)
+    assert list(counts(repo).values()) == [0, 0]
+
+
+def test_postgres_executor_requires_repository_write_enable(cohort):
+    from onehealth_worker.evaluation.event_creation_executor_v049 import EventCreationExecutor
+    repo, seed, _, relation_ids = cohort
+    report = EventCreationPlanner(repo).plan_cohorts([str(i) for i in relation_ids])
+    disabled_repo = EventMatchingRepository(repo.database_url)
+    with pytest.raises(RuntimeError, match='not enabled'):
+        EventCreationExecutor(disabled_repo).execute_planned_cohort(report=report, expected_event_code=seed['event_code'], dry_run=False)
+    assert disabled_repo.event_creation_writes_enabled is False
+    assert list(counts(repo).values()) == [0, 0]
+
+
 def test_postgres_creation_replay_and_read_only_dry_run(cohort):
     repo, seed, _, relation_ids = cohort
     assert seed["domains_present"] == ["human"]
