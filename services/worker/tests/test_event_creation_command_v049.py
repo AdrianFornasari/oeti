@@ -118,3 +118,85 @@ def test_validate_cli_rejects_overwriting_reviewed_plan(monkeypatch, tmp_path):
     with pytest.raises(ValueError, match='entrada'):
         cli.main()
     assert path.read_text(encoding='utf-8') == '{"mode":"plan_only"}'
+
+
+def test_execute_command_defaults_to_existing_read_only_path(monkeypatch):
+    calls = []
+    def validate(*args):
+        calls.append(args)
+        return {'status': 'ready_to_create', 'dry_run': True}
+    monkeypatch.setattr(command, 'validate_event_creation_plan', validate)
+    plan = {'mode': 'plan_only'}
+    assert command.execute_event_creation_plan('unused', plan, 'reviewed')['dry_run'] is True
+    assert calls == [('unused', plan, 'reviewed')]
+
+
+def test_execute_command_explicitly_enables_only_its_repository(monkeypatch):
+    repositories = []
+    class Repository:
+        def __init__(self, dsn, *, event_creation_writes_enabled=False):
+            assert dsn == 'unused'
+            self.enabled = event_creation_writes_enabled
+            repositories.append(self)
+    class Executor:
+        def __init__(self, repository): self.repository = repository
+        def execute_planned_cohort(self, **kwargs):
+            assert self.repository.enabled is True
+            assert kwargs == {'report': {'mode': 'plan_only'}, 'expected_event_code': 'reviewed', 'dry_run': False}
+            return {'status': 'created', 'dry_run': False}
+    monkeypatch.setattr(command, 'EventMatchingRepository', Repository)
+    monkeypatch.setattr(command, 'EventCreationExecutor', Executor)
+    assert command.execute_event_creation_plan('unused', {'mode': 'plan_only'}, 'reviewed', execute=True)['status'] == 'created'
+    assert len(repositories) == 1
+
+
+@pytest.mark.parametrize('execute', [False, True])
+def test_execute_cli_forwards_explicit_flag_and_preserves_plan(monkeypatch, tmp_path, capsys, execute):
+    from onehealth_worker import config
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    path, output = tmp_path / 'plan.json', tmp_path / 'result.json'
+    original = '{"mode":"plan_only"}'
+    path.write_text(original, encoding='utf-8')
+    def run(dsn, report, code, *, execute):
+        assert dsn == 'unused' and report == {'mode': 'plan_only'} and code == 'reviewed'
+        return {'status': 'created' if execute else 'ready_to_create', 'dry_run': not execute}
+    monkeypatch.setattr(command, 'execute_event_creation_plan', run)
+    arguments = ['worker', 'execute-event-creation-plan', '--plan-file', str(path),
+        '--event-code', 'reviewed', '--output', str(output)]
+    if execute: arguments.append('--execute')
+    monkeypatch.setattr('sys.argv', arguments)
+    cli.main()
+    result = json.loads(capsys.readouterr().out)
+    assert result['dry_run'] is (not execute)
+    assert json.loads(output.read_text(encoding='utf-8')) == result
+    assert path.read_text(encoding='utf-8') == original
+
+
+def test_execute_cli_output_failure_does_not_repeat_execution(monkeypatch, tmp_path):
+    from onehealth_worker import config
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    path = tmp_path / 'plan.json'
+    path.write_text('{"mode":"plan_only"}', encoding='utf-8')
+    calls = []
+    def run(*args, **kwargs):
+        calls.append(kwargs)
+        return {'status': 'created', 'dry_run': False}
+    monkeypatch.setattr(command, 'execute_event_creation_plan', run)
+    monkeypatch.setattr('sys.argv', ['worker', 'execute-event-creation-plan', '--plan-file', str(path),
+        '--event-code', 'reviewed', '--execute', '--output', str(tmp_path)])
+    with pytest.raises(OSError): cli.main()
+    assert calls == [{'execute': True}]
+
+
+def test_execute_cli_rejects_overwriting_plan_before_execution(monkeypatch, tmp_path):
+    from onehealth_worker import config
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    path = tmp_path / 'plan.json'
+    path.write_text('{"mode":"plan_only"}', encoding='utf-8')
+    calls = []
+    monkeypatch.setattr(command, 'execute_event_creation_plan', lambda *args, **kwargs: calls.append(kwargs))
+    monkeypatch.setattr('sys.argv', ['worker', 'execute-event-creation-plan', '--plan-file', str(path),
+        '--event-code', 'reviewed', '--execute', '--output', str(path)])
+    with pytest.raises(ValueError): cli.main()
+    assert calls == []
+    assert path.read_text(encoding='utf-8') == '{"mode":"plan_only"}'

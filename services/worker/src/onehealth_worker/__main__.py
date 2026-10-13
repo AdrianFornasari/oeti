@@ -110,6 +110,14 @@ def _parser() -> argparse.ArgumentParser:
     validate_plan.add_argument("--event-code", required=True)
     validate_plan.add_argument("--output", type=Path, default=None)
 
+    execute_plan = sub.add_parser(
+        "execute-event-creation-plan", help="Revalida o ejecuta explícitamente una cohorte revisada",
+    )
+    execute_plan.add_argument("--plan-file", required=True, type=Path)
+    execute_plan.add_argument("--event-code", required=True)
+    execute_plan.add_argument("--output", type=Path, default=None)
+    execute_plan.add_argument("--execute", action="store_true", help="Escribe una sola cohorte; sin este flag solo revalida")
+
     return parser
 
 
@@ -203,6 +211,21 @@ def main() -> None:
         return
     from .config import Settings
     settings = Settings()
+
+    if args.command == "execute-event-creation-plan":
+        from .evaluation.event_creation_command_v049 import execute_event_creation_plan
+        if args.output and args.output.resolve() == args.plan_file.resolve():
+            raise ValueError("El informe de entrada no puede ser el archivo de salida.")
+        report = json.loads(args.plan_file.read_text(encoding="utf-8"))
+        result = execute_event_creation_plan(
+            settings.database_url, report, args.event_code, execute=args.execute,
+        )
+        serialized = json.dumps(result, ensure_ascii=False, indent=2)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(serialized, encoding="utf-8")
+        print(serialized)
+        return
 
     if args.command == "validate-event-creation-plan":
         from .evaluation.event_creation_command_v049 import validate_event_creation_plan

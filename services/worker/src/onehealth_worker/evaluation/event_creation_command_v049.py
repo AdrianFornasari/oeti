@@ -1,4 +1,4 @@
-"""Operational cohort planning within a database-enforced read-only snapshot."""
+"""Cohort planning, read-only validation and explicitly requested execution."""
 from contextlib import contextmanager
 from typing import Any
 
@@ -39,3 +39,17 @@ def validate_event_creation_plan(
         return EventCreationExecutor(repository).execute_planned_cohort(
             report=report, expected_event_code=expected_event_code, dry_run=True,
         )
+
+
+def execute_event_creation_plan(
+    database_url: str, report: dict[str, Any], expected_event_code: str,
+    *, execute: bool = False,
+) -> dict[str, Any]:
+    if not isinstance(execute, bool):
+        raise ValueError("execute must be a boolean.")
+    if not execute:
+        return validate_event_creation_plan(database_url, report, expected_event_code)
+    repository = EventMatchingRepository(database_url, event_creation_writes_enabled=True)
+    return EventCreationExecutor(repository).execute_planned_cohort(
+        report=report, expected_event_code=expected_event_code, dry_run=False,
+    )
