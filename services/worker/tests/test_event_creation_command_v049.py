@@ -57,3 +57,64 @@ def test_cli_rejects_missing_invalid_ids_and_write_flag(arguments):
     with pytest.raises(SystemExit) as exc:
         cli._parser().parse_args(['plan-event-creation-cohorts', *arguments])
     assert exc.value.code == 2
+
+
+def test_validate_plan_uses_read_only_executor(monkeypatch):
+    connection = SimpleNamespace(read_only=False, isolation_level=None)
+    plan = {'mode': 'plan_only'}
+
+    @contextmanager
+    def connect(*args, **kwargs): yield connection
+
+    class Executor:
+        def __init__(self, repository): self.repository = repository
+        def execute_planned_cohort(self, *, report, expected_event_code, dry_run):
+            assert report is plan
+            assert expected_event_code == 'reviewed'
+            assert dry_run is True
+            assert connection.read_only is True
+            assert connection.isolation_level == psycopg.IsolationLevel.REPEATABLE_READ
+            assert self.repository.event_creation_writes_enabled is False
+            with self.repository.connection() as conn: assert conn is connection
+            return {'status': 'already_exists', 'dry_run': True}
+
+    monkeypatch.setattr(command.psycopg, 'connect', connect)
+    monkeypatch.setattr(command, 'EventCreationExecutor', Executor)
+    assert command.validate_event_creation_plan('unused', plan, 'reviewed')['status'] == 'already_exists'
+
+
+def test_cli_validates_selected_plan_and_preserves_input(monkeypatch, capsys, tmp_path):
+    from onehealth_worker import config
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    plan_path, output = tmp_path / 'plan.json', tmp_path / 'validation.json'
+    original = '{"mode":"plan_only"}'
+    plan_path.write_text(original, encoding='utf-8')
+    def validate(dsn, report, code):
+        assert dsn == 'unused' and report == {'mode': 'plan_only'} and code == 'reviewed'
+        return {'status': 'blocked', 'dry_run': True, 'reason': 'current-state'}
+    monkeypatch.setattr(command, 'validate_event_creation_plan', validate)
+    monkeypatch.setattr('sys.argv', ['worker', 'validate-event-creation-plan', '--plan-file',
+        str(plan_path), '--event-code', 'reviewed', '--output', str(output)])
+    cli.main()
+    assert json.loads(capsys.readouterr().out) == json.loads(output.read_text(encoding='utf-8'))
+    assert plan_path.read_text(encoding='utf-8') == original
+
+
+@pytest.mark.parametrize('arguments', [[], ['--plan-file', 'plan.json'],
+    ['--plan-file', 'plan.json', '--event-code', 'reviewed', '--persist']])
+def test_validate_cli_requires_selection_and_has_no_write_flag(arguments):
+    with pytest.raises(SystemExit) as exc:
+        cli._parser().parse_args(['validate-event-creation-plan', *arguments])
+    assert exc.value.code == 2
+
+
+def test_validate_cli_rejects_overwriting_reviewed_plan(monkeypatch, tmp_path):
+    from onehealth_worker import config
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    path = tmp_path / 'plan.json'
+    path.write_text('{"mode":"plan_only"}', encoding='utf-8')
+    monkeypatch.setattr('sys.argv', ['worker', 'validate-event-creation-plan', '--plan-file',
+        str(path), '--event-code', 'reviewed', '--output', str(path)])
+    with pytest.raises(ValueError, match='entrada'):
+        cli.main()
+    assert path.read_text(encoding='utf-8') == '{"mode":"plan_only"}'

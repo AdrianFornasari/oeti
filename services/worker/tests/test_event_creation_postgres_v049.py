@@ -122,6 +122,26 @@ def snapshot(repo):
         return conn.execute("select (select jsonb_agg(e order by id) from public.events e) as events, (select jsonb_agg(es order by signal_id) from public.event_signals es) as memberships").fetchone()
 
 
+def test_postgres_validate_plan_command_revalidates_read_only(cohort, monkeypatch):
+    from onehealth_worker.evaluation import event_creation_command_v049 as command
+    repo, seed, ids, relation_ids = cohort
+    report = EventCreationPlanner(repo).plan_cohorts([str(i) for i in relation_ids])
+    original = command.EventCreationExecutor.execute_planned_cohort
+    def inspect(executor, **kwargs):
+        with executor.repository.connection() as conn:
+            row = conn.execute("select current_setting('transaction_read_only') as ro, current_setting('transaction_isolation') as iso").fetchone()
+            assert row == {'ro': 'on', 'iso': 'repeatable read'}
+        return original(executor, **kwargs)
+    monkeypatch.setattr(command.EventCreationExecutor, 'execute_planned_cohort', inspect)
+    before = snapshot(repo)
+    assert command.validate_event_creation_plan(repo.database_url, report, seed['event_code'])['status'] == 'ready_to_create'
+    assert snapshot(repo) == before
+    with repo.connection() as conn:
+        conn.execute('update public.signals set event_matching_eligible=false where id=%s', (ids[0],))
+    assert command.validate_event_creation_plan(repo.database_url, report, seed['event_code'])['status'] == 'blocked'
+    assert snapshot(repo) == before
+
+
 def test_postgres_executor_creates_and_replays_reviewed_plan(cohort):
     from onehealth_worker.evaluation.event_creation_executor_v049 import EventCreationExecutor
     repo, seed, _, relation_ids = cohort
