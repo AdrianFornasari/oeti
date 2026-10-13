@@ -2,6 +2,10 @@
 
 Fecha: 9 de octubre de 2026.
 
+Nota de estado: este documento conserva la selección previa al commit. La
+selección ya se integró mediante el PR #5; el PR #6 incorporó el comando de
+planificación y el PR #7 integró tokens/provider. Consultar [el estado actual](event-persistence-v049-current-status.md).
+
 ## Resultado
 
 El conjunto de Event Persistence y hardening semántico puede validarse sin los

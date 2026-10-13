@@ -1,5 +1,9 @@
 # Event Persistence v0.4.9 — validación transaccional
 
+Nota de estado: las secciones siguientes conservan la cronología de validación.
+Los PR #5, #6 y #7 ya están integrados; consultar [el estado actual](event-persistence-v049-current-status.md)
+para distinguir los resultados históricos de los pendientes vigentes.
+
 ## Alcance
 
 `EventMatchingRepository.persist_event_creation_cohort()` conserva `dry_run=True`
