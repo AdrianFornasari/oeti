@@ -29,6 +29,7 @@ class ExtractionResult:
     provider: str
     model_name: str
     response_id: str | None
+    usage: dict[str, int] | None
     warnings: list[str]
     payload: dict[str, Any]
 
@@ -88,6 +89,7 @@ def extract_raw_item(
                 input_char_count=len(document_input),
                 error_text=str(exc),
                 response_id=provider_response.response_id if provider_response else None,
+                usage=provider_response.usage if provider_response else None,
             )
         raise
 
@@ -101,6 +103,7 @@ def extract_raw_item(
             model_name=model_name,
             response_id=provider_response.response_id,
             input_char_count=len(document_input),
+            usage=provider_response.usage,
         )
 
     return ExtractionResult(
@@ -111,6 +114,7 @@ def extract_raw_item(
         provider=provider_name,
         model_name=model_name,
         response_id=provider_response.response_id,
+        usage=provider_response.usage,
         warnings=warnings,
         payload=payload,
     )

@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import json
+import math
 import time
 import re
 from dataclasses import dataclass
 from typing import Any
 
 import httpx
+
+from .token_usage import normalize_token_usage
 
 
 class LLMProviderError(RuntimeError):
@@ -17,6 +20,7 @@ class LLMProviderError(RuntimeError):
 class ProviderResponse:
     payload: dict[str, Any]
     response_id: str | None
+    usage: dict[str, int] | None
 
 
 OPENAI_UNSUPPORTED_SCHEMA_KEYWORDS = frozenset({
@@ -118,17 +122,54 @@ def _structured_output_name(schema: dict[str, Any]) -> str:
     return f"oeti_signal_extractor_v{safe}"
 
 
+
+
+def _extract_usage(
+    data: dict[str, Any],
+) -> dict[str, int] | None:
+    usage_raw = data.get("usage")
+    if usage_raw is None:
+        return None
+    if not isinstance(usage_raw, dict):
+        raise ValueError("Provider usage must be a mapping")
+    input_details = usage_raw.get("input_tokens_details")
+    output_details = usage_raw.get("output_tokens_details")
+    for details in (input_details, output_details):
+        if details is not None and not isinstance(details, dict):
+            raise ValueError("Provider token details must be a mapping")
+    return normalize_token_usage({
+        "input_tokens": usage_raw.get("input_tokens"),
+        "cached_input_tokens": (input_details or {}).get("cached_tokens"),
+        "output_tokens": usage_raw.get("output_tokens"),
+        "reasoning_tokens": (output_details or {}).get("reasoning_tokens"),
+        "total_tokens": usage_raw.get("total_tokens"),
+    })
+
+
 class OpenAIResponsesProvider:
     """OpenAI Responses API adapter using Structured Outputs (JSON Schema)."""
 
-    def __init__(self, api_key: str, model: str, base_url: str = "https://api.openai.com/v1"):
+    def __init__(
+        self,
+        api_key: str,
+        model: str,
+        base_url: str = "https://api.openai.com/v1",
+        read_timeout_seconds: float = 600.0,
+    ):
         if not api_key:
             raise ValueError("LLM_API_KEY es obligatorio para provider=openai")
         if not model:
             raise ValueError("LLM_MODEL es obligatorio para provider=openai")
+        if (
+            type(read_timeout_seconds) not in (int, float)
+            or not math.isfinite(read_timeout_seconds)
+            or read_timeout_seconds <= 0
+        ):
+            raise ValueError("read_timeout_seconds debe ser un número finito mayor que cero")
         self.api_key = api_key
         self.model = model
         self.base_url = base_url.rstrip("/")
+        self.read_timeout_seconds = float(read_timeout_seconds)
 
     def extract(self, *, instructions: str, document_input: str, schema: dict[str, Any]) -> ProviderResponse:
         body = {
@@ -151,19 +192,44 @@ class OpenAIResponsesProvider:
             "Content-Type": "application/json",
         }
 
-        last_network_error: Exception | None = None
         for attempt in range(3):
             try:
-                with httpx.Client(timeout=httpx.Timeout(120.0, connect=20.0)) as client:
-                    response = client.post(f"{self.base_url}/responses", headers=headers, json=body)
+                timeout = httpx.Timeout(
+                    connect=20.0,
+                    read=self.read_timeout_seconds,
+                    write=20.0,
+                    pool=20.0,
+                )
+
+                with httpx.Client(
+                    timeout=timeout
+                ) as client:
+                    response = client.post(
+                        f"{self.base_url}/responses",
+                        headers=headers,
+                        json=body,
+                    )
+
                 break
-            except (httpx.TimeoutException, httpx.NetworkError) as exc:
-                last_network_error = exc
+
+            except (
+                httpx.ConnectTimeout,
+                httpx.ConnectError,
+            ) as exc:
                 if attempt == 2:
-                    raise LLMProviderError(f"Error de red al consultar OpenAI: {exc}") from exc
-                time.sleep(2 ** attempt)
-        else:  # pragma: no cover
-            raise LLMProviderError(f"Error de red al consultar OpenAI: {last_network_error}")
+                    raise LLMProviderError(
+                        "No se pudo conectar con OpenAI después de tres intentos."
+                    ) from exc
+
+                time.sleep(
+                    2 ** attempt
+                )
+            except httpx.RequestError as exc:
+                raise LLMProviderError(
+                    f"Error de transporte al consultar OpenAI ({type(exc).__name__}). "
+                    "La solicitud no se reintenta automáticamente. "
+                    "No se puede confirmar su procesamiento desde este cliente."
+                ) from exc
 
         if response.status_code >= 400:
             try:
@@ -187,7 +253,15 @@ class OpenAIResponsesProvider:
         except json.JSONDecodeError as exc:
             raise LLMProviderError(f"Structured Output no pudo parsearse como JSON: {exc}") from exc
 
-        return ProviderResponse(payload=payload, response_id=data.get("id"))
+        usage = _extract_usage(
+            data
+        )
+
+        return ProviderResponse(
+            payload=payload,
+            response_id=data.get("id"),
+            usage=usage,
+        )
 
 
 def _extract_output_text(data: dict[str, Any]) -> str | None:

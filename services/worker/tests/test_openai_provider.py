@@ -1,5 +1,6 @@
 from onehealth_worker.extraction.openai_provider import (
     _extract_output_text,
+    _extract_usage,
     _to_openai_structured_output_schema,
 )
 
@@ -68,3 +69,29 @@ def test_openai_schema_sanitizes_provider_incompatible_constraints_without_mutat
     assert canonical["properties"]["schema_version"]["const"] == "0.1"
     assert canonical["properties"]["domains"]["uniqueItems"] is True
     assert canonical["properties"]["confidence"]["maximum"] == 1
+
+
+def test_extract_usage_from_responses_payload():
+    payload = {
+        "usage": {
+            "input_tokens": 31842,
+            "input_tokens_details": {
+                "cached_tokens": 4096,
+            },
+            "output_tokens": 4126,
+            "output_tokens_details": {
+                "reasoning_tokens": 1740,
+            },
+            "total_tokens": 35968,
+        }
+    }
+
+    assert _extract_usage(
+        payload
+    ) == {
+        "input_tokens": 31842,
+        "cached_input_tokens": 4096,
+        "output_tokens": 4126,
+        "reasoning_tokens": 1740,
+        "total_tokens": 35968,
+    }
