@@ -2,6 +2,10 @@
 
 Fecha: 9 de octubre de 2026.
 
+Nota de estado: este documento conserva la revisión previa al commit. Los PR #5
+y #6 ya están integrados; el PR #7 incorporó tokens/provider. Consultar [el estado actual](event-persistence-v049-current-status.md)
+para el cierre posterior y los pendientes vigentes.
+
 ## Resultado y alcance
 
 El núcleo de persistencia de cohortes está validado localmente y cuenta con una
