@@ -12,6 +12,28 @@ from psycopg.rows import dict_row
 
 from .prompt import EXTRACTOR_VERSION, PROMPT_VERSION
 from .matching import event_matching_eligible
+from .token_usage import TOKEN_USAGE_KEYS, normalize_token_usage
+
+
+def _usage_columns(
+    usage: dict[str, int] | None,
+) -> tuple[
+    int | None,
+    int | None,
+    int | None,
+    int | None,
+    int | None,
+]:
+    """Normalize provider token usage for SQL persistence.
+
+    None means that the provider/run did not report usage. Zero remains a
+    legitimate reported value.
+    """
+
+    normalized = normalize_token_usage(usage) or {}
+    return tuple(normalized.get(key) for key in TOKEN_USAGE_KEYS)
+
+
 
 
 @dataclass(slots=True)
@@ -95,14 +117,17 @@ class ExtractionRepository:
         input_char_count: int,
         error_text: str,
         response_id: str | None = None,
+        usage: dict[str, int] | None = None,
     ) -> str:
+        usage_values = _usage_columns(usage)
         with self.connection() as conn, conn.cursor() as cur:
             cur.execute(
                 """
                 insert into public.extraction_runs (
                   raw_item_id, schema_version, extractor_version, prompt_version,
-                  provider, model_name, status, response_id, input_char_count, error_text
-                ) values (%s, %s, %s, %s, %s, %s, 'failed', %s, %s, %s)
+                  provider, model_name, status, response_id, input_char_count, error_text,
+                  input_tokens, cached_input_tokens, output_tokens, reasoning_tokens, total_tokens
+                ) values (%s, %s, %s, %s, %s, %s, 'failed', %s, %s, %s, %s, %s, %s, %s, %s)
                 returning id
                 """,
                 (
@@ -115,6 +140,7 @@ class ExtractionRepository:
                     response_id,
                     input_char_count,
                     error_text[:10000],
+                    *usage_values,
                 ),
             )
             run_id = str(cur.fetchone()["id"])
@@ -130,8 +156,17 @@ class ExtractionRepository:
         model_name: str,
         response_id: str | None,
         input_char_count: int,
+        usage: dict[str, int] | None = None,
     ) -> tuple[str, list[str]]:
         warnings: list[str] = list(payload.get("warnings", []))
+
+        (
+            input_tokens,
+            cached_input_tokens,
+            output_tokens,
+            reasoning_tokens,
+            total_tokens,
+        ) = _usage_columns(usage)
 
         with self.connection() as conn:
             with conn.cursor() as cur:
@@ -140,8 +175,14 @@ class ExtractionRepository:
                     insert into public.extraction_runs (
                       raw_item_id, schema_version, extractor_version, prompt_version,
                       provider, model_name, status, response_id, input_char_count,
+                      input_tokens, cached_input_tokens, output_tokens,
+                      reasoning_tokens, total_tokens,
                       output_json, warnings
-                    ) values (%s, %s, %s, %s, %s, %s, 'succeeded', %s, %s, %s::jsonb, %s::jsonb)
+                    ) values (
+                      %s, %s, %s, %s, %s, %s, 'succeeded', %s, %s,
+                      %s, %s, %s, %s, %s,
+                      %s::jsonb, %s::jsonb
+                    )
                     returning id
                     """,
                     (
@@ -153,6 +194,11 @@ class ExtractionRepository:
                         model_name,
                         response_id,
                         input_char_count,
+                        input_tokens,
+                        cached_input_tokens,
+                        output_tokens,
+                        reasoning_tokens,
+                        total_tokens,
                         json.dumps(payload, ensure_ascii=False),
                         json.dumps(warnings, ensure_ascii=False),
                     ),
