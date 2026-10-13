@@ -122,6 +122,46 @@ def snapshot(repo):
         return conn.execute("select (select jsonb_agg(e order by id) from public.events e) as events, (select jsonb_agg(es order by signal_id) from public.event_signals es) as memberships").fetchone()
 
 
+def test_postgres_manual_command_dry_run_create_replay_and_obsolete_plan(cohort):
+    from onehealth_worker.evaluation.event_creation_command_v049 import execute_event_creation_plan
+    repo, seed, ids, relation_ids = cohort
+    report = EventCreationPlanner(repo).plan_cohorts([str(i) for i in relation_ids])
+    before = snapshot(repo)
+    assert execute_event_creation_plan(repo.database_url, report, seed['event_code'])['status'] == 'ready_to_create'
+    assert snapshot(repo) == before
+    result = execute_event_creation_plan(repo.database_url, report, seed['event_code'], execute=True)
+    assert result['status'] == 'created'
+    assert list(counts(repo).values()) == [1, 5]
+    after = snapshot(repo)
+    replay = execute_event_creation_plan(repo.database_url, report, seed['event_code'], execute=True)
+    assert replay['status'] == 'already_exists'
+    assert replay['event_id'] == result['event_id']
+    assert snapshot(repo) == after
+    with repo.connection() as conn:
+        conn.execute('update public.signals set event_matching_eligible=false where id=%s', (ids[0],))
+    assert execute_event_creation_plan(repo.database_url, report, seed['event_code'], execute=True)['status'] == 'blocked'
+    assert snapshot(repo) == after
+
+
+def test_postgres_manual_command_partial_failure_rolls_back(cohort):
+    from onehealth_worker.evaluation.event_creation_command_v049 import execute_event_creation_plan
+    repo, seed, _, relation_ids = cohort
+    report = EventCreationPlanner(repo).plan_cohorts([str(i) for i in relation_ids])
+    with repo.connection() as conn:
+        conn.execute("""create function public.fail_manual_membership() returns trigger language plpgsql as $$
+            begin
+              if (select count(*) from public.event_signals) >= 2 then
+                raise exception 'manual membership failure';
+              end if;
+              return new;
+            end $$;
+            create trigger test_manual_failure before insert on public.event_signals
+            for each row execute function public.fail_manual_membership();""")
+    with pytest.raises(psycopg.errors.RaiseException, match='manual membership failure'):
+        execute_event_creation_plan(repo.database_url, report, seed['event_code'], execute=True)
+    assert list(counts(repo).values()) == [0, 0]
+
+
 def test_postgres_validate_plan_command_revalidates_read_only(cohort, monkeypatch):
     from onehealth_worker.evaluation import event_creation_command_v049 as command
     repo, seed, ids, relation_ids = cohort
