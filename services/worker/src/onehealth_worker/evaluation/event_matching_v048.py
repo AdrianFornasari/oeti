@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import math
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -1942,20 +1943,21 @@ def score_signal_pair_components(
         "component_scores": rounded_components,
     }
 
-_NON_RELATION_TEXT_MARKERS = (
-    "sin relaciÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³n",
-    "sin relacion",
-    "no relacionado",
-    "no relacionada",
-    "no relacionados",
-    "no relacionadas",
-    "diferente de",
-    "descartar",
-    "descartÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³",
-    "descarto",
-    "not related",
-    "unrelated",
-    "different from",
+def _fold_conflict_text(text: str) -> str:
+    """Normalize a comparison copy; preserve source summaries and evidence."""
+    return "".join(
+        character for character in unicodedata.normalize("NFKD", text.casefold())
+        if not unicodedata.combining(character)
+    )
+
+
+_NON_RELATION_TEXT_MARKERS = tuple(
+    _fold_conflict_text(marker)
+    for marker in (
+        "sin relaci\u00f3n", "no relacionado", "no relacionada", "no relacionados",
+        "no relacionadas", "diferente de", "descartar", "descart\u00f3",
+        "not related", "unrelated", "different from",
+    )
 )
 
 
@@ -2060,9 +2062,7 @@ def _is_negative_refutation(
 def _contains_explicit_non_relation(
     signal: Mapping[str, Any],
 ) -> bool:
-    text = _signal_text(
-        signal
-    )
+    text = _fold_conflict_text(_signal_text(signal))
 
     return any(
         marker in text
