@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "onehealth-worker"
-version = "0.4.6"
+dynamic = ["version"]
 description = "Ingestion and structured epidemiological extraction worker for One Health Emerging Threat Intelligence"
 requires-python = ">=3.12"
 dependencies = [
@@ -22,6 +22,9 @@ test = ["pytest>=8.4,<9"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "onehealth_worker.__version__"}
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

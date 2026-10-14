@@ -12,5 +12,5 @@ class Settings(BaseSettings):
     # Sprint 1C - structured epidemiological extraction.
     # Keep credentials server-side only; never expose LLM_API_KEY to apps/web.
     llm_provider: str = "openai"
-    llm_model: str = "gpt-5.2"
+    llm_model: str = "gpt-5.4-mini"
     llm_api_key: str | None = None
