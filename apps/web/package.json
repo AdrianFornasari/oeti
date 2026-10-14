@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "demo:preview": "node scripts/preview_demo.cjs",
+    "demo:check": "node --test --test-isolation=none scripts/snapshot.test.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
