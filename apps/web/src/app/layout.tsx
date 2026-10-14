@@ -1,14 +1,15 @@
 import type { ReactNode } from "react";
+import "./globals.css";
 
 export const metadata = {
-  title: "One Health Emerging Threat Intelligence",
-  description: "Argentina-first One Health epidemic intelligence MVP",
+  title: "MV Hondius · OETI · Demo retrospectiva",
+  description: "Ficha local de evidencia: cinco señales y tres relaciones registradas de MV Hondius.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es">
-      <body style={{ margin: 0, fontFamily: "Arial, sans-serif", background: "#071820", color: "#eaf4f2" }}>
+      <body>
         {children}
       </body>
     </html>

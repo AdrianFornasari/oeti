@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-14T13:57:30.862709+00:00",
+  "mode": "frozen_readonly",
+  "implementation_base": "caa2598ccd87ee4fb09679a3b14d2ec8e6947e49",
+  "extraction_commit": null,
+  "transaction": {
+    "read_only": "on",
+    "isolation": "repeatable read"
+  },
+  "provenance": {
+    "event": "public.events",
+    "memberships": "public.event_signals",
+    "signals": "public.signals + public.raw_items (source_* and published_at)",
+    "evidence": "public.signal_evidence",
+    "relations": "public.signal_relations",
+    "extraction_commit": "Not recorded in the source rows; implementation_base is not the extraction commit"
+  },
+  "event": {
+    "id": "f3c0aefa-49e9-4553-aa67-ddf5a7cb84f6",
+    "event_code": "OETI-EVT-e3aa17f0-c789-5315-9dc8-ef7833697c06",
+    "title": "Andes virus - emerging event",
+    "event_start_date": "2026-05-02",
+    "first_signal_at": "2026-05-04 18:06:44+00:00",
+    "domains": [
+      "genomic",
+      "human"
+    ],
+    "lifecycle_status": "active",
+    "priority": "P3",
+    "evidence_confidence": "low",
+    "cross_sector_convergence": "none",
+    "review_status": "pending",
+    "contradictions_present": false,
+    "created_at": "2026-10-09 13:17:12.513351+00:00",
+    "updated_at": "2026-10-09 13:17:12.513351+00:00"
+  },
+  "memberships": [
+    {
+      "signal_id": "013da99e-5666-4d89-827a-7ce683fa0d02",
+      "relation_to_event": "supports",
+      "match_decision": "auto_linked",
+      "match_score": null,
+      "linked_at": "2026-10-09 13:17:12.513351+00:00"
+    },
+    {
+      "signal_id": "4eb9f1fd-d769-4d31-bfb3-a3896f0b0b65",
+      "relation_to_event": "supports",
+      "match_decision": "auto_linked",
+      "match_score": null,
+      "linked_at": "2026-10-09 13:17:12.513351+00:00"
+    },
+    {
+      "signal_id": "8683a891-4217-4dfe-b2d6-e34ba28a4ea4",
+      "relation_to_event": "supports",
+      "match_decision": "auto_linked",
+      "match_score": null,
+      "linked_at": "2026-10-09 13:17:12.513351+00:00"
+    },
+    {
+      "signal_id": "95799c89-1605-4eb2-9f4d-fc3e76c3a11a",
+      "relation_to_event": "supports",
+      "match_decision": "auto_linked",
+      "match_score": null,
+      "linked_at": "2026-10-09 13:17:12.513351+00:00"
+    },
+    {
+      "signal_id": "dd3474d8-8628-4519-8362-96bae27d5045",
+      "relation_to_event": "supports",
+      "match_decision": "auto_linked",
+      "match_score": null,
+      "linked_at": "2026-10-09 13:17:12.513351+00:00"
+    }
+  ],
+  "signals": [
+    {
+      "id": "013da99e-5666-4d89-827a-7ce683fa0d02",
+      "raw_item_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3",
+      "signal_type": "cluster",
+      "summary": "Notificación (2 de mayo) de un conglomerado de enfermedades respiratorias agudas graves a bordo del buque MV Hondius, incluyendo tres fallecimientos.",
+      "domains": [
+        "human"
+      ],
+      "occurred_start": "2026-05-02",
+      "occurred_end": null,
+      "date_precision": "day",
+      "review_status": "pending",
+      "verification_status": "reported",
+      "extractor_version": "oeti-signal-extractor-v0.3.5",
+      "model_name": "gpt-5.2",
+      "source_title": "Salud monitorea junto a organismos internacionales los casos de hantavirus reportados en el buque MV Hondius",
+      "source_url": "https://www.argentina.gob.ar/noticias/salud-monitorea-junto-organismos-internacionales-los-casos-de-hantavirus-reportados-en-el",
+      "published_at": "2026-05-04 18:06:44+00:00",
+      "source_recorded_at": "2026-09-10 16:05:00.080377+00:00"
+    },
+    {
+      "id": "8683a891-4217-4dfe-b2d6-e34ba28a4ea4",
+      "raw_item_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3",
+      "signal_type": "case_report",
+      "summary": "Un pasajero a bordo del buque MV Hondius con confirmación laboratorial de hantavirus (notificado el 2 de mayo).",
+      "domains": [
+        "human"
+      ],
+      "occurred_start": "2026-05-02",
+      "occurred_end": null,
+      "date_precision": "day",
+      "review_status": "pending",
+      "verification_status": "confirmed",
+      "extractor_version": "oeti-signal-extractor-v0.3.5",
+      "model_name": "gpt-5.2",
+      "source_title": "Salud monitorea junto a organismos internacionales los casos de hantavirus reportados en el buque MV Hondius",
+      "source_url": "https://www.argentina.gob.ar/noticias/salud-monitorea-junto-organismos-internacionales-los-casos-de-hantavirus-reportados-en-el",
+      "published_at": "2026-05-04 18:06:44+00:00",
+      "source_recorded_at": "2026-09-10 16:05:00.080377+00:00"
+    },
+    {
+      "id": "95799c89-1605-4eb2-9f4d-fc3e76c3a11a",
+      "raw_item_id": "af424964-8b72-489b-b6bc-ea7d6218aeb3",
+      "signal_type": "laboratory_investigation",
+      "summary": "Se realizan pruebas adicionales en el Laboratorio Nacional de Referencia de Sudáfrica para identificar la cepa y el origen del brote.",
+      "domains": [
+        "human"
+      ],
+      "occurred_start": null,
+      "occurred_end": null,
+      "date_precision": "unknown",
+      "review_status": "pending",
+      "verification_status": "reported",
+      "extractor_version": "oeti-signal-extractor-v0.3.5",
+      "model_name": "gpt-5.2",
+      "source_title": "Salud monitorea junto a organismos internacionales los casos de hantavirus reportados en el buque MV Hondius",
+      "source_url": "https://www.argentina.gob.ar/noticias/salud-monitorea-junto-organismos-internacionales-los-casos-de-hantavirus-reportados-en-el",
+      "published_at": "2026-05-04 18:06:44+00:00",
+      "source_recorded_at": "2026-09-10 16:05:00.080377+00:00"
+    },
+    {
+      "id": "4eb9f1fd-d769-4d31-bfb3-a3896f0b0b65",
+      "raw_item_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9",
+      "signal_type": "outbreak",
+      "summary": "En SE 17 de 2026 se identificaron 8 casos de hantavirus a bordo del crucero MV Hondius.",
+      "domains": [
+        "human"
+      ],
+      "occurred_start": null,
+      "occurred_end": null,
+      "date_precision": "unknown",
+      "review_status": "pending",
+      "verification_status": "confirmed",
+      "extractor_version": "oeti-signal-extractor-v0.4.4",
+      "model_name": "gpt-5.2",
+      "source_title": "Actualización del Boletín Epidemiológico Nacional de la semana N° 17",
+      "source_url": "https://www.argentina.gob.ar/noticias/actualizacion-del-boletin-epidemiologico-nacional-de-la-semana-ndeg-17",
+      "published_at": "2026-05-12 20:30:05+00:00",
+      "source_recorded_at": "2026-09-10 16:30:02.111923+00:00"
+    },
+    {
+      "id": "dd3474d8-8628-4519-8362-96bae27d5045",
+      "raw_item_id": "268d4106-4ed2-46e0-954d-730d7bb1e7c9",
+      "signal_type": "laboratory_result",
+      "summary": "PCR realizada en laboratorios de referencia de Sudáfrica y Suiza confirmó que los casos corresponden a la cepa Andes. La secuenciación genómica realizada en laboratorios de referencia de Sudáfrica y Suiza confirmó que los casos corresponden a la cepa Andes. ANLIS Malbrán determinó alto parentesco entre la secuencia del virus del crucero y cepas detectadas en 2018 en Neuquén.",
+      "domains": [
+        "human",
+        "genomic"
+      ],
+      "occurred_start": null,
+      "occurred_end": null,
+      "date_precision": "unknown",
+      "review_status": "pending",
+      "verification_status": "confirmed",
+      "extractor_version": "oeti-signal-extractor-v0.4.4",
+      "model_name": "gpt-5.2",
+      "source_title": "Actualización del Boletín Epidemiológico Nacional de la semana N° 17",
+      "source_url": "https://www.argentina.gob.ar/noticias/actualizacion-del-boletin-epidemiologico-nacional-de-la-semana-ndeg-17",
+      "published_at": "2026-05-12 20:30:05+00:00",
+      "source_recorded_at": "2026-09-10 16:30:02.111923+00:00"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "c4864a24-a7ec-4ac4-a4b1-cfffe9a99645",
+      "signal_id": "013da99e-5666-4d89-827a-7ce683fa0d02",
+      "excerpt": "El 2 de mayo, el Centro Nacional de Epidemiología de nuestro país recibió la notificación de un conglomerado de enfermedades respiratorias agudas graves a bordo del crucero, incluyendo tres fallecimientos",
+      "document_locator": null,
+      "page_number": null,
+      "char_start": null,
+      "char_end": null,
+      "evidence_hash": null
+    },
+    {
+      "id": "496b18d1-d616-47b6-b0bb-7aec5e26442e",
+      "signal_id": "4eb9f1fd-d769-4d31-bfb3-a3896f0b0b65",
+      "excerpt": "se identificaron ocho casos a bordo del buque (seis confirmados y dos probables)",
+      "document_locator": null,
+      "page_number": null,
+      "char_start": null,
+      "char_end": null,
+      "evidence_hash": null
+    },
+    {
+      "id": "5d365b12-2a7d-4a85-be46-640592f13639",
+      "signal_id": "4eb9f1fd-d769-4d31-bfb3-a3896f0b0b65",
+      "excerpt": "el Boletín Epidemiológico Nacional (BEN) correspondiente a la semana epidemiológica (SE) 17 de 2026 confirma que, hasta el momento, se identificaron ocho casos a bordo del buque",
+      "document_locator": null,
+      "page_number": null,
+      "char_start": null,
+      "char_end": null,
+      "evidence_hash": null
+    },
+    {
+      "id": "ac76d6bb-ec6e-4741-8f8e-226329f8f457",
+      "signal_id": "4eb9f1fd-d769-4d31-bfb3-a3896f0b0b65",
+      "excerpt": "de los cuales tres fallecieron",
+      "document_locator": null,
+      "page_number": null,
+      "char_start": null,
+      "char_end": null,
+      "evidence_hash": null
+    },
+    {
+      "id": "ef27b7e6-e08e-487e-a348-b254a55d36f0",
+      "signal_id": "8683a891-4217-4dfe-b2d6-e34ba28a4ea4",
+      "excerpt": "El 2 de mayo, el Centro Nacional de Epidemiología de nuestro país recibió la notificación de un conglomerado de enfermedades respiratorias agudas graves a bordo del crucero, incluyendo tres fallecimientos y un pasajero con confirmación laboratorial de hantavirus.",
+      "document_locator": null,
+      "page_number": null,
+      "char_start": null,
+      "char_end": null,
+      "evidence_hash": null
+    },
+    {
+      "id": "2cf52c60-c7e3-4aeb-b80c-5c2f44321bc6",
+      "signal_id": "95799c89-1605-4eb2-9f4d-fc3e76c3a11a",
+      "excerpt": "se continúan realizando pruebas adicionales en el Laboratorio Nacional de Referencia de Sudáfrica para poder identificar la cepa y origen del brote.",
+      "document_locator": null,
+      "page_number": null,
+      "char_start": null,
+      "char_end": null,
+      "evidence_hash": null
+    },
+    {
+      "id": "578b5ca6-4938-4660-bd3f-ce86392c56af",
+      "signal_id": "dd3474d8-8628-4519-8362-96bae27d5045",
+      "excerpt": "Las pruebas de PCR y secuenciación genómica realizadas en laboratorios de referencia de Sudáfrica y Suiza confirmaron que los casos corresponden a la cepa Andes",
+      "document_locator": null,
+      "page_number": null,
+      "char_start": null,
+      "char_end": null,
+      "evidence_hash": null
+    },
+    {
+      "id": "979f29b8-abf0-41f0-8fce-c361e95df124",
+      "signal_id": "dd3474d8-8628-4519-8362-96bae27d5045",
+      "excerpt": "la ANLIS Malbrán determinó que la secuencia del virus del crucero tiene un alto grado de parentesco con cepas detectadas en 2018 en Neuquén",
+      "document_locator": null,
+      "page_number": null,
+      "char_start": null,
+      "char_end": null,
+      "evidence_hash": null
+    }
+  ],
+  "relations": [
+    {
+      "id": "583a2172-9226-4e29-9ec2-8e3dbe982d24",
+      "source_signal_id": "013da99e-5666-4d89-827a-7ce683fa0d02",
+      "target_signal_id": "4eb9f1fd-d769-4d31-bfb3-a3896f0b0b65",
+      "relation": "refines",
+      "score": "0.967",
+      "hard_conflict": false,
+      "matcher_version": "0.4.8"
+    },
+    {
+      "id": "6d1d9f0a-a2f0-48be-9387-48be304515f8",
+      "source_signal_id": "4eb9f1fd-d769-4d31-bfb3-a3896f0b0b65",
+      "target_signal_id": "8683a891-4217-4dfe-b2d6-e34ba28a4ea4",
+      "relation": "refines",
+      "score": "0.933",
+      "hard_conflict": false,
+      "matcher_version": "0.4.8"
+    },
+    {
+      "id": "cb994680-0281-496e-a0e4-bb3afec3abd3",
+      "source_signal_id": "95799c89-1605-4eb2-9f4d-fc3e76c3a11a",
+      "target_signal_id": "dd3474d8-8628-4519-8362-96bae27d5045",
+      "relation": "refines",
+      "score": "0.830",
+      "hard_conflict": false,
+      "matcher_version": "0.4.8"
+    }
+  ]
+}
