@@ -1,0 +1,61 @@
+name: Worker tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worker-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  worker-tests:
+    name: Worker / Python ${{ matrix.python }} / PostgreSQL 18.6
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.12', '3.13']
+    services:
+      postgres:
+        image: postgres:18.6
+        env:
+          POSTGRES_USER: oeti_test
+          POSTGRES_DB: postgres
+          # Disposable runner service only; fixtures never read a production DSN.
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 55449:5432
+        options: >-
+          --health-cmd "pg_isready -U oeti_test -d postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      OETI_LOCAL_PG_TESTS: '1'
+      PYTHONPATH: services/worker/src
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install worker and test dependencies
+        run: python -m pip install -e './services/worker[test]'
+      - name: Run unit and PostgreSQL integration tests
+        run: python -m pytest services/worker/tests -q --tb=short --junitxml=worker-tests.xml
+      - name: Require executed tests without skips
+        shell: python
+        run: |
+          import xml.etree.ElementTree as ET
+          suites = list(ET.parse('worker-tests.xml').getroot().iter('testsuite'))
+          assert suites and sum(int(s.get('tests', 0)) for s in suites) > 0, 'No tests executed'
+          assert sum(int(s.get('skipped', 0)) for s in suites) == 0, 'Tests were skipped'
