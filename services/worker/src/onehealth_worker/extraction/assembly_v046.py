@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import re
 from typing import Any
 
 from .assembly_v045 import assemble_claims_payload as assemble_claims_payload_v045
+from .animal_multisite import prepare_animal_multisite_claims
 
 
 _TEXTUAL_EVIDENCE_TYPES = {"text", "quote", "excerpt", "document_text"}
@@ -13,8 +15,8 @@ def assemble_claims_payload(claim_payload: dict[str, Any]) -> dict[str, Any]:
     """Assemble atomic claims with deterministic v0.4.6 benchmark hardening.
 
     v0.4.6 keeps provider-facing atomic claims unchanged on disk. It prepares a deep
-    copy before v0.4.5 assembly, applying only deterministic rules derived from the
-    adjudicated MV Hondius corpus and then canonicalizes textual evidence labels.
+    copy before v0.4.5 assembly, applies deterministic hardening and conservative
+    animal-claim guards, then canonicalizes textual evidence labels.
     """
     prepared = _prepare_claims_for_v046(claim_payload)
     payload = assemble_claims_payload_v045(prepared)
@@ -25,6 +27,21 @@ def assemble_claims_payload(claim_payload: dict[str, Any]) -> dict[str, Any]:
 def _prepare_claims_for_v046(claim_payload: dict[str, Any]) -> dict[str, Any]:
     prepared = deepcopy(claim_payload)
     claims = list(prepared.get("claims") or [])
+    claims = prepare_animal_multisite_claims(claims, prepared.setdefault("warnings", []))
+    kept = []
+    for claim in claims:
+        if _is_nonbiological_facility_inventory(claim):
+            prepared.setdefault("warnings", []).append(
+                f"ASM-FACILITY-01 {claim.get('claim_id')}: facility inventory excluded from wildlife findings."
+            )
+            continue
+        if _is_explicit_confirmed_animal_outbreak(claim):
+            claim["claim_kind"] = "outbreak_update"
+            prepared.setdefault("warnings", []).append(
+                f"ASM-ANIMAL-01 {claim.get('claim_id')}: confirmed animal focal event retained as outbreak."
+            )
+        kept.append(claim)
+    claims = kept
 
     groups: dict[str, list[dict[str, Any]]] = {}
     for claim in claims:
@@ -32,6 +49,7 @@ def _prepare_claims_for_v046(claim_payload: dict[str, Any]) -> dict[str, Any]:
         groups.setdefault(group_id, []).append(claim)
 
     for group in groups.values():
+        _attach_supporting_animal_lab_confirmation(group, prepared.setdefault("warnings", []))
         _prepare_collective_lab_characterization(group)
         _merge_operational_mobility_into_intervention(group)
 
@@ -39,6 +57,116 @@ def _prepare_claims_for_v046(claim_payload: dict[str, Any]) -> dict[str, Any]:
     _merge_current_surveillance_snapshots(claims)
     prepared["claims"] = claims
     return prepared
+
+
+def _claim_evidence_text(claim: dict[str, Any]) -> str:
+    return " ".join(" ".join(str(ev.get("text") or "") for ev in
+        (claim.get("evidence") or [])).casefold().split())
+
+
+def _is_explicit_confirmed_animal_outbreak(claim: dict[str, Any]) -> bool:
+    """Require explicit outbreak or facility detection, not just an animal test."""
+    if (claim.get("claim_kind") != "diagnostic_result"
+        or claim.get("polarity") != "positive"
+        or claim.get("verification_status") != "confirmed"
+        or (claim.get("diagnostics") or {}).get("result") != "positive"
+        or (claim.get("reference_period") or {}).get("period_type") == "historical_period"
+        or (claim.get("subject") or {}).get("subject_type") not in {"animal", "wildlife"}
+        or "animal" not in (claim.get("domains") or [])):
+        return False
+    event_locations = [loc for loc in (claim.get("locations") or []) if loc.get("role") == "event_location"]
+    if not event_locations or any(not loc.get("locality") for loc in event_locations):
+        return False
+    locations = {tuple(loc.get(key) for key in ("country_iso2", "admin1", "admin2", "locality"))
+        for loc in event_locations}
+    if len(locations) != 1:
+        return False
+    text = _claim_evidence_text(claim)
+    if re.search(r"\b(no|not|sin|posible|possible|sospech\w*|presunt\w*|pasado|historical)\b", text):
+        return False
+    if re.search(r"\b(confirmó|confirmaron|confirmed)\b.{0,40}\b(brote|outbreak)\b", text):
+        return True
+    # Operational focal-event representation, not a biological outbreak threshold.
+    return _is_reported_single_facility_detection(claim, text, event_locations[0]["locality"])
+
+
+def _is_reported_single_facility_detection(claim: dict[str, Any], text: str, locality: str) -> bool:
+    subject = claim.get("subject") or {}
+    if subject.get("subject_type") != "animal":
+        return False
+    verbatim = " ".join(str(subject.get("verbatim") or "").casefold().split())
+    if not re.search(r"\b(aves|cerdos|bovinos|ovinos|caprinos|equinos|animales|rebaño|piara|parvada|poultry|livestock|cattle|pigs|birds|herd|flock)\b", verbatim):
+        return False
+    # Require the animal population, a singular facility and the locality in
+    # the same evidence sentence as confirmation. Do not borrow from summaries.
+    for sentence in re.split(r"[.!?]", text):
+        if (verbatim in sentence
+            and re.search(r"\b(confirmó|detectó|confirmed|detected)\b.{0,60}\b(caso positivo|positive case)\b", sentence)
+            and re.search(r"\b(un predio|un establecimiento|una granja|a farm|an establishment)\b", sentence)
+            and re.search(r"\b" + re.escape(locality.casefold()) + r"\b", sentence)):
+            return True
+    return False
+
+
+def _attach_supporting_animal_lab_confirmation(group: list[dict[str, Any]], warnings: list[str]) -> None:
+    anchors = [claim for claim in group if claim.get("claim_kind") == "outbreak_update"
+        and (claim.get("subject") or {}).get("subject_type") == "animal"
+        and claim.get("polarity") == "positive" and claim.get("verification_status") == "confirmed"
+        and (claim.get("diagnostics") or {}).get("result") == "positive"]
+    if len(anchors) != 1:
+        return
+    anchor = anchors[0]
+    event_locations = [loc for loc in (anchor.get("locations") or []) if loc.get("role") == "event_location"]
+    if (not event_locations or any(not loc.get("locality") for loc in event_locations)
+        or len({tuple(loc.get(key) for key in ("country_iso2", "admin1", "admin2", "locality"))
+            for loc in event_locations}) != 1):
+        return
+    pathogen = _folded(anchor.get("pathogen_verbatim"))
+    if not pathogen:
+        return
+    for claim in group:
+        locations = claim.get("locations") or []
+        if (claim.get("claim_kind") != "diagnostic_result" or claim.get("polarity") != "positive"
+            or claim.get("verification_status") != "confirmed"
+            or (claim.get("subject") or {}).get("subject_type") != "other"
+            or _folded(claim.get("pathogen_verbatim")) != pathogen
+            or (claim.get("diagnostics") or {}).get("result") != "positive"
+            or not (claim.get("diagnostics") or {}).get("test_reported")
+            or (claim.get("reference_period") or {}).get("period_type") == "historical_period"
+            or (claim.get("metric") or {}).get("reported")
+            or (claim.get("genomics") or {}).get("sequence_reported")
+            or not locations or any(loc.get("role") != "laboratory_location" for loc in locations)):
+            continue
+        anchor_date, support_date = anchor.get("event_date") or {}, claim.get("event_date") or {}
+        if any(support_date.get(key) and support_date.get(key) != anchor_date.get(key) for key in ("start", "end")):
+            continue
+        text = _claim_evidence_text(claim)
+        if not re.search(r"\b(confirmó el resultado|confirmed the result)\b", text):
+            continue
+        if re.search(r"\b(no|not|sin|posible|possible)\b", text):
+            continue
+        claim["claim_kind"] = "outbreak_update"
+        warnings.append(f"ASM-ANIMAL-02 {claim.get('claim_id')}: supporting laboratory confirmation attached to focal event.")
+
+
+def _is_nonbiological_facility_inventory(claim: dict[str, Any]) -> bool:
+    """Exclude explicit zero inventories of facilities, never absence of infection."""
+    subject = claim.get("subject") or {}
+    metric = claim.get("metric") or {}
+    diagnostics = claim.get("diagnostics") or {}
+    if (claim.get("claim_kind") != "wildlife_presence_absence"
+        or claim.get("polarity") != "negative" or subject.get("subject_type") != "other"
+        or str(subject.get("verbatim") or "").strip().casefold() not in
+            {"granjas", "granjas comerciales", "farms", "commercial farms"}
+        or not metric.get("reported") or metric.get("value_numeric") != 0
+        or metric.get("unit") not in {"granjas", "farms"}
+        or diagnostics.get("test_reported") or diagnostics.get("result") == "negative"
+        or (claim.get("genomics") or {}).get("sequence_reported")):
+        return False
+    text = _claim_evidence_text(claim)
+    if re.search(r"\b(brotes?|casos?|infect\w*|virus|aves|animales|outbreaks?|cases?|animals)\b", text):
+        return False
+    return bool(re.search(r"\b(no se (encuentran|encontraron|registran|registraron)|there (are|were) no)\s+(granjas|farms)\b", text))
 
 
 def _prepare_collective_lab_characterization(group: list[dict[str, Any]]) -> None:
