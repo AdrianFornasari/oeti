@@ -7,6 +7,7 @@ from zoneinfo import ZoneInfo
 from bs4 import BeautifulSoup
 
 from .models import FetchedDocument, ParsedDocument
+from .html_text import render_dom_text
 
 SPANISH_MONTHS = {
     "enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5, "junio": 6,
@@ -104,13 +105,15 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
     main = soup.find("article") or soup.find("main") or soup.body or soup
     paragraphs = []
     for node in main.find_all(["p", "li"]):
-        text = " ".join(node.stripped_strings)
-        text = re.sub(r"\s+", " ", text).strip()
+        # A containing list item already serializes its nested paragraphs/items.
+        if any(parent.name in {"p", "li"} for parent in node.parents if parent is not main):
+            continue
+        text = render_dom_text(node)
         if len(text) >= 20:
             paragraphs.append(text)
 
     if not paragraphs:
-        fallback = re.sub(r"\s+", " ", " ".join(main.stripped_strings)).strip()
+        fallback = render_dom_text(main)
         paragraphs = [fallback] if fallback else []
 
     # Stable de-duplication while preserving order.
@@ -134,7 +137,7 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
         metadata={
             "http_status": fetched.status_code,
             "response_headers": fetched.headers,
-            "parser": "beautifulsoup-html-v0.2.1",
+            "parser": "beautifulsoup-html-v0.2.2",
             "paragraph_count": len(unique_paragraphs),
         },
     )
