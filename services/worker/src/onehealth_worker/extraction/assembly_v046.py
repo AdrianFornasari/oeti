@@ -97,13 +97,26 @@ def _is_reported_single_facility_detection(claim: dict[str, Any], text: str, loc
     verbatim = " ".join(str(subject.get("verbatim") or "").casefold().split())
     if not re.search(r"\b(aves|cerdos|bovinos|ovinos|caprinos|equinos|animales|rebaño|piara|parvada|poultry|livestock|cattle|pigs|birds|herd|flock)\b", verbatim):
         return False
-    # Require the animal population, a singular facility and the locality in
-    # the same evidence sentence as confirmation. Do not borrow from summaries.
+    # Require a complete locality in the facility clause, not a name prefix
+    # or a laboratory location in another clause of the same sentence.
     for sentence in re.split(r"[.!?]", text):
+        # Parenthetical animal lists inside em dashes may contain commas; they
+        # do not establish a location. Keep the original sentence for population
+        # matching, and remove only these asides from the location-clause check.
+        asides = re.findall(r"—([^—]*)—", sentence)
+        if any(re.search(r"\b(en|in|localidad|located|ubicad\w*|situad\w*)\b", aside) for aside in asides):
+            continue
+        location_text = re.sub(r"—[^—]*—", " ", sentence)
+        location_text = " ".join(location_text.split())
+        facility_location = (r"\b(un predio|un establecimiento|una granja|a farm|an establishment)\b"
+            r"(?:\s+(?:multiespecie|avícola|comercial|rural)){0,2}\s+"
+            r"(?:(?:ubicado|ubicada|situado|situada|located)\s+)?"
+            r"(?:(?:en\s+)?(?:la\s+)?localidad\s+de\s+|(?:de|en|in)\s+)"
+            + re.escape(locality.casefold())
+            + r"(?=\s*(?:[,;]|$))")
         if (verbatim in sentence
             and re.search(r"\b(confirmó|detectó|confirmed|detected)\b.{0,60}\b(caso positivo|positive case)\b", sentence)
-            and re.search(r"\b(un predio|un establecimiento|una granja|a farm|an establishment)\b", sentence)
-            and re.search(r"\b" + re.escape(locality.casefold()) + r"\b", sentence)):
+            and re.search(facility_location, location_text)):
             return True
     return False
 

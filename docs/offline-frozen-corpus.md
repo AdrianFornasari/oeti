@@ -158,6 +158,15 @@ que la confirmación/detección de un caso positivo, un establecimiento singular
 explícito y la localidad del evento. Se admite una colección de animales aunque
 la fuente reporte un caso: no se transforma ese caso en cantidad de aves/animales.
 
+La localidad completa debe estar vinculada a la cláusula del establecimiento,
+mediante una construcción locativa admitida (por ejemplo, «un predio de A» o
+«un establecimiento situado en A»). No basta que aparezca en otra cláusula de
+la misma oración. Se rechazan nombres que solo coincidan por prefijo y apartes
+entre rayas que introduzcan otra ubicación. Los apartes de listas animales sin
+información locativa pueden omitirse solo para comprobar ese vínculo; su texto
+original sigue conservado en la evidencia. La gramática es intencionalmente
+acotada y las construcciones no reconocidas permanecen como diagnósticos.
+
 Un individuo aislado, una muestra remitida desde una granja, la sola mención de
 un predio en otra oración, un resultado de laboratorio sin ubicación del evento
 o múltiples localidades no cumplen esta regla. No se inventan datos para

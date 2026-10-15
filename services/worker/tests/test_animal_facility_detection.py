@@ -34,6 +34,10 @@ def test_reported_animal_population_detection_at_one_facility_is_focal_event(tex
     'Se investiga un posible caso positivo en cerdos de un predio de Villa Norte.',
     'Se confirmó un caso positivo en cerdos. Hay un predio en Villa Sur.',
     'Se confirmó un caso positivo en cerdos de predios ubicados en Villa Norte y Villa Sur.',
+    'Se confirmó un caso positivo en cerdos de un predio de Villa Norte del Monte.',
+    'Se confirmó un caso positivo en cerdos de un predio de Villa Sur, con análisis en Villa Norte.',
+    'Se confirmó un caso positivo en cerdos de un predio de Villa Sur y se analizó en Villa Norte.',
+    'Se confirmó un caso positivo en cerdos de un predio —ubicado en Villa Sur— de Villa Norte.',
 ])
 def test_incomplete_or_non_focal_reports_remain_diagnostics(text):
     assert assembled(detection(text))['signals'][0]['signal_type'] == 'laboratory_result'
