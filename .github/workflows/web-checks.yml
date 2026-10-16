@@ -1,0 +1,40 @@
+name: Web checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web-checks:
+    name: Web / Node 24
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      OETI_LOW_MEMORY: '1'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.13.1'
+          package-manager-cache: false
+      - name: Install locked web dependencies
+        run: npm ci --workspace apps/web --include-workspace-root=false
+      - name: Check TypeScript
+        run: node node_modules/typescript/bin/tsc --project apps/web/tsconfig.json --incremental false
+      - name: Check frozen snapshot
+        run: npm --workspace apps/web run demo:check
+      - name: Build web application
+        run: npm --workspace apps/web run build -- --webpack
