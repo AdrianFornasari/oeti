@@ -211,7 +211,9 @@ def _assemble_hosts(bucket: list[dict[str, Any]]) -> list[dict[str, Any]]:
         canonical = subject.get("canonical_name")
         if stype == "human":
             canonical = canonical or "Homo sapiens"
-        host_type = "wildlife" if stype == "wildlife" else stype
+        # Claims allow a generic animal; signal hosts have no "animal" enum.
+        # Preserve its text/taxon without assuming domestic or wildlife status.
+        host_type = "other" if stype == "animal" else stype
         key = (verbatim, canonical, host_type)
         if key in seen:
             continue

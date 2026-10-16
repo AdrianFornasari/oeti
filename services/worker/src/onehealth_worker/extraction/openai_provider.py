@@ -155,6 +155,7 @@ class OpenAIResponsesProvider:
         model: str,
         base_url: str = "https://api.openai.com/v1",
         read_timeout_seconds: float = 600.0,
+        max_output_tokens: int | None = None,
     ):
         if not api_key:
             raise ValueError("LLM_API_KEY es obligatorio para provider=openai")
@@ -166,10 +167,15 @@ class OpenAIResponsesProvider:
             or read_timeout_seconds <= 0
         ):
             raise ValueError("read_timeout_seconds debe ser un número finito mayor que cero")
+        if max_output_tokens is not None and (
+            type(max_output_tokens) is not int or max_output_tokens <= 0
+        ):
+            raise ValueError("max_output_tokens debe ser un entero positivo o None")
         self.api_key = api_key
         self.model = model
         self.base_url = base_url.rstrip("/")
         self.read_timeout_seconds = float(read_timeout_seconds)
+        self.max_output_tokens = max_output_tokens
 
     def extract(self, *, instructions: str, document_input: str, schema: dict[str, Any]) -> ProviderResponse:
         body = {
@@ -187,6 +193,8 @@ class OpenAIResponsesProvider:
                 "verbosity": "low",
             },
         }
+        if self.max_output_tokens is not None:
+            body["max_output_tokens"] = self.max_output_tokens
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
