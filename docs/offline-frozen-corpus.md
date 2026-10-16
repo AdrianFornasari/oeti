@@ -268,3 +268,32 @@ la fecha del documento y la del hecho son contratos distintos. No cambia el
 prompt ni reinterpreta las fuentes. Las mediciones históricas quedan intactas;
 los freezes que incluyan offline.py requieren una revisión para ejecutar el
 código nuevo.
+
+## Avisos opcionales de revisión de claims
+
+La API Python acepta include_review_hints=True (por defecto False). Se ejecuta
+solo después de validar esquema, binding y evidencia literal de los claims.
+No conecta ningún proveedor por sí sola y no cambia el CLI de preparación.
+
+Cuando se habilita, report.claim_review registra versión/hash del módulo de
+revisión y affects_validation=false. Cada documento distingue:
+- not_reviewed, findings=null: preparación sin respuestas o fallo previo a revisión.
+- reviewed, findings=[]: revisión ejecutada sin avisos; no acredita corrección semántica.
+- reviewed con findings: avisos por claim/campo/código para revisión posterior.
+- review_error, findings=null y error_type: error del revisor, redaccionado, sin
+  cambiar la aceptación de una respuesta válida.
+
+La revisión se refiere a claims, antes del ensamblado. Si luego falla el ensamblado,
+puede existir revisión ejecutada en un documento failed. No equiparar ambos estados.
+REVIEW-LOCALITY-QUOTE marca localidad completa ausente de las citas de ese claim;
+puede estar sustentada por contexto de otra frase del documento. No prueba error.
+REVIEW-TEST-RESULT marca test_reported=false con resultado/estado diagnóstico.
+REVIEW-INVESTIGATION-STATE marca investigación sin estado pending, que puede ser
+metadata incompleta. No corrige campos ni clasifica automáticamente toda negación.
+
+Los avisos no modifican claims, señales, validaciones, métricas o scorer; tampoco
+son una cola persistida ni autorización de publicación. Su presencia en el reporte
+sí cambia su hash. No reescribir reportes históricos: usar una ejecución/replay
+separada con freeze actualizado. El módulo nuevo debe incluirse en ese freeze.
+La ausencia de avisos no garantiza localidad correcta, scope cumplido o fechas
+sustentadas; la herramienta tiene cobertura limitada y puede producir falsos avisos.

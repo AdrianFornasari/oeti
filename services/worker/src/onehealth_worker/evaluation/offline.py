@@ -112,7 +112,8 @@ def _validate_document_binding(payload: dict[str, Any], document: FrozenDocument
 
 
 def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
-                      execute: bool = False, provider=None) -> dict[str, Any]:
+                      execute: bool = False, provider=None,
+                      include_review_hints: bool = False) -> dict[str, Any]:
     """Prepare all inputs or process with an explicitly supplied provider.
 
     The default never calls the provider. No overwrite/resume/force is supported:
@@ -146,6 +147,10 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
         'provider_class': type(provider).__name__ if execute else None,
         'production_sequence': ['assembly_v046', 'normalization', 'signal_semantics_v049'],
         'results': []}
+    if include_review_hints:
+        from . import claim_review
+        report['claim_review'] = {'version': claim_review.REVIEW_VERSION,
+            'code_sha256': _sha(Path(claim_review.__file__).read_bytes()), 'affects_validation': False}
     if execute:
         report['schemas_sha256'] = {name: _sha(json.dumps(schema, sort_keys=True).encode())
             for name, schema in [('claims', claims_schema), ('signals', signal_schema)]}
@@ -157,6 +162,8 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
             'source_path': source, 'source_sha256': source_sha,
             'input_path': f'{prefix}.input.txt', 'input_sha256': _sha(input_bytes),
             'status': 'prepared', 'usage': None, 'response_id': None}
+        if include_review_hints:
+            result['claim_review'] = {'status': 'not_reviewed', 'findings': None}
         if execute:
             phase = 'provider'
             try:
@@ -170,6 +177,13 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                 validate_atomic_claims(response.payload, claims_schema)
                 _validate_document_binding(response.payload, document)
                 validate_literal_claim_evidence(response.payload, document.raw_text)
+                if include_review_hints:
+                    try:
+                        result['claim_review'] = {'status': 'reviewed',
+                            'findings': claim_review.review_claims(response.payload)}
+                    except Exception as review_error:
+                        result['claim_review'] = {'status': 'review_error', 'findings': None,
+                            'error_type': type(review_error).__name__}
                 payload = assemble_claims_payload(response.payload)
                 payload = harden_signal_semantics_v049(normalize_extraction_payload(payload))
                 validate_extraction(payload, signal_schema)
