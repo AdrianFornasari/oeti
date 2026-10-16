@@ -88,3 +88,24 @@ de veto del benchmark están fuera de esta primera ficha del evento persistido;
 no se mezclaron pares sintéticos con relaciones reales. Antes de una demo en
 vivo o publicada quedan por verificar signup, acceso restringido y RLS desplegada.
 La protección de main y el segundo caso holdout siguen pendientes por separado.
+
+## Verificación de impresión — 16 de octubre de 2026
+
+La demo base fue integrada mediante #16; el build completo de Next aprobó
+posteriormente con opciones locales de menor memoria. Las notas anteriores de
+fallos de memoria describen los primeros intentos, no el resultado final.
+
+Se verificó una impresión local de Edge headless sobre la ficha autónoma:
+cinco páginas, cinco IDs de señal, ocho citas completas y enlaces PDF clicables
+a las dos publicaciones. Las cinco páginas se renderizaron y revisaron visualmente.
+Los estilos de impresión ocultan la instrucción de selección y mantienen unido
+el encabezado de relaciones, que comienza en una página nueva. Los enlaces de
+fuente del bloque imprimible son anclas explícitas. Aprobaron TypeScript, las
+tres pruebas de snapshot y git diff --check.
+
+La evidencia local está en local-postgres-tests/edge-print-2026-10-16/verification.json
+y el PDF en output/pdf/oeti-mv-hondius-navegador.pdf, fuera de la selección Git.
+Esto comprueba el render de impresión con selección inicial y opciones headless;
+no certifica el diálogo interactivo ni las preferencias de cada navegador.
+No se recapturaron fuentes ni se consultó Supabase. El acceso restringido previo
+a una exposición en vivo sigue pendiente.
