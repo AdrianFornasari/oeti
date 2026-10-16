@@ -57,3 +57,35 @@ nuevo resumen es responsabilidad explícita del llamador. Versiones/hashes de
 código deben congelarse al reproducir; un cambio de registro requiere revalidar.
 Los paquetes de revisión H5 siguen fuera de Git y no se incluyen en los ejemplos
 de prueba. Los tests utilizan archivos sintéticos y no necesitan credenciales.
+
+## Informe HTML local
+
+Para leer decisiones, valores y citas sin abrir cada JSON:
+
+```powershell
+python -m onehealth_worker.evaluation.field_review_report `
+  --decisions C:/ruta/paquete/decisions.json `
+  --allowed-root C:/ruta/paquete `
+  --output C:/ruta/salidas/revision.html
+```
+
+El directorio de salida debe existir y el archivo debe ser nuevo. La API
+`export_field_review(decisions_path=..., allowed_root=..., output_path=...)`
+valida antes de generar el informe y vuelve a comprobar las referencias antes
+de escribir. Usa creación exclusiva, incluso si la salida coincide con un input.
+No modifica registros ni aplica propuestas. Se debe trabajar con archivos que
+nadie esté modificando simultáneamente, igual que con el validador.
+
+El HTML muestra una sección por decisión, valor observado/propuesto, disposición,
+motivo, cita literal, intervalo Unicode, hashes y referencia opcional de metadatos
+congelados. Incluye conteos y SHA-256 de decisions. Sus URL son texto; no descarga
+fuentes. Escapa el contenido y no incluye scripts, formularios ni recursos externos.
+El resumen de API/CLI añade report_version y html_sha256; no se guarda otro archivo
+automáticamente. CLI devuelve 0 al exportar y 1 ante un error de validación o E/S,
+sin imprimir rutas o contenido de los documentos en el error.
+
+Aceptar una propuesta en el registro no significa aplicarla ni acreditar su
+corrección. El informe conserva explícitamente autoría provisional del agente,
+ausencia de revisión humana y decisiones_applied=0. No transforma documentos
+fallidos en predicciones válidas ni recalcula métricas. Se genera para lectura
+local; revisar su contenido antes de compartirlo, pues contiene citas originales.
