@@ -49,6 +49,10 @@ def _bucket_key(claim: dict[str, Any]) -> tuple[str, str]:
     group = str(claim.get("group_id") or claim.get("claim_id") or "?")
     polarity = str(claim.get("polarity") or "not_applicable")
 
+    # An explicit absence is evidence about a focus, not part of its positive
+    # case/death update even when the provider assigns the same group.
+    if kind == "outbreak_update" and polarity == "negative":
+        return ("outbreak_absence", group)
     if kind in _OUTBREAK_KINDS:
         return ("outbreak", group)
     if kind == "surveillance_baseline":
@@ -136,7 +140,8 @@ def _role_and_type(kind: str, bucket: list[dict[str, Any]]) -> tuple[str, str]:
     if kind == "syndromic_cluster":
         return "primary_event", "cluster"
     if kind == "outbreak":
-        return "primary_event", "outbreak"
+        role = "negative_evidence" if all(c.get("polarity") == "negative" for c in bucket) else "primary_event"
+        return role, "outbreak"
     if kind == "baseline":
         return "surveillance_baseline", "case_report"
     if kind == "diagnostic_result":
