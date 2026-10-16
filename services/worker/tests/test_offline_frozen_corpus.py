@@ -178,3 +178,71 @@ def test_cli_prepares_without_settings_or_network(tmp_path, monkeypatch, capsys)
     path = manifest(tmp_path)
     main(['--manifest', str(path), '--output', str(tmp_path/'plan')])
     assert json.loads(capsys.readouterr().out)['mode'] == 'prepare_only'
+
+@pytest.mark.parametrize('declared,returned', [(None, '2026-03-01'),
+    ('2026-03-01', None), ('2026-03-01', '2026-03-02')])
+def test_provider_cannot_replace_frozen_document_date(tmp_path, declared, returned):
+    path = manifest(tmp_path, 2)
+    frozen = json.loads(path.read_text())
+    frozen['documents'][0]['declared_page_date'] = declared
+    path.write_text(json.dumps(frozen))
+    class WrongDate(FakeProvider):
+        def extract(self, **kwargs):
+            response = super().extract(**kwargs)
+            if len(self.calls) == 1:
+                response.payload['document']['document_date'] = returned
+            return response
+    report = run_frozen_corpus(manifest_path=path, output_dir=tmp_path/'run',
+        execute=True, provider=WrongDate())
+    assert [r['status'] for r in report['results']] == ['failed', 'generated']
+    assert report['results'][0]['phase'] == 'validation'
+    assert report['results'][0]['usage']['total_tokens'] == 10
+    saved = json.loads((tmp_path/'run/001.claims.json').read_text())
+    assert saved['document']['document_date'] == returned
+    assert not (tmp_path/'run/001.signals.json').exists()
+
+
+@pytest.mark.parametrize('declared', [None, '2026-03-01'])
+def test_matching_document_date_is_preserved(tmp_path, declared):
+    path = manifest(tmp_path)
+    frozen = json.loads(path.read_text())
+    frozen['documents'][0]['declared_page_date'] = declared
+    path.write_text(json.dumps(frozen))
+    class MatchingDate(FakeProvider):
+        def extract(self, **kwargs):
+            response = super().extract(**kwargs)
+            response.payload['document']['document_date'] = declared
+            return response
+    report = run_frozen_corpus(manifest_path=path, output_dir=tmp_path/'run',
+        execute=True, provider=MatchingDate())
+    assert report['results'][0]['status'] == 'generated'
+    saved = json.loads((tmp_path/'run/001.signals.json').read_text())
+    assert saved['document']['document_date'] == declared
+
+
+def test_provider_cannot_replace_frozen_document_language(tmp_path):
+    class WrongLanguage(FakeProvider):
+        def extract(self, **kwargs):
+            response = super().extract(**kwargs)
+            response.payload['document']['language'] = 'en'
+            return response
+    report = run_frozen_corpus(manifest_path=manifest(tmp_path), output_dir=tmp_path/'run',
+        execute=True, provider=WrongLanguage())
+    assert report['results'][0]['status'] == 'failed'
+    assert (tmp_path/'run/001.claims.json').exists()
+    assert not (tmp_path/'run/001.signals.json').exists()
+
+@pytest.mark.parametrize('field,value', [('document_date', '2026-03-01'), ('language', 'en')])
+def test_assembly_cannot_replace_frozen_metadata(tmp_path, monkeypatch, field, value):
+    from onehealth_worker.extraction import assembly_v046
+    original = assembly_v046.assemble_claims_payload
+    def changed(payload):
+        result = original(payload)
+        result['document'][field] = value
+        return result
+    monkeypatch.setattr(assembly_v046, 'assemble_claims_payload', changed)
+    report = run_frozen_corpus(manifest_path=manifest(tmp_path), output_dir=tmp_path/'run',
+        execute=True, provider=FakeProvider())
+    assert report['results'][0]['status'] == 'failed'
+    assert report['results'][0]['usage']['total_tokens'] == 10
+    assert not (tmp_path/'run/001.signals.json').exists()
