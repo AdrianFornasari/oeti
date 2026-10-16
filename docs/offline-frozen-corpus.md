@@ -42,6 +42,48 @@ Los IDs son locales a la evaluación: no son UUIDs de raw_items persistidos.
 Cambiar fuente, metadata o scope cambia el binding. Esto no constituye un lockfile
 de dependencias ni un registro automático del SHA Git de cada ejecución.
 
+### Control opcional del entorno declarado
+
+Un manifiesto nuevo puede incluir `runtime_freeze`:
+
+```json
+{
+  "runtime_freeze": {
+    "version": 1,
+    "python": "3.13.8",
+    "distributions": [{"name": "httpx", "version": "0.28.1"}],
+    "locks": [{"path": "services/worker/requirements-test.lock", "sha256": "HASH_SHA256_DE_64_CARACTERES"}]
+  }
+}
+```
+
+Los valores del ejemplo son ilustrativos: congelar las versiones y hashes reales
+del entorno elegido. Python exige tres componentes y coincidencia exacta;
+distributions es una lista no vacía de nombres/versiones exactas. Los nombres
+ignoran mayúsculas y normalizan secuencias de guiones, puntos y guiones bajos.
+Se rechazan nombres canónicos duplicados y paquetes requeridos ausentes, con
+versión distinta, metadata incompleta o múltiples distribuciones identificadas.
+Una entrada de metadata sin Name no puede satisfacer un requisito. Los paquetes
+no declarados no se comprueban. No se instalan ni actualizan dependencias.
+
+locks es opcional: lista de rutas relativas únicas dentro del checkout tras
+resolver enlaces y SHA-256 en hexadecimal minúsculo. Se verifican sus bytes,
+sin interpretar requisitos ni inferir que esos locks se usaron para instalar.
+La instalación con hashes se describe en docs/worker-dependencies.md.
+
+El control usa solo stdlib y corre antes de crear salidas o invocar al proveedor,
+tanto en prepare_only como en ejecución explícita. Añade verified_runtime_freeze
+al reporte únicamente cuando se declaró. Sin runtime_freeze, se conserva el
+comportamiento anterior; un campo presente pero null es inválido. Errores de
+metadata o lectura impiden continuar. No lee credenciales, variables de entorno
+ni URL de instalación para este control. No acredita integridad de los archivos
+instalados, equivalencia de sistema operativo o bibliotecas nativas, ni congela
+los paquetes omitidos. No modificar el entorno durante una ejecución.
+
+Agregar este contrato exige un manifiesto nuevo y actualizar los hashes de código
+de offline.py y runtime_freeze.py. No convierte freezes anteriores en corridas
+verificadas con los locks actuales ni altera sus resultados.
+
 ## Interfaz de extracción probada con proveedor simulado
 
 La función Python `run_frozen_corpus` acepta execute=True únicamente junto con
