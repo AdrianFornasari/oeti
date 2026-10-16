@@ -1069,21 +1069,23 @@ class EventMatchingRepository:
             tuple(seed[field] for field in fields),
         )
         event_id = str(cur.fetchone()["id"])
-        for membership in plan["memberships"]:
-            cur.execute(
-                """
-                insert into public.event_signals (
-                  event_id, signal_id, relation_to_event, match_score,
-                  match_decision, rationale
-                ) values (
-                  %s::uuid, %s::uuid, %s::public.relation_type, %s,
-                  %s::public.match_decision, %s::jsonb
-                )
-                """,
+        cur.executemany(
+            """
+            insert into public.event_signals (
+              event_id, signal_id, relation_to_event, match_score,
+              match_decision, rationale
+            ) values (
+              %s::uuid, %s::uuid, %s::public.relation_type, %s,
+              %s::public.match_decision, %s::jsonb
+            )
+            """,
+            [
                 (event_id, membership["signal_id"], membership["relation_to_event"],
                  membership["match_score"], membership["match_decision"],
-                 json.dumps(membership["rationale"], ensure_ascii=False)),
-            )
+                 json.dumps(membership["rationale"], ensure_ascii=False))
+                for membership in plan["memberships"]
+            ],
+        )
         return {**plan, "status": "created", "event_id": event_id, "dry_run": False}
 
     def load_raw_text_for_signal(
