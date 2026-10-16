@@ -125,6 +125,10 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
     if execute and provider is None:
         raise ValueError('execute requires an explicitly injected provider')
     manifest, manifest_sha, prepared = _preflight(manifest_path)
+    runtime_freeze = None
+    if 'runtime_freeze' in manifest:
+        from .runtime_freeze import verify_runtime_freeze
+        runtime_freeze = verify_runtime_freeze(manifest['runtime_freeze'], repository_root=REPOSITORY_ROOT)
     if execute:
         # Keep preparation independent from DB and network/provider packages.
         from ..extraction.assembly_v046 import assemble_claims_payload
@@ -151,6 +155,8 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
         from . import claim_review
         report['claim_review'] = {'version': claim_review.REVIEW_VERSION,
             'code_sha256': _sha(Path(claim_review.__file__).read_bytes()), 'affects_validation': False}
+    if runtime_freeze is not None:
+        report['verified_runtime_freeze'] = runtime_freeze
     if execute:
         report['schemas_sha256'] = {name: _sha(json.dumps(schema, sort_keys=True).encode())
             for name, schema in [('claims', claims_schema), ('signals', signal_schema)]}
