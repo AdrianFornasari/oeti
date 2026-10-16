@@ -5,11 +5,14 @@ pull requests hacia `main`, pushes a `main` y ejecuciones manuales. No usa filtr
 por ruta para que los checks puedan exigirse en todos los PR.
 
 La matriz cubre Python 3.12 (mínimo declarado) y 3.13 (runtime local validado).
-Cada job instala el paquete con el extra `test` y levanta PostgreSQL 18.6 en
+Cada job instala dependencias de runtime/test/build desde locks con hashes,
+instala el worker editable sin resolver dependencias ni aislar el build y ejecuta
+pip check. El job además usa PostgreSQL 18.6 en
 `127.0.0.1:55449`, usuario `oeti_test`, con autenticación trust exclusivamente
 para el servicio descartable del runner. No requiere secretos, Supabase ni LLM.
-Las acciones están fijadas por SHA; las dependencias Python conservan los rangos
-del paquete, por lo que esto no constituye un entorno con lockfile completo.
+Las acciones están fijadas por SHA. requirements-test.lock y requirements-build.lock
+fijan versiones/hashes; pyproject.toml conserva rangos para consumidores del paquete.
+La actualización de locks se describe en docs/worker-dependencies.md.
 
 `OETI_LOCAL_PG_TESTS=1` activa las dos suites de integración existentes. Cada
 fixture crea y elimina una base `oeti_test_*`. Si el servicio no está disponible,
