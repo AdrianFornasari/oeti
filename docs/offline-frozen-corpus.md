@@ -253,3 +253,18 @@ habilitado y detenido al terminar. Es validación de software, no generalizació
 La evaluación H5 y sus replays son artefactos locales separados: la primera
 corrida real tuvo seis fallos de validación; el análisis posterior es de desarrollo,
 incompleto, sin sustituir la medición inicial. Ningún gate de release queda habilitado.
+
+## Binding de metadatos del documento
+
+Además del raw_item_id, el runner exige que language y document_date coincidan
+con los metadatos congelados. La fecha desconocida debe permanecer null; no se
+admite completarla desde un prefijo del cuerpo. La comprobación se realiza
+sobre los claims y sobre las señales ensambladas antes de guardar salidas válidas.
+Un desajuste queda como fallo de validación, preserva claims originales y consumo
+conocido y permite continuar el resto del corpus. No se corrige silenciosamente.
+
+Esta guarda no prueba que event_date o cada campo semántico tenga fundamento:
+la fecha del documento y la del hecho son contratos distintos. No cambia el
+prompt ni reinterpreta las fuentes. Las mediciones históricas quedan intactas;
+los freezes que incluyan offline.py requieren una revisión para ejecutar el
+código nuevo.

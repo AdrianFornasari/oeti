@@ -101,6 +101,16 @@ def _preflight(manifest_path: Path):
     return manifest, _sha(manifest_bytes), prepared
 
 
+def _validate_document_binding(payload: dict[str, Any], document: FrozenDocument) -> None:
+    expected = {
+        'raw_item_id': document.raw_item_id,
+        'language': document.language,
+        'document_date': document.published_at.isoformat() if document.published_at else None,
+    }
+    if any(payload['document'].get(key) != value for key, value in expected.items()):
+        raise ValueError('document metadata differs from frozen input')
+
+
 def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                       execute: bool = False, provider=None) -> dict[str, Any]:
     """Prepare all inputs or process with an explicitly supplied provider.
@@ -158,14 +168,12 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                 result.update(claims_path=f'{prefix}.claims.json',
                     claims_sha256=_sha((output_dir / f'{prefix}.claims.json').read_bytes()))
                 validate_atomic_claims(response.payload, claims_schema)
-                if response.payload['document']['raw_item_id'] != document.raw_item_id:
-                    raise ValueError('returned document binding differs')
+                _validate_document_binding(response.payload, document)
                 validate_literal_claim_evidence(response.payload, document.raw_text)
                 payload = assemble_claims_payload(response.payload)
                 payload = harden_signal_semantics_v049(normalize_extraction_payload(payload))
                 validate_extraction(payload, signal_schema)
-                if payload['document']['raw_item_id'] != document.raw_item_id:
-                    raise ValueError('assembled document binding differs')
+                _validate_document_binding(payload, document)
                 validate_literal_evidence(payload, document.raw_text)
                 _write(output_dir / f'{prefix}.signals.json', payload)
                 result.update(status='generated', signals=len(payload['signals']),
