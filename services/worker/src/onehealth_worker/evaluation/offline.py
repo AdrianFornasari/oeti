@@ -21,6 +21,10 @@ from .extraction import scoped_document_input
 REPOSITORY_ROOT = Path(__file__).resolve().parents[5]
 
 
+class EventDatePolicyError(ValueError):
+    """An output conflicts with a declared source-review constraint."""
+
+
 @dataclass(frozen=True)
 class FrozenDocument:
     raw_item_id: str
@@ -65,6 +69,12 @@ def _preflight(manifest_path: Path):
     identifiers, source_paths = set(), set()
     root = manifest_path.parent
     for item in items:
+        if 'event_date_policy' in item:
+            policy = item['event_date_policy']
+            if (not isinstance(policy, dict) or set(policy) != {'mode', 'basis'}
+                    or policy['mode'] != 'unknown_only' or not isinstance(policy['basis'], str)
+                    or not policy['basis'].strip()):
+                raise ValueError('invalid declared event date policy')
         identifier = item.get('document_id')
         if not isinstance(identifier, str) or not identifier.strip():
             raise ValueError('document_id is required')
@@ -111,6 +121,14 @@ def _validate_document_binding(payload: dict[str, Any], document: FrozenDocument
         raise ValueError('document metadata differs from frozen input')
 
 
+def _validate_event_date_policy(payload: dict[str, Any], policy: dict | None) -> None:
+    if policy is None:
+        return
+    for item in payload.get('claims', payload.get('signals', [])):
+        if item['event_date'] != {'start': None, 'end': None, 'precision': 'unknown'}:
+            raise EventDatePolicyError('event date conflicts with declared source policy')
+
+
 def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                       execute: bool = False, provider=None,
                       include_review_hints: bool = False) -> dict[str, Any]:
@@ -125,6 +143,7 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
     if execute and provider is None:
         raise ValueError('execute requires an explicitly injected provider')
     manifest, manifest_sha, prepared = _preflight(manifest_path)
+    date_policies = {item['document_id']: item.get('event_date_policy') for item in manifest['documents']}
     runtime_freeze = None
     if 'runtime_freeze' in manifest:
         from .runtime_freeze import verify_runtime_freeze
@@ -168,6 +187,9 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
             'source_path': source, 'source_sha256': source_sha,
             'input_path': f'{prefix}.input.txt', 'input_sha256': _sha(input_bytes),
             'status': 'prepared', 'usage': None, 'response_id': None}
+        date_policy = date_policies[identifier]
+        if date_policy is not None:
+            result['verified_event_date_policy'] = date_policy
         if include_review_hints:
             result['claim_review'] = {'status': 'not_reviewed', 'findings': None}
         if execute:
@@ -182,6 +204,7 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                     claims_sha256=_sha((output_dir / f'{prefix}.claims.json').read_bytes()))
                 validate_atomic_claims(response.payload, claims_schema)
                 _validate_document_binding(response.payload, document)
+                _validate_event_date_policy(response.payload, date_policy)
                 validate_literal_claim_evidence(response.payload, document.raw_text)
                 if include_review_hints:
                     try:
@@ -194,6 +217,7 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                 payload = harden_signal_semantics_v049(normalize_extraction_payload(payload))
                 validate_extraction(payload, signal_schema)
                 _validate_document_binding(payload, document)
+                _validate_event_date_policy(payload, date_policy)
                 validate_literal_evidence(payload, document.raw_text)
                 _write(output_dir / f'{prefix}.signals.json', payload)
                 result.update(status='generated', signals=len(payload['signals']),

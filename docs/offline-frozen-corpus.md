@@ -86,6 +86,45 @@ verificadas con los locks actuales ni altera sus resultados.
 
 ## Interfaz de extracción probada con proveedor simulado
 
+### Política opcional de fecha del hecho por documento
+
+Una revisión previa del scope puede declarar en una entrada de documents:
+
+```json
+{
+  "event_date_policy": {
+    "mode": "unknown_only",
+    "basis": "La fuente solo fija semanas o temporada; no establece fecha del hecho."
+  }
+}
+```
+
+Solo admite esas dos claves, modo unknown_only y basis textual no vacío. Campo
+presente pero null o mal formado falla en preflight antes de salidas/proveedor.
+Sin el campo, el runner conserva su comportamiento y formato anteriores.
+
+Cuando está declarado, cada claim y cada señal debe tener event_date exactamente
+`{"start": null, "end": null, "precision": "unknown"}`. Se valida tras schema/binding,
+antes de aceptar claims y de nuevo después del ensamblado. Fechas no nulas con
+precision unknown también se rechazan. Una incompatibilidad deja el documento
+failed/EventDatePolicyError, conserva claims originales y usage/response_id
+conocidos y no escribe señales aceptadas. No hay reparación ni conversión de fechas.
+Claims vacíos siguen permitidos; no prueban cobertura de hechos.
+
+El resultado por documento añade verified_event_date_policy incluso en preparación
+o fallo cuando se declaró. Verificado significa contrato aplicado, no interpretación
+semántica o autoría de basis acreditada. La decisión de revisión debe ser correcta
+para la fuente y scope; una política mal elegida puede rechazar fechas legítimas.
+No declararla si existe una fecha del hecho que debe conservarse. No se infiere
+automáticamente desde coincidencia con publicación o palabras clave.
+
+Semanas/temporadas pueden conservarse en reference_period, pero este control no
+valida ese campo ni recupera omisiones. No se añade la política a instrucciones,
+inputs del modelo o binding UUID5: cambia aceptación, no identidad de la fuente.
+El hash del manifiesto diferencia intentos con políticas distintas. Actualizar el
+freeze de offline.py y guardar un manifiesto/salida nuevos; no reescribir corridas
+históricas ni presentar mayor rechazo como mejora de precisión.
+
 La función Python `run_frozen_corpus` acepta execute=True únicamente junto con
 un proveedor inyectado explícitamente. Se usa en pruebas con respuestas simuladas.
 El valor por defecto no llama al proveedor aunque se le haya pasado uno.
