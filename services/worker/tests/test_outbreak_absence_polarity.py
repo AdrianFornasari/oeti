@@ -7,6 +7,8 @@ from onehealth_worker.extraction.atomic_claims import assemble_claims_payload as
 from onehealth_worker.extraction.assembly_v045 import assemble_claims_payload as assemble_v045
 from onehealth_worker.extraction.assembly_v046 import assemble_claims_payload as assemble_v046
 from onehealth_worker.extraction.schema import validate_atomic_claims, validate_extraction
+from onehealth_worker.extraction.normalization import normalize_extraction_payload
+from onehealth_worker.extraction.signal_semantics_v049 import harden_signal_semantics_v049
 
 
 def outbreak(polarity, identifier='absence'):
@@ -73,4 +75,79 @@ def test_repeated_negative_updates_still_consolidate(assembler):
     signals = assemble(assembler, [a, b])
     assert len(signals) == 1
     assert signals[0]['signal_role'] == 'negative_evidence'
+    assert len(signals[0]['evidence']) == 2
+
+
+def assemble_current_pipeline(payload):
+    return harden_signal_semantics_v049(normalize_extraction_payload(assemble_v046(payload)))
+
+
+ASSEMBLERS = [assemble_v044, assemble_v045, assemble_v046, assemble_current_pipeline]
+
+
+def case_status(polarity='negative'):
+    claim = outbreak(polarity, 'case-status')
+    claim['claim_kind'] = 'case_status'
+    claim['metric'].update(reported=True, name='confirmed cases', value_numeric=0, unit='cases')
+    claim['summary'] = 'No confirmed cases have been reported this season.'
+    claim['evidence'][0]['text'] = claim['summary']
+    return claim
+
+
+@pytest.mark.parametrize('assembler', ASSEMBLERS)
+@pytest.mark.parametrize('reverse', [False, True])
+@pytest.mark.parametrize('positive_kind', ['case_status', 'outbreak_update', 'death_count'])
+def test_negative_case_status_isolated_from_positive_counts(assembler, reverse, positive_kind):
+    negative = case_status()
+    positive = outbreak('positive', 'positive-count')
+    positive['claim_kind'] = positive_kind
+    positive['metric'].update(reported=True, name='probable cases', value_numeric=3, unit='cases')
+    positive['evidence'][0]['text'] = 'Three probable cases have been reported.'
+    items = [negative, positive]
+    signals = assemble(assembler, list(reversed(items)) if reverse else items)
+    assert len(signals) == 2
+    absence = next(s for s in signals if s['signal_role'] == 'negative_evidence')
+    event = next(s for s in signals if s['signal_role'] == 'primary_event')
+    assert absence['signal_type'] == 'case_report'
+    assert absence['metrics'] == [{k: v for k, v in negative['metric'].items() if k != 'reported'}]
+    assert event['metrics'] == [{k: v for k, v in positive['metric'].items() if k != 'reported'}]
+    assert [e['text'] for e in absence['evidence']] == [negative['evidence'][0]['text']]
+    assert [e['text'] for e in event['evidence']] == [positive['evidence'][0]['text']]
+
+
+@pytest.mark.parametrize('assembler', ASSEMBLERS)
+@pytest.mark.parametrize('polarity,role', [('negative', 'negative_evidence'),
+    ('positive', 'primary_event'), ('uncertain', 'primary_event')])
+@pytest.mark.parametrize('reported', [True, False])
+def test_case_status_role_uses_polarity_not_zero_or_metric_presence(assembler, polarity, role, reported):
+    claim = case_status(polarity)
+    if not reported:
+        claim['metric'].update(reported=False, value_numeric=None)
+    signals = assemble(assembler, [claim])
+    assert len(signals) == 1
+    assert signals[0]['signal_role'] == role
+    assert signals[0]['signal_type'] == 'case_report'
+    assert bool(signals[0]['metrics']) == reported
+
+
+@pytest.mark.parametrize('assembler', ASSEMBLERS)
+def test_negative_death_count_keeps_existing_grouping(assembler):
+    positive = outbreak('positive', 'positive')
+    negative = case_status()
+    negative['claim_kind'] = 'death_count'
+    negative['metric']['name'] = 'deaths'
+    signals = assemble(assembler, [positive, negative])
+    assert len(signals) == 1
+    assert signals[0]['signal_role'] == 'primary_event'
+
+
+@pytest.mark.parametrize('assembler', ASSEMBLERS)
+def test_repeated_negative_case_status_still_consolidates(assembler):
+    first, second = case_status(), case_status()
+    second['claim_id'] = 'second-negative'
+    second['evidence'][0]['text'] = 'No additional confirmed cases were reported.'
+    signals = assemble(assembler, [first, second])
+    assert len(signals) == 1
+    assert signals[0]['signal_role'] == 'negative_evidence'
+    assert len(signals[0]['metrics']) == 1
     assert len(signals[0]['evidence']) == 2

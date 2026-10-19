@@ -53,6 +53,8 @@ def _bucket_key(claim: dict[str, Any]) -> tuple[str, str]:
     # case/death update even when the provider assigns the same group.
     if kind == "outbreak_update" and polarity == "negative":
         return ("outbreak_absence", group)
+    if kind == "case_status" and polarity == "negative":
+        return ("case_status_negative", group)
     if kind in _OUTBREAK_KINDS:
         return ("outbreak", group)
     if kind == "surveillance_baseline":
@@ -167,7 +169,7 @@ def _role_and_type(kind: str, bucket: list[dict[str, Any]]) -> tuple[str, str]:
     if kind == "official_action":
         return "primary_event", "official_alert"
     if kind == "case_status":
-        return "primary_event", "case_report"
+        return ("negative_evidence" if polarity else "primary_event"), "case_report"
     if kind == "death_count":
         return "primary_event", "mortality_event"
     return "primary_event", "other"
