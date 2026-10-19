@@ -76,7 +76,7 @@ def _assemble_bucket(
     hosts = _assemble_hosts(bucket)
     locations = _merge_locations(bucket)
     metrics = _merge_metrics(bucket)
-    event_date = _best_event_date(bucket)
+    event_date = _best_event_date(bucket, warnings=warnings)
     reference_period = _best_reference_period(bucket)
     diagnostics = _merge_diagnostics(bucket)
     genomics = _merge_genomics(bucket)
@@ -266,12 +266,21 @@ def _merge_metrics(bucket: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
-def _best_event_date(bucket: list[dict[str, Any]]) -> dict[str, Any]:
+def _best_event_date(bucket: list[dict[str, Any]], *, warnings: list[str]) -> dict[str, Any]:
     rank = {"day": 3, "month": 2, "year": 1, "unknown": 0}
     candidates = [c.get("event_date") for c in bucket if isinstance(c.get("event_date"), dict)]
     if not candidates:
         return {"start": None, "end": None, "precision": "unknown"}
-    return deepcopy(max(candidates, key=lambda d: rank.get(d.get("precision"), 0)))
+    best_rank = max(rank.get(d.get("precision"), 0) for d in candidates)
+    best = [d for d in candidates if rank.get(d.get("precision"), 0) == best_rank]
+    signatures = {(d.get("start"), d.get("end"), d.get("precision")) for d in best}
+    if best_rank > 0 and len(signatures) > 1:
+        warnings.append(
+            "ASM-EVENT-DATE-01: distinct equally precise event dates in one signal; "
+            "event_date left unknown; inspect source claims."
+        )
+        return {"start": None, "end": None, "precision": "unknown"}
+    return deepcopy(best[0])
 
 
 def _best_reference_period(bucket: list[dict[str, Any]]) -> dict[str, Any]:
