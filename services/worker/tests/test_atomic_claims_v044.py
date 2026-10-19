@@ -192,3 +192,66 @@ def test_current_assembly_still_deduplicates_identical_observations(cutoff):
     assert len(metrics) == 1
     assert metrics[0]["value_numeric"] == 80
     assert {key: metrics[0][key] for key in cutoff} == cutoff
+
+
+def _event_date(start=None, end=None, precision="unknown"):
+    return dict(start=start, end=end, precision=precision)
+
+
+def _assemble_dates(dates, *, separate_groups=False):
+    from onehealth_worker.extraction.assembly_v046 import assemble_claims_payload as assemble_current
+    from onehealth_worker.extraction.normalization import normalize_extraction_payload
+    from onehealth_worker.extraction.signal_semantics_v049 import harden_signal_semantics_v049
+
+    payload = _cutoff_payload([_cutoff(verbatim=f"cutoff-{i}") for i in range(len(dates))])
+    for index, (claim, date) in enumerate(zip(payload["claims"], dates)):
+        claim["event_date"] = copy.deepcopy(date)
+        if separate_groups:
+            claim["group_id"] = f"group-{index}"
+    payload["warnings"] = ["original warning"]
+    original = copy.deepcopy(payload)
+    validate_atomic_claims(payload)
+    result = harden_signal_semantics_v049(normalize_extraction_payload(assemble_current(payload)))
+    validate_extraction(result)
+    assert payload == original
+    assert result["warnings"][0] == "original warning"
+    assert sum(len(s["metrics"]) for s in result["signals"]) == len(dates)
+    evidence = {e["text"] for c in payload["claims"] for e in c["evidence"]}
+    assert {e["text"] for s in result["signals"] for e in s["evidence"]} == evidence
+    return result
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+@pytest.mark.parametrize("dates", [
+    [_event_date("2026-09-03", "2026-09-03", "day"), _event_date("2026-09-10", "2026-09-10", "day")],
+    [_event_date("2026-09-03", "2026-09-10", "day"), _event_date("2026-09-05", "2026-09-12", "day")],
+    [_event_date("2026-09-03", None, "day"), _event_date("2026-09-03", "2026-09-03", "day")],
+    [_event_date("2026-08-01", None, "month"), _event_date("2026-09-01", None, "month")],
+    [_event_date("2025-01-01", None, "year"), _event_date("2026-01-01", None, "year")],
+])
+def test_current_assembly_warns_instead_of_selecting_first_tied_date(dates, reverse):
+    result = _assemble_dates(list(reversed(dates)) if reverse else dates)
+    assert len(result["signals"]) == 1
+    assert result["signals"][0]["event_date"] == _event_date()
+    assert len([w for w in result["warnings"] if w.startswith("ASM-EVENT-DATE-01:")]) == 1
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+@pytest.mark.parametrize("dates, expected", [
+    ([_event_date(), _event_date()], _event_date()),
+    ([_event_date("2026-09-03", None, "day")] * 2, _event_date("2026-09-03", None, "day")),
+    ([_event_date(), _event_date("2026-09-03", None, "day")], _event_date("2026-09-03", None, "day")),
+    ([_event_date("2025-01-01", None, "year"), _event_date("2026-09-03", None, "day")],
+     _event_date("2026-09-03", None, "day")),
+])
+def test_current_assembly_keeps_existing_date_selection_without_known_tie(dates, expected, reverse):
+    result = _assemble_dates(list(reversed(dates)) if reverse else dates)
+    assert result["signals"][0]["event_date"] == expected
+    assert result["warnings"] == ["original warning"]
+
+
+def test_current_assembly_does_not_conflict_dates_in_separate_groups():
+    dates = [_event_date("2026-09-03", None, "day"), _event_date("2026-09-10", None, "day")]
+    result = _assemble_dates(dates, separate_groups=True)
+    assert [s["event_date"] for s in result["signals"]] == dates
+    assert result["warnings"] == ["original warning"]
