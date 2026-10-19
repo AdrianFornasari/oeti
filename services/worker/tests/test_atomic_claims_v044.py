@@ -2,6 +2,8 @@ import copy
 import json
 from pathlib import Path
 
+import pytest
+
 from onehealth_worker.evaluation.scoring import evaluate_payloads
 from onehealth_worker.extraction.atomic_claims import assemble_claims_payload
 from onehealth_worker.extraction.schema import load_atomic_claims_schema, validate_atomic_claims, validate_extraction
@@ -128,3 +130,65 @@ def test_assembler_keeps_wildlife_diagnostic_genomic_relation_and_absence_separa
     ]
     assert assembled["signals"][2]["signal_role"] == "negative_evidence"
     assert assembled["signals"][3]["signal_role"] == "negative_evidence"
+
+
+def _cutoff_payload(cutoffs):
+    gold = json.loads((GOLD_DIR / "2026-05-04-initial-notification.gold.json").read_text(encoding="utf-8"))
+    payload = _claims_from_gold(gold)
+    template = payload["claims"][0]
+    payload["claims"] = []
+    for index, cutoff in enumerate(cutoffs):
+        claim = copy.deepcopy(template)
+        claim.update(claim_id=f"cutoff-{index}", group_id="same-update", claim_kind="outbreak_update")
+        claim["event_date"] = {"start": None, "end": None, "precision": "unknown"}
+        claim["metric"] = {
+            "reported": True, "name": "probable_cases", "value_numeric": 80,
+            "value_text": None, "unit": "cases", **cutoff,
+        }
+        payload["claims"].append(claim)
+    return payload
+
+
+def _assemble_cutoffs(payload):
+    from onehealth_worker.extraction.assembly_v046 import assemble_claims_payload as assemble_current
+    from onehealth_worker.extraction.normalization import normalize_extraction_payload
+    from onehealth_worker.extraction.signal_semantics_v049 import harden_signal_semantics_v049
+
+    original = copy.deepcopy(payload)
+    validate_atomic_claims(payload)
+    result = harden_signal_semantics_v049(normalize_extraction_payload(assemble_current(payload)))
+    validate_extraction(result)
+    assert payload == original
+    assert len(result["signals"]) == 1
+    assert result["signals"][0]["event_date"] == {"start": None, "end": None, "precision": "unknown"}
+    return result["signals"][0]["metrics"]
+
+
+def _cutoff(date=None, year=None, month=None, precision="unknown", verbatim=None):
+    return dict(as_of_date=date, as_of_year=year, as_of_month=month,
+                as_of_precision=precision, as_of_verbatim=verbatim)
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+@pytest.mark.parametrize("cutoffs", [
+    [_cutoff("2026-09-18", 2026, 9, "day", "18 September"),
+     _cutoff("2026-09-19", 2026, 9, "day", "19 September")],
+    [_cutoff(year=2025, precision="year"), _cutoff(year=2026, precision="year")],
+    [_cutoff(year=2026, month=8, precision="month"), _cutoff(year=2026, month=9, precision="month")],
+    [_cutoff(verbatim="SE 37"), _cutoff(verbatim="SE 38")],
+    [_cutoff(), _cutoff("2026-09-18", 2026, 9, "day", "18 September")],
+])
+def test_current_assembly_preserves_equal_counts_with_distinct_cutoffs(cutoffs, reverse):
+    ordered = list(reversed(cutoffs)) if reverse else cutoffs
+    metrics = _assemble_cutoffs(_cutoff_payload(ordered))
+    assert len(metrics) == 2
+    assert [{key: metric[key] for key in cutoff} for metric, cutoff in zip(metrics, ordered)] == ordered
+    assert [metric["value_numeric"] for metric in metrics] == [80, 80]
+
+
+@pytest.mark.parametrize("cutoff", [_cutoff(), _cutoff("2026-09-18", 2026, 9, "day", "18 September")])
+def test_current_assembly_still_deduplicates_identical_observations(cutoff):
+    metrics = _assemble_cutoffs(_cutoff_payload([cutoff, copy.deepcopy(cutoff)]))
+    assert len(metrics) == 1
+    assert metrics[0]["value_numeric"] == 80
+    assert {key: metrics[0][key] for key in cutoff} == cutoff

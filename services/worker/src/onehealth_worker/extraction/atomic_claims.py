@@ -252,7 +252,12 @@ def _merge_metrics(bucket: list[dict[str, Any]]) -> list[dict[str, Any]]:
         metric = claim.get("metric")
         if not isinstance(metric, dict) or not metric.get("reported"):
             continue
-        key = (metric.get("name"), metric.get("value_numeric"), metric.get("value_text"), metric.get("unit"))
+        # Equal counts at different reporting cutoffs are distinct observations.
+        key = (
+            metric.get("name"), metric.get("value_numeric"), metric.get("value_text"), metric.get("unit"),
+            metric.get("as_of_date"), metric.get("as_of_year"), metric.get("as_of_month"),
+            metric.get("as_of_precision"), metric.get("as_of_verbatim"),
+        )
         if key in seen:
             continue
         seen.add(key)
