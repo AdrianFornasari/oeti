@@ -378,3 +378,32 @@ sí cambia su hash. No reescribir reportes históricos: usar una ejecución/repl
 separada con freeze actualizado. El módulo nuevo debe incluirse en ese freeze.
 La ausencia de avisos no garantiza localidad correcta, scope cumplido o fechas
 sustentadas; la herramienta tiene cobertura limitada y puede producir falsos avisos.
+
+## Mapa temporal opcional por metrica
+
+La API `run_frozen_corpus(..., include_metric_period_provenance=True)` agrega
+`NNN.metric-periods.json` despues de validar claims y senales, incluida la politica
+temporal declarada cuando corresponda. Usa bytes y hashes de los archivos guardados,
+esquemas canonicos y el documento ya vinculado. La salida enumera candidatos de
+metricas exactamente iguales con sus periodos, fechas y evidencia originales.
+No modifica el periodo unico de la senal ni certifica atribucion semantica.
+
+El reporte registra version/hash del generador y `affects_validation=false`.
+Cada documento tiene estado `not_generated` en preparacion o fallo previo;
+`generated` incluye ruta relativa y SHA-256 del mapa. `generation_error` registra
+solo el tipo de excepcion redactado y mantiene el estado de la extraccion y su
+uso conocido. Una escritura fallida puede dejar un archivo parcial de diagnostico;
+solo un estado `generated` con hash identifica un mapa publicado correctamente.
+Los archivos se crean exclusivamente en el directorio nuevo de la ejecucion.
+
+Sin la opcion no se agregan archivos, claves o cambios de solicitudes/senales.
+La CLI sigue en prepare-only y no agrega una opcion nueva. Los avisos de claims
+y este mapa pueden activarse juntos, con estados independientes. Incluir el
+generador en el freeze de codigo de una nueva ejecucion; no modificar freezes
+historicos para habilitarlo. El hash de codigo en el reporte no autentica al autor.
+
+Una coincidencia unica no garantiza que el claim pertenezca al grupo de la senal;
+las coincidencias ambiguas conservan todos los candidatos y `unmatched` no repara
+metricas derivadas o normalizadas. Los claims cualitativos sin metrica reportada
+siguen fuera de este mapa y requieren revision separada. No activa el prompt v2,
+cambia la aceptacion, ejecuta inferencias adicionales ni recalcula exactitud.

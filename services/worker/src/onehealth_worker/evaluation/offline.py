@@ -131,7 +131,8 @@ def _validate_event_date_policy(payload: dict[str, Any], policy: dict | None) ->
 
 def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                       execute: bool = False, provider=None,
-                      include_review_hints: bool = False) -> dict[str, Any]:
+                      include_review_hints: bool = False,
+                      include_metric_period_provenance: bool = False) -> dict[str, Any]:
     """Prepare all inputs or process with an explicitly supplied provider.
 
     The default never calls the provider. No overwrite/resume/force is supported:
@@ -176,6 +177,11 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
             'code_sha256': _sha(Path(claim_review.__file__).read_bytes()), 'affects_validation': False}
     if runtime_freeze is not None:
         report['verified_runtime_freeze'] = runtime_freeze
+    if include_metric_period_provenance:
+        from . import metric_period_provenance
+        report['metric_period_provenance'] = {'version': 'metric-period-provenance-1',
+            'code_sha256': _sha(Path(metric_period_provenance.__file__).read_bytes()),
+            'affects_validation': False, 'semantic_correctness_verified': False}
     if execute:
         report['schemas_sha256'] = {name: _sha(json.dumps(schema, sort_keys=True).encode())
             for name, schema in [('claims', claims_schema), ('signals', signal_schema)]}
@@ -192,6 +198,8 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
             result['verified_event_date_policy'] = date_policy
         if include_review_hints:
             result['claim_review'] = {'status': 'not_reviewed', 'findings': None}
+        if include_metric_period_provenance:
+            result['metric_period_provenance'] = {'status': 'not_generated'}
         if execute:
             phase = 'provider'
             try:
@@ -223,6 +231,24 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                 result.update(status='generated', signals=len(payload['signals']),
                     signals_path=f'{prefix}.signals.json',
                     signals_sha256=_sha((output_dir / f'{prefix}.signals.json').read_bytes()))
+                if include_metric_period_provenance:
+                    try:
+                        mapping = metric_period_provenance.build_metric_period_provenance(
+                            claims_bytes=(output_dir / result['claims_path']).read_bytes(),
+                            signals_bytes=(output_dir / result['signals_path']).read_bytes(),
+                            expected_claims_sha256=result['claims_sha256'],
+                            expected_signals_sha256=result['signals_sha256'],
+                            expected_document=payload['document'],
+                            claims_schema=claims_schema, signal_schema=signal_schema)
+                        mapping_path = f'{prefix}.metric-periods.json'
+                        with (output_dir / mapping_path).open('xb') as stream:
+                            stream.write(mapping)
+                        result['metric_period_provenance'] = {'status': 'generated',
+                            'path': mapping_path, 'sha256': _sha(mapping)}
+                    except Exception as mapping_error:
+                        # Auxiliary mapping must not change extraction acceptance.
+                        result['metric_period_provenance'] = {'status': 'generation_error',
+                            'error_type': type(mapping_error).__name__}
             except Exception as error:
                 # Exception messages from transports may contain URLs/credentials.
                 result.update(status='failed', error_type=type(error).__name__, phase=phase)

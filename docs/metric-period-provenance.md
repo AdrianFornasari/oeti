@@ -39,7 +39,10 @@ justify splitting metrics into independent events. The output version is
 `metric-period-provenance-1`; it is a derived candidate map, not a model response
 or independent gold. Manual adjudication artifacts remain manual after mapping.
 
-File publication is intentionally left to the evaluation caller. Before writing,
-that caller must enforce its allowed root and create a new output exclusively,
-without overwriting either input. There is no new CLI or automatic export in
-this change. The current evaluation runner and production prompt are unchanged.
+The builder leaves file publication to its caller. The offline evaluation runner
+can opt in with `include_metric_period_provenance=True`; it creates a numbered
+map exclusively inside its fresh output directory after signal validation.
+See [offline corpus execution](offline-frozen-corpus.md). Other callers must
+enforce their own allowed root and exclusive creation without overwriting inputs.
+No CLI flag or production prompt change is introduced; the runner's default
+behavior remains unchanged.
