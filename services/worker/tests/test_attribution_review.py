@@ -114,6 +114,10 @@ def test_ambiguous_and_unmatched_bindings_are_not_classified():
     result = build_review(**args)
     assert result['findings'][0]['binding_status'] == 'ambiguous_metric_match'
     assert result['findings'][0]['candidate_claim_ids'] == ['test', 'second']
+    context = result['metric_source_contexts'][0]
+    assert context['binding_status'] == 'ambiguous_metric_match'
+    assert [c['claim_id'] for c in context['source_claims']] == ['test', 'second']
+    assert [c['group_id'] for c in context['source_claims']] == ['test', 'another']
     payload['claims'][0]['metric']['value_numeric'] = 7
     payload['claims'][1]['metric']['value_numeric'] = 8
     args['claims_bytes'] = encoded(payload)
@@ -121,6 +125,72 @@ def test_ambiguous_and_unmatched_bindings_are_not_classified():
     result = build_review(**args)
     assert result['findings'][0]['binding_status'] == 'unmatched'
     assert all(f['code'] != 'REVIEW-METRIC-CLASSIFICATION-SOURCE' for f in result['findings'])
+    assert result['metric_source_contexts'][0]['source_claims'] == []
+
+
+@pytest.mark.parametrize('metric_name', ['case_count', 'confirmed_cases'])
+def test_context_copies_declared_source_fields_without_inferred_metric_class(metric_name):
+    args = artifacts(metric_name=metric_name, subject='casos probables')
+    before = copy.deepcopy(args)
+    payload = json.loads(args['claims_bytes'])
+    claim = payload['claims'][0]
+    result = build_review(**args)
+    assert result['version'] == 'attribution-review-sidecar-2'
+    context = result['metric_source_contexts'][0]
+    assert context['binding_status'] == 'unique_metric_match'
+    assert context['metric_pointer'] == '/signals/0/metrics/0'
+    assert len(context['source_claims']) == 1
+    source = context['source_claims'][0]
+    assert source['claim_pointer'] == '/claims/0'
+    for key in ('claim_id', 'group_id', 'claim_kind', 'polarity', 'subject', 'locations',
+                'reference_period', 'event_date', 'metric', 'diagnostics', 'summary', 'evidence'):
+        assert source[key] == claim[key]
+    # A conflicting explicit metric name remains visible, not silently repaired.
+    assert source['metric']['name'] == metric_name
+    assert source['subject']['verbatim'] == 'casos probables'
+    assert result['metric_classification_assigned'] is False
+    assert result['group_membership_verified'] is False
+    assert 'classification' not in context and 'selected_claim_id' not in context
+    source['subject']['verbatim'] = 'changed'
+    source['evidence'][0]['text'] = 'changed'
+    assert args == before
+
+
+def test_metric_context_keeps_all_equal_candidates_with_distinct_source_classes():
+    args = artifacts()
+    payload = json.loads(args['claims_bytes'])
+    other = copy.deepcopy(payload['claims'][0])
+    other.update(claim_id='second', group_id='another')
+    other['subject']['verbatim'] = 'casos confirmados'
+    other['reference_period']['verbatim'] = 'another declared period'
+    payload['claims'].append(other)
+    args['claims_bytes'] = encoded(payload)
+    args['expected_claims_sha256'] = digest(args['claims_bytes'])
+    result = build_review(**args)
+    context = result['metric_source_contexts'][0]
+    assert context['binding_status'] == 'ambiguous_metric_match'
+    assert [c['subject']['verbatim'] for c in context['source_claims']] == ['casos probables', 'casos confirmados']
+    assert context['source_claims'][1]['reference_period']['verbatim'] == 'another declared period'
+    assert result['metric_classification_assigned'] is False
+
+
+def test_zero_metric_context_and_no_metric_qualitative_absence_remain_distinct():
+    args = artifacts(metric_name='confirmed_cases')
+    payload = json.loads(args['claims_bytes'])
+    claim = payload['claims'][0]
+    claim['metric']['value_numeric'] = 0
+    negative = copy.deepcopy(claim)
+    negative.update(claim_id='qualitative', polarity='negative')
+    negative['metric'].update(reported=False, value_numeric=None)
+    payload['claims'].append(negative)
+    args['claims_bytes'] = encoded(payload)
+    args['expected_claims_sha256'] = digest(args['claims_bytes'])
+    args['signals_bytes'] = encoded(assemble_claims_payload(payload))
+    args['expected_signals_sha256'] = digest(args['signals_bytes'])
+    result = build_review(**args)
+    assert len(result['metric_source_contexts']) == 1
+    assert result['metric_source_contexts'][0]['metric']['value_numeric'] == 0
+    assert [c['claim_id'] for c in result['metric_source_contexts'][0]['source_claims']] == ['test']
 
 
 @pytest.mark.parametrize('field', ['expected_claims_sha256', 'expected_signals_sha256', 'expected_raw_text_sha256'])
@@ -198,6 +268,9 @@ def test_runner_generates_hash_bound_nonempty_findings_without_changing_signals(
     codes = [f['code'] for f in data['findings']]
     assert codes.count('REVIEW-LOCATION-DOCUMENT') == 2
     assert codes.count('REVIEW-METRIC-CLASSIFICATION-SOURCE') == 1
+    assert data['version'] == 'attribution-review-sidecar-2'
+    assert len(data['metric_source_contexts']) == 1
+    assert data['metric_source_contexts'][0]['source_claims'][0]['subject']['verbatim'] == 'casos probables'
     assert data['semantic_acceptance'] == 'not_assessed' and data['decisions_applied'] == 0
     assert data['claims_sha256'] == b['claims_sha256'] and data['signals_sha256'] == b['signals_sha256']
 

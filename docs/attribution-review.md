@@ -42,6 +42,32 @@ No cambia instructions, input o esquema del provider, uso, response_id, bytes de
 claims/signals, validaciones ni decisiones. Una revisión sin findings no aprueba
 la predicción. No está integrado al pipeline de extracción/persistencia.
 
+## Contexto original por métrica: formato v2
+
+`attribution-review-sidecar-2` agrega `metric_source_contexts`, una fila por métrica
+final con signal_id, metric_pointer, métrica original, binding_status y la lista
+completa de source_claims candidatos exactos. Cada candidato conserva su puntero,
+ID/grupo, claim_kind, polarity, subject, locations, reference_period, event_date,
+metric, diagnostics, summary y evidence tal como figuran en el claim guardado.
+
+El bloque se genera para nombres genéricos y explícitos, sin depender de palabras
+clave de clase. Un candidato único es sólo una coincidencia estructural; no se
+asigna clasificación ni se verifica pertenencia al grupo. Ambiguous conserva
+todos los candidatos con sus diferencias; unmatched tiene source_claims vacío.
+No hay selected_claim_id ni clase normalizada derivada. Un cero explícito reportado
+conserva contexto; ausencia cualitativa o PCR sin métrica no genera filas métricas.
+
+Esto permite revisar `case_count=3` junto a subject «casos probables» y
+`case_count=2` junto a «casos confirmados» en sus fuentes candidatas, sin cambiar
+las métricas de la señal. También expone nombres explícitos y campos fuente que
+se contradigan para revisión manual; no los corrige. Son campos del modelo,
+incluidos sus errores, no hechos adjudicados. Las declaraciones de no aceptación,
+clasificación no asignada y grupo no verificado siguen vigentes.
+
+Los sidecars v1 históricos permanecen intactos; el runner registra la nueva
+versión y hash del generador cuando se habilita la opción. El mapa
+metric-period-provenance-1 y los esquemas de producción no cambian.
+
 ## Interpretación de avisos
 
 | Código | Observación que requiere revisión |
@@ -62,8 +88,9 @@ tener un rol erróneo sin producir aviso: presencia no es atribución correcta.
 
 Los nombres métricos genéricos y palabras de clase son listas limitadas. Un nombre
 explícito `confirmed_cases` no produce este aviso, incluso si contradice un subject
-que dice probable. Tampoco basta una clase que aparezca únicamente en evidencia.
-Esas inconsistencias quedan fuera de este helper; no interpretar ausencia de
+que dice probable. Tampoco basta una clase que aparezca únicamente en evidencia
+para generar el aviso. El contexto v2 permite consultar esos campos originales,
+pero no detecta ni decide esas inconsistencias. No interpretar ausencia de
 findings como corrección. La ausencia cualitativa sin métrica no crea filas de
 procedencia ni métricas sintéticas.
 
