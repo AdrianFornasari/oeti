@@ -10,7 +10,7 @@ from .metric_period_provenance import build_metric_period_provenance
 from ..extraction.schema import validate_literal_claim_evidence, validate_literal_evidence
 
 
-REVIEW_VERSION = 'attribution-review-sidecar-1'
+REVIEW_VERSION = 'attribution-review-sidecar-2'
 _LOCATION_FIELDS = ('country', 'admin1', 'admin2', 'locality', 'region')
 _GENERIC_METRICS = {'case_count', 'case count', 'case counts', 'cases', 'casos', 'conteo de casos'}
 _LABEL_CUES = re.compile(
@@ -47,6 +47,7 @@ def build_review(*, claims_bytes, signals_bytes, raw_text, expected_claims_sha25
     validate_literal_evidence(signals, raw_text)
     by_id = {claim['claim_id']: claim for claim in claims['claims']}
     findings = []
+    metric_source_contexts = []
     for claim in claims['claims']:
         quotes = [evidence['text'] for evidence in claim['evidence']]
         for index, location in enumerate(claim['locations']):
@@ -65,6 +66,18 @@ def build_review(*, claims_bytes, signals_bytes, raw_text, expected_claims_sha25
                 })
     for row in mapping['rows']:
         context = {key: row[key] for key in ('signal_id', 'metric_pointer', 'metric', 'binding_status')}
+        candidates = []
+        for candidate in row['source_claims']:
+            claim = by_id[candidate['claim_id']]
+            candidates.append({
+                'claim_pointer': candidate['claim_pointer'],
+                **{key: deepcopy(claim[key]) for key in (
+                    'claim_id', 'group_id', 'claim_kind', 'polarity', 'subject', 'locations',
+                    'reference_period', 'event_date', 'metric', 'diagnostics', 'summary', 'evidence')},
+            })
+        # Retain every structural candidate, even for non-generic metric names.
+        # These are source model fields, not approved classes or group membership.
+        metric_source_contexts.append({**deepcopy(context), 'source_claims': candidates})
         if row['binding_status'] != 'unique_metric_match':
             findings.append({**context, 'code': 'REVIEW-METRIC-BINDING',
                 'candidate_claim_ids': [claim['claim_id'] for claim in row['source_claims']],
@@ -85,7 +98,8 @@ def build_review(*, claims_bytes, signals_bytes, raw_text, expected_claims_sha25
     return {'version': REVIEW_VERSION, 'mode': 'development_review_only',
         'document': deepcopy(expected_document), 'claims_sha256': expected_claims_sha256,
         'signals_sha256': expected_signals_sha256, 'raw_text_sha256': expected_raw_text_sha256,
-        'findings': findings, 'decisions_applied': 0, 'semantic_acceptance': 'not_assessed',
+        'findings': findings, 'metric_source_contexts': metric_source_contexts,
+        'decisions_applied': 0, 'semantic_acceptance': 'not_assessed',
         'geographic_support_verified': False, 'metric_classification_assigned': False,
         'group_membership_verified': False,
         'limitations': [
