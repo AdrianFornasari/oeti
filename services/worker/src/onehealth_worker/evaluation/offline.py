@@ -132,7 +132,8 @@ def _validate_event_date_policy(payload: dict[str, Any], policy: dict | None) ->
 def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                       execute: bool = False, provider=None,
                       include_review_hints: bool = False,
-                      include_metric_period_provenance: bool = False) -> dict[str, Any]:
+                      include_metric_period_provenance: bool = False,
+                      include_attribution_review: bool = False) -> dict[str, Any]:
     """Prepare all inputs or process with an explicitly supplied provider.
 
     The default never calls the provider. No overwrite/resume/force is supported:
@@ -182,6 +183,11 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
         report['metric_period_provenance'] = {'version': 'metric-period-provenance-1',
             'code_sha256': _sha(Path(metric_period_provenance.__file__).read_bytes()),
             'affects_validation': False, 'semantic_correctness_verified': False}
+    if include_attribution_review:
+        from . import attribution_review
+        report['attribution_review'] = {'version': attribution_review.REVIEW_VERSION,
+            'code_sha256': _sha(Path(attribution_review.__file__).read_bytes()),
+            'affects_validation': False, 'semantic_acceptance': 'not_assessed'}
     if execute:
         report['schemas_sha256'] = {name: _sha(json.dumps(schema, sort_keys=True).encode())
             for name, schema in [('claims', claims_schema), ('signals', signal_schema)]}
@@ -200,6 +206,8 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
             result['claim_review'] = {'status': 'not_reviewed', 'findings': None}
         if include_metric_period_provenance:
             result['metric_period_provenance'] = {'status': 'not_generated'}
+        if include_attribution_review:
+            result['attribution_review'] = {'status': 'not_generated'}
         if execute:
             phase = 'provider'
             try:
@@ -249,6 +257,25 @@ def run_frozen_corpus(*, manifest_path: Path, output_dir: Path,
                         # Auxiliary mapping must not change extraction acceptance.
                         result['metric_period_provenance'] = {'status': 'generation_error',
                             'error_type': type(mapping_error).__name__}
+                if include_attribution_review:
+                    try:
+                        review = attribution_review.build_review(
+                            claims_bytes=(output_dir / result['claims_path']).read_bytes(),
+                            signals_bytes=(output_dir / result['signals_path']).read_bytes(),
+                            raw_text=document.raw_text,
+                            expected_claims_sha256=result['claims_sha256'],
+                            expected_signals_sha256=result['signals_sha256'],
+                            expected_raw_text_sha256=source_sha,
+                            expected_document=payload['document'],
+                            claims_schema=claims_schema, signal_schema=signal_schema)
+                        review_path = f'{prefix}.attribution-review.json'
+                        _write(output_dir / review_path, review)
+                        result['attribution_review'] = {'status': 'generated',
+                            'path': review_path, 'sha256': _sha((output_dir / review_path).read_bytes())}
+                    except Exception as review_error:
+                        # Review hints cannot change prediction acceptance or log source contents.
+                        result['attribution_review'] = {'status': 'generation_error',
+                            'error_type': type(review_error).__name__}
             except Exception as error:
                 # Exception messages from transports may contain URLs/credentials.
                 result.update(status='failed', error_type=type(error).__name__, phase=phase)

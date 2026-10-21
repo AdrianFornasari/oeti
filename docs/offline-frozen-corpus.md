@@ -407,3 +407,15 @@ las coincidencias ambiguas conservan todos los candidatos y `unmatched` no repar
 metricas derivadas o normalizadas. Los claims cualitativos sin metrica reportada
 siguen fuera de este mapa y requieren revision separada. No activa el prompt v2,
 cambia la aceptacion, ejecuta inferencias adicionales ni recalcula exactitud.
+
+## Avisos de atribución opcionales
+
+`run_frozen_corpus(..., include_attribution_review=True)` agrega un sidecar de
+revisión lexical después de validar claims y signals. Está desactivado por
+defecto, no cambia requests, predicciones ni aceptación, y puede convivir con
+review hints y metric-period provenance. Los fallos del sidecar se registran
+sin rechazar predicciones válidas. No se integra al pipeline activo.
+
+Ver [contrato, límites y pruebas](attribution-review.md). La presencia textual
+de un lugar o una coincidencia métrica exacta no prueba atribución semántica;
+ausencia de avisos no equivale a aprobación.
