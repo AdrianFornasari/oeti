@@ -25,7 +25,7 @@ def test_creation_insert_is_inside_single_transaction(failure):
     seed = build_event_creation_cohort_seed(signals=[{"signal_id": ids[0]}, {"signal_id": ids[1]}],
         relations=[{"signal_relation_id": ids[2], "source_signal_id": ids[0], "target_signal_id": ids[1],
             "matcher_result": {"gate": "eligible", "decision": "auto_linked", "merge_allowed": True, "relation": "refines"}}])
-    state = {"transaction": False, "commits": 0, "rollbacks": 0, "insertions": 0}
+    state = {"transaction": False, "commits": 0, "rollbacks": 0, "insertions": 0, "batches": 0}
 
     class Cursor:
         def __enter__(self): return self
@@ -36,6 +36,10 @@ def test_creation_insert_is_inside_single_transaction(failure):
                 state["insertions"] += 1
                 if failure and state["insertions"] == 3: raise RuntimeError("membership failure")
         def fetchone(self): return {"id": ids[2]}
+        def executemany(self, query, parameters):
+            state['batches'] += 1
+            for values in parameters:
+                self.execute(query, values)
 
     class Connection:
         @contextmanager
@@ -74,3 +78,34 @@ def test_creation_insert_is_inside_single_transaction(failure):
         assert result["dry_run"] is False
         assert state["commits"] == 1
     assert state["insertions"] == 3
+    assert state['batches'] == 1
+
+
+def test_membership_batch_preserves_values_and_unicode_audit():
+    import json
+    from onehealth_worker.evaluation.event_creation_v049 import build_event_creation_cohort_seed
+    seed = build_event_creation_cohort_seed(signals=[{'signal_id': 'a'}, {'signal_id': 'b'}],
+        relations=[{'signal_relation_id': 'r', 'source_signal_id': 'a', 'target_signal_id': 'b',
+            'matcher_result': {'gate': 'eligible', 'decision': 'auto_linked', 'merge_allowed': True, 'relation': 'refines'}}])
+    captured = []
+    class Cursor:
+        def execute(self, query, values):
+            assert 'insert into public.events (' in query
+        def fetchone(self): return {'id': 'event-id'}
+        def executemany(self, query, values):
+            assert 'insert into public.event_signals' in query
+            captured.extend(values)
+    memberships = [
+        {'signal_id': 'a', 'relation_to_event': 'refines', 'match_score': 0.95,
+         'match_decision': 'auto_linked', 'rationale': {'producer': 'matcher', 'sources': ['a','b'], 'detail': 'confirmación'}},
+        {'signal_id': 'b', 'relation_to_event': 'duplicates', 'match_score': None,
+         'match_decision': 'auto_linked', 'rationale': {'relations': ['r'], 'nested': {'version': '0.4.9'}}},
+    ]
+    plan = {'event_seed': seed, 'memberships': memberships}
+    result = EventMatchingRepository('unused')._insert_event_creation_cohort(Cursor(), plan)
+    assert result['status'] == 'created' and result['event_id'] == 'event-id'
+    assert len(captured) == 2
+    for values, membership in zip(captured, memberships):
+        assert values[:5] == ('event-id', membership['signal_id'], membership['relation_to_event'],
+            membership['match_score'], membership['match_decision'])
+        assert json.loads(values[5]) == membership['rationale']

@@ -308,6 +308,7 @@ def test_postgres_revalidates_after_planning(cohort, change):
 
 
 def test_postgres_membership_failure_rolls_back_everything(cohort):
+    from contextlib import contextmanager
     repo, seed, _, _ = cohort
     with repo.connection() as conn:
         conn.execute("""create function public.fail_membership() returns trigger language plpgsql as $$
@@ -320,10 +321,26 @@ def test_postgres_membership_failure_rolls_back_everything(cohort):
             create trigger test_failure before insert on public.event_signals
             for each row execute function public.fail_membership();""")
     before = snapshot(repo)
-    with pytest.raises(psycopg.errors.RaiseException, match="injected membership failure"):
+    original_connection = repo.connection
+    connections = []
+    @contextmanager
+    def observed_connection():
+        with original_connection() as conn:
+            connections.append(conn)
+            yield conn
+    repo.connection = observed_connection
+    with pytest.raises(psycopg.errors.RaiseException, match="injected membership failure") as failure:
         repo.persist_event_creation_cohort(event_seed=seed, dry_run=False)
+    assert failure.value.sqlstate == 'P0001'
+    assert connections[-1].closed
     assert snapshot(repo) == before
     assert list(counts(repo).values()) == [0, 0]
+    # A new invocation uses a fresh connection after the failed pipeline.
+    with repo.connection() as conn:
+        assert conn.execute('select 1 as healthy').fetchone()['healthy'] == 1
+        conn.execute('drop trigger test_failure on public.event_signals')
+    assert repo.persist_event_creation_cohort(event_seed=seed, dry_run=False)['status'] == 'created'
+    assert list(counts(repo).values()) == [1, 5]
 
 
 def test_postgres_concurrent_creation_is_idempotent(cohort):
