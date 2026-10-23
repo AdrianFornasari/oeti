@@ -218,7 +218,8 @@ def _suppress_from_canonical_signals(claim: dict[str, Any]) -> bool:
     # ASM-045-04: a negative historical narrative without a quantified observation
     # remains auditable in the claims sidecar but is not a canonical signal.
     if claim.get("claim_kind") == "surveillance_baseline" and claim.get("polarity") == "negative":
-        if not (claim.get("metric") or {}).get("reported"):
+        if (not (claim.get("metric") or {}).get("reported")
+            and (claim.get("reference_period") or {}).get("period_type") == "historical_period"):
             return True
 
     # Training/technology-transfer actions are operational context, not an emerging
