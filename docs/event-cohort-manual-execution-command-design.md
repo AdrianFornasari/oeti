@@ -28,6 +28,12 @@ Dry-run: ready_to_create, already_exists o blocked. Ejecución: created,
 already_exists o blocked. La salida JSON es la respuesta del repository, con
 su dry_run, event ID, reason y trazabilidad disponibles. El archivo de entrada
 se conserva; se rechaza el mismo path como salida.
+La validación y la ejecución también rechazan una salida existente que sea
+un enlace duro al mismo archivo del plan. El lector rechaza claves JSON
+duplicadas, incluso anidadas, y valores numéricos no finitos o desbordados.
+Estos controles se aplican antes de invocar el repository y no sustituyen
+la revalidación de la cohorte. No protegen frente a sustituciones concurrentes
+de rutas entre comprobación y escritura.
 
 Una escritura puede terminar correctamente aunque falle después la salida a
 disco o stdout. Ese fallo no significa rollback de la transacción ya finalizada:

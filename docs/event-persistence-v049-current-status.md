@@ -1,6 +1,7 @@
 # Estado de Event Persistence v0.4.9
 
-Actualizado: 13 de octubre de 2026, después de integrar los PR #5, #6 y #7.
+Estado histórico de los PR #5, #6 y #7: 13 de octubre de 2026.
+Disponibilidad del comando manual contrastada con el código: 29 de octubre de 2026.
 
 ## Resultado integrado
 
@@ -53,7 +54,17 @@ Ver [la política de timeout y reintentos](provider-timeout-retry-policy.md).
 El cierre corresponde al núcleo de persistencia y su planificación operativa.
 No se publicó un tag de versión ni se habilitó creación automática.
 El orquestador persiste relaciones; el executor de assignment ejecuta attachments
-y mantiene diferida la creación. No hay un executor operativo de cohortes.
+y mantiene diferida la creación. El checkout actual sí incluye
+`EventCreationExecutor` y el comando manual `execute-event-creation-plan`.
+Sin `--execute`, el comando revalida en `READ ONLY / REPEATABLE READ` y con
+`dry_run=True`. Con ese flag habilita escrituras sólo en la instancia del
+repository creada para esa invocación. No habilita creación automática.
+Ver [el diseño del comando manual](event-cohort-manual-execution-command-design.md).
+
+Esta comprobación fue estática: no se ejecutó el comando ni se consultó la DB
+el 29 de octubre. Su presencia en código no acredita permisos, estado operativo
+de una base actual ni autorización para escribir. Incluso el modo de lectura
+necesita conexión a DB; no confundirlo con una comprobación sobre archivos offline.
 
 Los locks de creación son de tabla, con timeout de cinco segundos, y pueden
 retrasar otras escrituras. Las pruebas locales no reproducen RLS, PostGIS ni
@@ -66,10 +77,12 @@ los timeouts por fase no constituyen un plazo global de ejecución.
 El checkout se mantiene en la rama de desarrollo original;
 actualizar referencias remotas no cambió esa rama ni los archivos pendientes.
 
-Siguiente incremento propuesto: diseñar ejecución explícita de una cohorte
-seleccionada, reutilizando la transacción del repository, con dry-run por defecto
-y sin conectarla automáticamente al orquestador. La implementación y validación
-local no autorizan nuevas escrituras reales, commits ni publicación.
+La ejecución explícita de una cohorte y su acceso manual por CLI ya están
+implementados en este checkout; no corresponde desarrollarlos de nuevo a partir
+de la nota histórica. Antes de cualquier uso futuro hay que revisar el informe,
+la cohorte seleccionada y el entorno, y obtener autorización específica para
+escritura. La implementación y validación local no autorizan nuevas escrituras
+reales, commits ni publicación, ni su conexión automática al orquestador.
 
 Los documentos de validación, selección de dependencias y revisión de cierre
 conservan su cronología previa. Este archivo es la referencia del estado posterior
