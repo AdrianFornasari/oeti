@@ -76,10 +76,10 @@ export default function SignalDetailPage() {
           <section className={styles.card}>
             <h2>{isSpanish ? "Propuesta automática de OETI" : "OETI machine proposal"}</h2>
             <div className={styles.summaryList}>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Resumen" : "Summary"}</div><div>{isSpanish ? "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego)." : signal.summary}</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Resumen" : "Summary"}</div><div>{isSpanish ? "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego)." : "Five rodents of the genus Abrothrix had hantavirus-specific antibodies in Ushuaia (Tierra del Fuego)."}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Tipo técnico" : "Technical type"}</div><div>{signal.signalType}</div></div>
               <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Rol técnico" : "Technical role"}</div><div>{signal.signalRole}</div></div>
-              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Confianza de extracción" : "Extraction confidence"}</div><div>{Math.round(signal.extractionConfidence * 100)}%</div></div>
+              <div className={styles.summaryRow}><div className={styles.summaryKey}>{isSpanish ? "Confianza de extracción" : "Extraction confidence"}</div><div>{Math.round(signal.extractionConfidence * 100)}%<small className={styles.muted} style={{ display: "block", marginTop: 4 }}>{isSpanish ? "Valor de extracción guardado; no es precisión validada ni probabilidad de causalidad." : "Stored extraction value; not validated accuracy or a probability of causation."}</small></div></div>
             </div>
           </section>
 
@@ -107,7 +107,7 @@ export default function SignalDetailPage() {
         <div className={styles.threatLayout} style={{ marginTop: 14 }}>
           <section className={styles.card}>
             <h2>{isSpanish ? "Qué significa esta señal" : "What this signal means"}</h2>
-            <p>{isSpanish ? "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego)." : signal.summary}</p>
+            <p>{isSpanish ? "Cinco roedores del género Abrothrix presentaron anticuerpos específicos contra hantavirus en Ushuaia (Tierra del Fuego)." : "Five rodents of the genus Abrothrix had hantavirus-specific antibodies in Ushuaia (Tierra del Fuego)."}</p>
             <div className={styles.detailPanel}><strong>{isSpanish ? "Límite de interpretación" : "Interpretation limit"}</strong><br />{isSpanish ? "El hallazgo en fauna es real, pero no identifica por sí mismo la fuente del brote. OETI también conserva evidencia negativa que descarta a estos roedores analizados como fuente de infección del evento MV Hondius." : "The wildlife finding is real, but it does not by itself identify the outbreak source. OETI also preserves negative evidence ruling out these analysed rodents as the infection source for the MV Hondius event."}</div>
           </section>
 
@@ -141,8 +141,8 @@ export default function SignalDetailPage() {
               <tr><td>{isSpanish ? "Animales seropositivos" : "Seropositive animals"}</td><td><strong>{signal.metric.value}</strong></td></tr>
               <tr><td>{isSpanish ? "Huésped / género" : "Host / genus"}</td><td><strong>{signal.host}</strong></td></tr>
               <tr><td>{isSpanish ? "Patógeno" : "Pathogen"}</td><td><strong>{signal.pathogen}</strong></td></tr>
-              <tr><td>{isSpanish ? "Tipo de prueba" : "Test type"}</td><td><strong>{signal.diagnostics.testType}</strong></td></tr>
-              <tr><td>{isSpanish ? "Objetivo" : "Target"}</td><td><strong>{signal.diagnostics.target}</strong></td></tr>
+              <tr><td>{isSpanish ? "Tipo de prueba" : "Test type"}</td><td><strong>{isSpanish ? signal.diagnostics.testType : "Serology"}</strong></td></tr>
+              <tr><td>{isSpanish ? "Objetivo" : "Target"}</td><td><strong>{isSpanish ? signal.diagnostics.target : "Specific antibodies"}</strong></td></tr>
               <tr><td>{isSpanish ? "Resultado" : "Result"}</td><td><strong>{isSpanish ? "positivo" : signal.diagnostics.result}</strong></td></tr>
             </tbody></table>
           </section>
@@ -154,11 +154,14 @@ export default function SignalDetailPage() {
         </div>
 
         <section className={`${styles.card} ${styles.tableWrap}`}>
-          <h2>{isSpanish ? "Otras señales extraídas del mismo documento" : "Other signals extracted from the same document"}</h2>
+          <h2 id="related-signals-heading">{isSpanish ? "Otras señales extraídas del mismo documento" : "Other signals extracted from the same document"}</h2>
+          <p className={`${styles.small} ${styles.muted}`}>{isSpanish ? "Si la tabla no entra en la pantalla, desplazala horizontalmente para ver todas las columnas." : "If the table does not fit the screen, scroll horizontally to view all columns."}</p>
+          <div role="region" aria-labelledby="related-signals-heading" tabIndex={0} style={{ overflowX: "auto", maxWidth: "100%" }}>
           <table className={styles.table}>
             <thead><tr><th>{isSpanish ? "Fecha" : "Date"}</th><th>ID</th><th>{isSpanish ? "Descripción" : "Description"}</th><th>{isSpanish ? "Dominio" : "Domain"}</th><th>{isSpanish ? "Tipo" : "Type"}</th><th>{isSpanish ? "Estado" : "Status"}</th></tr></thead>
             <tbody>{related.map((row) => <tr key={row[1]}>{row.map((cell, index) => <td key={`${row[1]}-${index}`}>{cell}</td>)}</tr>)}</tbody>
           </table>
+          </div>
         </section>
       </div>
     </DemoShell>

@@ -130,11 +130,14 @@ export default function SponsorDemoPage() {
         </section>
 
         <section className={`${styles.card} ${styles.tableWrap}`}>
-          <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center", flexWrap: "wrap" }}><h2>{isSpanish ? "Señales reales del caso MV Hondius" : "Real MV Hondius case signals"}</h2><span className={`${styles.pill} ${styles.pillReviewed}`}>{isSpanish ? "CORPUS ADJUDICADO" : "ADJUDICATED CORPUS"}</span></div>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center", flexWrap: "wrap" }}><h2 id="case-signals-heading">{isSpanish ? "Señales reales del caso MV Hondius" : "Real MV Hondius case signals"}</h2><span className={`${styles.pill} ${styles.pillReviewed}`}>{isSpanish ? "CORPUS ADJUDICADO" : "ADJUDICATED CORPUS"}</span></div>
+          <p className={`${styles.small} ${styles.muted}`}>{isSpanish ? "Si la tabla no entra en la pantalla, desplazala horizontalmente para ver todas las columnas." : "If the table does not fit the screen, scroll horizontally to view all columns."}</p>
+          <div role="region" aria-labelledby="case-signals-heading" tabIndex={0} style={{ overflowX: "auto", maxWidth: "100%" }}>
           <table className={styles.table}>
             <thead><tr><th>{isSpanish ? "Fecha" : "Date"}</th><th>{isSpanish ? "Patógeno / Enfermedad" : "Pathogen / Disease"}</th><th>{isSpanish ? "Ubicación / contexto" : "Location / context"}</th><th>{isSpanish ? "Tipo de señal" : "Signal type"}</th><th>{isSpanish ? "Dominio One Health" : "One Health domain"}</th><th>{isSpanish ? "Fuente" : "Source"}</th><th>{isSpanish ? "Revisión" : "Review"}</th></tr></thead>
             <tbody>{signals.map((signal, rowIndex) => <tr key={`${signal[0]}-${signal[2]}-${signal[3]}`}>{signal.map((cell, index) => <td key={`${cell}-${index}`}>{cell}</td>)}<td>{rowIndex === 0 ? <span className={`${styles.pill} ${record ? styles.pillReviewed : styles.pillActive}`}>{reviewLabel}</span> : "—"}</td></tr>)}</tbody>
           </table>
+          </div>
         </section>
       </div>
     </DemoShell>
