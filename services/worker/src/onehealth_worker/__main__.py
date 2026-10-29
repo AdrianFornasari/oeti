@@ -3,10 +3,58 @@ from __future__ import annotations
 import argparse
 import json
 from dataclasses import asdict
+from math import isfinite
 from pathlib import Path
 from uuid import UUID
 
 from .evaluation.corpus import evaluate_corpus, evaluate_file
+from .file_outputs import check_input_output as _check_input_output
+
+
+def _check_corpus_output(manifest_file: Path, output: Path | None) -> None:
+    if output is None:
+        return
+    _check_input_output(manifest_file, output)
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8-sig"))
+    for document in manifest.get("documents", []):
+        for field in ("prediction", "gold", "claims"):
+            if path := document.get(field):
+                _check_input_output(manifest_file.parent / path, output)
+
+
+def _check_event_benchmark_output(manifest_file: Path, output: Path | None) -> None:
+    if output is None:
+        return
+    manifest_file = manifest_file.resolve()
+    _check_input_output(manifest_file, output)
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8-sig"))
+    for path in manifest.get("source_gold_documents", []):
+        _check_input_output(manifest_file.parent / path, output)
+
+
+def _unique_plan_keys(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("El informe contiene claves JSON duplicadas.")
+        result[key] = value
+    return result
+
+
+def _finite_plan_number(value: str) -> float:
+    number = float(value)
+    if not isfinite(number):
+        raise ValueError("El informe contiene un número no finito.")
+    return number
+
+
+def _read_plan_file(plan_file: Path):
+    return json.loads(
+        plan_file.read_text(encoding="utf-8"),
+        object_pairs_hook=_unique_plan_keys,
+        parse_float=_finite_plan_number,
+        parse_constant=_finite_plan_number,
+    )
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -131,6 +179,8 @@ def main() -> None:
         return
 
     if args.command == "evaluate-extraction":
+        _check_input_output(args.prediction, args.output)
+        _check_input_output(args.gold, args.output)
         report = evaluate_file(args.prediction, args.gold, threshold=args.threshold)
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -139,6 +189,7 @@ def main() -> None:
         return
 
     if args.command == "evaluate-corpus":
+        _check_corpus_output(args.manifest, args.output)
         report = evaluate_corpus(args.manifest, threshold=args.threshold)
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -147,6 +198,7 @@ def main() -> None:
         return
 
     if args.command == "evaluate-event-matching":
+        _check_event_benchmark_output(args.manifest, args.output)
         from .evaluation.event_matching_v048 import (
             evaluate_event_matching_benchmark,
         )
@@ -178,6 +230,8 @@ def main() -> None:
         )
         return
     if args.command == "evaluate-event-matching-predictions":
+        _check_event_benchmark_output(args.event_manifest, args.output)
+        _check_corpus_output(args.corpus_manifest.resolve(), args.output)
         from .evaluation.event_matching_predictions_v048 import (
             evaluate_event_matching_predictions,
         )
@@ -214,9 +268,8 @@ def main() -> None:
 
     if args.command == "execute-event-creation-plan":
         from .evaluation.event_creation_command_v049 import execute_event_creation_plan
-        if args.output and args.output.resolve() == args.plan_file.resolve():
-            raise ValueError("El informe de entrada no puede ser el archivo de salida.")
-        report = json.loads(args.plan_file.read_text(encoding="utf-8"))
+        _check_input_output(args.plan_file, args.output)
+        report = _read_plan_file(args.plan_file)
         result = execute_event_creation_plan(
             settings.database_url, report, args.event_code, execute=args.execute,
         )
@@ -229,9 +282,8 @@ def main() -> None:
 
     if args.command == "validate-event-creation-plan":
         from .evaluation.event_creation_command_v049 import validate_event_creation_plan
-        if args.output and args.output.resolve() == args.plan_file.resolve():
-            raise ValueError("El informe de entrada no puede ser el archivo de salida.")
-        report = json.loads(args.plan_file.read_text(encoding="utf-8"))
+        _check_input_output(args.plan_file, args.output)
+        report = _read_plan_file(args.plan_file)
         result = validate_event_creation_plan(settings.database_url, report, args.event_code)
         serialized = json.dumps(result, ensure_ascii=False, indent=2)
         if args.output:

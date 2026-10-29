@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Callable
 
+from ..file_outputs import check_input_output, paths_alias
 from ..extraction.assembly_v045 import assemble_claims_payload as assemble_claims_payload_v045
 from ..extraction.assembly_v046 import assemble_claims_payload as assemble_claims_payload_v046
 from ..extraction.normalization import normalize_extraction_payload
@@ -31,6 +32,29 @@ def _select_assembler(
     )
 
 
+def _check_reassembly_outputs(manifest_path: Path, documents, *, force: bool) -> None:
+    base = manifest_path.parent
+    protected = [manifest_path]
+    destinations: list[tuple[Path, Path]] = []
+    for item in documents:
+        for field in ("claims", "gold"):
+            if path := item.get(field):
+                protected.append(base / path)
+    for item in documents:
+        if item.get("status") != "adjudicated" or not item.get("claims") or not item.get("prediction"):
+            continue
+        claims = (base / item["claims"]).resolve()
+        prediction = (base / item["prediction"]).resolve()
+        if not claims.exists() or (prediction.exists() and not force):
+            continue
+        for input_file in protected:
+            check_input_output(input_file, prediction)
+        for previous_prediction, previous_claims in destinations:
+            if paths_alias(prediction, previous_prediction) and not paths_alias(claims, previous_claims):
+                raise ValueError("Distintos archivos de claims comparten el mismo destino de predicción.")
+        destinations.append((prediction, claims))
+
+
 def reassemble_evaluation_corpus(*, manifest_path: Path, force: bool = False) -> dict[str, Any]:
     """Rebuild benchmark predictions from existing atomic-claims sidecars only.
 
@@ -38,6 +62,7 @@ def reassemble_evaluation_corpus(*, manifest_path: Path, force: bool = False) ->
     assembler/evaluator changes from provider variability and API cost.
     """
     manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    _check_reassembly_outputs(manifest_path, manifest.get("documents", []), force=force)
     base = manifest_path.parent
     benchmark_version = str(manifest.get("benchmark_version") or "") or None
     assembler, architecture = _select_assembler(benchmark_version)

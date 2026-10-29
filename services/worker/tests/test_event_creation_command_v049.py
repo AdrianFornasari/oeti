@@ -200,3 +200,143 @@ def test_execute_cli_rejects_overwriting_plan_before_execution(monkeypatch, tmp_
     with pytest.raises(ValueError): cli.main()
     assert calls == []
     assert path.read_text(encoding='utf-8') == '{"mode":"plan_only"}'
+
+
+@pytest.mark.parametrize('command_name,execute', [
+    ('validate-event-creation-plan', False),
+    ('execute-event-creation-plan', False),
+    ('execute-event-creation-plan', True),
+])
+def test_cli_rejects_hardlinked_output_before_repository_call(
+    monkeypatch, tmp_path, command_name, execute,
+):
+    from onehealth_worker import config
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    plan = tmp_path / 'reviewed-plan.json'
+    output = tmp_path / 'result.json'
+    original = b'{"mode":"plan_only"}'
+    plan.write_bytes(original)
+    output.hardlink_to(plan)
+    calls = []
+
+    def run(*args, **kwargs):
+        calls.append((args, kwargs))
+        return {'status': 'created' if execute else 'ready_to_create', 'dry_run': not execute}
+
+    monkeypatch.setattr(command, 'validate_event_creation_plan', run)
+    monkeypatch.setattr(command, 'execute_event_creation_plan', run)
+    arguments = ['worker', command_name, '--plan-file', str(plan),
+                 '--event-code', 'reviewed', '--output', str(output)]
+    if execute:
+        arguments.append('--execute')
+    monkeypatch.setattr('sys.argv', arguments)
+    with pytest.raises(ValueError, match='entrada'):
+        cli.main()
+    assert calls == []
+    assert plan.read_bytes() == output.read_bytes() == original
+
+
+@pytest.mark.parametrize('command_name,execute', [
+    ('validate-event-creation-plan', False),
+    ('execute-event-creation-plan', False),
+    ('execute-event-creation-plan', True),
+])
+@pytest.mark.parametrize('duplicate_level', ['report', 'seed'])
+def test_cli_rejects_duplicate_plan_keys_before_repository_call(
+    monkeypatch, tmp_path, command_name, execute, duplicate_level,
+):
+    from onehealth_worker import config
+    from test_event_creation_executor_v049 import report
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    original = json.dumps(report())
+    if duplicate_level == 'report':
+        original = original.replace('"mode": "plan_only"',
+                                    '"mode": "other", "mode": "plan_only"')
+    else:
+        original = original.replace('"event_code": "reviewed-code"',
+                                    '"event_code": "other-code", "event_code": "reviewed-code"')
+    path = tmp_path / 'plan.json'
+    output = tmp_path / 'result.json'
+    path.write_text(original, encoding='utf-8')
+    calls = []
+
+    def run(*args, **kwargs):
+        calls.append((args, kwargs))
+        return {'status': 'created' if execute else 'ready_to_create', 'dry_run': not execute}
+
+    monkeypatch.setattr(command, 'validate_event_creation_plan', run)
+    monkeypatch.setattr(command, 'execute_event_creation_plan', run)
+    arguments = ['worker', command_name, '--plan-file', str(path),
+                 '--event-code', 'reviewed-code', '--output', str(output)]
+    if execute:
+        arguments.append('--execute')
+    monkeypatch.setattr('sys.argv', arguments)
+    with pytest.raises(ValueError, match='duplicadas'):
+        cli.main()
+    assert calls == []
+    assert path.read_text(encoding='utf-8') == original
+    assert not output.exists()
+
+
+@pytest.mark.parametrize('command_name,execute', [
+    ('validate-event-creation-plan', False),
+    ('execute-event-creation-plan', False),
+    ('execute-event-creation-plan', True),
+])
+@pytest.mark.parametrize('number', ['NaN', 'Infinity', '-Infinity', '1e999'])
+def test_cli_rejects_nonfinite_plan_numbers_before_repository_call(
+    monkeypatch, tmp_path, command_name, execute, number,
+):
+    from onehealth_worker import config
+    from test_event_creation_executor_v049 import report
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    payload = report()
+    payload['cohorts'][0]['event_seed']['confidence'] = 'number-placeholder'
+    original = json.dumps(payload).replace('"number-placeholder"', number)
+    plan = tmp_path / 'plan.json'
+    output = tmp_path / 'result.json'
+    plan.write_text(original, encoding='utf-8')
+    calls = []
+
+    def run(*args, **kwargs):
+        calls.append((args, kwargs))
+        return {'status': 'created' if execute else 'ready_to_create', 'dry_run': not execute}
+
+    monkeypatch.setattr(command, 'validate_event_creation_plan', run)
+    monkeypatch.setattr(command, 'execute_event_creation_plan', run)
+    arguments = ['worker', command_name, '--plan-file', str(plan),
+                 '--event-code', 'reviewed-code', '--output', str(output)]
+    if execute:
+        arguments.append('--execute')
+    monkeypatch.setattr('sys.argv', arguments)
+    with pytest.raises(ValueError, match='finito'):
+        cli.main()
+    assert calls == []
+    assert plan.read_text(encoding='utf-8') == original
+    assert not output.exists()
+
+
+def test_validate_cli_preserves_finite_decimal_in_plan(monkeypatch, tmp_path, capsys):
+    from onehealth_worker import config
+    from test_event_creation_executor_v049 import report
+    monkeypatch.setattr(config, 'Settings', lambda: SimpleNamespace(database_url='unused'))
+    payload = report()
+    payload['cohorts'][0]['event_seed']['confidence'] = 0.75
+    plan = tmp_path / 'plan.json'
+    original = json.dumps(payload)
+    plan.write_text(original, encoding='utf-8')
+    calls = []
+
+    def validate(dsn, parsed, code):
+        calls.append(parsed)
+        assert parsed == payload
+        assert parsed['cohorts'][0]['event_seed']['confidence'] == 0.75
+        return {'status': 'ready_to_create', 'dry_run': True}
+
+    monkeypatch.setattr(command, 'validate_event_creation_plan', validate)
+    monkeypatch.setattr('sys.argv', ['worker', 'validate-event-creation-plan',
+        '--plan-file', str(plan), '--event-code', 'reviewed-code'])
+    cli.main()
+    assert len(calls) == 1
+    assert json.loads(capsys.readouterr().out)['dry_run'] is True
+    assert plan.read_text(encoding='utf-8') == original
