@@ -27,6 +27,21 @@ class IngestionRepository:
         fetched: FetchedDocument,
         parsed: ParsedDocument,
     ) -> tuple[str, bool]:
+        try:
+            return self._store_document(source_code, fetched, parsed)
+        except psycopg.errors.UniqueViolation as error:
+            if error.diag.constraint_name != "raw_items_source_id_content_sha256_key":
+                raise
+            # The losing transaction has rolled back on connection exit. Retry
+            # once with a fresh snapshot to load the concurrent winner normally.
+            return self._store_document(source_code, fetched, parsed)
+
+    def _store_document(
+        self,
+        source_code: str,
+        fetched: FetchedDocument,
+        parsed: ParsedDocument,
+    ) -> tuple[str, bool]:
         if not parsed.text.strip():
             raise ValueError("El documento no contiene texto utilizable después del parseo.")
 
