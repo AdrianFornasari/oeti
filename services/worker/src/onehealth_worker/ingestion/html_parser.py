@@ -53,7 +53,10 @@ def _find_published_at(soup: BeautifulSoup, visible_text: str) -> datetime | Non
         day = int(match.group(1))
         month = SPANISH_MONTHS[match.group(2).lower()]
         year = int(match.group(3))
-        return datetime(year, month, day, tzinfo=ZoneInfo("America/Argentina/Buenos_Aires"))
+        try:
+            return datetime(year, month, day, tzinfo=ZoneInfo("America/Argentina/Buenos_Aires"))
+        except ValueError:
+            return None
     return None
 
 
@@ -137,7 +140,7 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
         metadata={
             "http_status": fetched.status_code,
             "response_headers": fetched.headers,
-            "parser": "beautifulsoup-html-v0.2.2",
+            "parser": "beautifulsoup-html-v0.2.3",
             "paragraph_count": len(unique_paragraphs),
         },
     )
