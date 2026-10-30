@@ -5,6 +5,31 @@ from typing import Any
 import json
 
 from ..extraction.prompt import build_document_input
+from ..file_outputs import check_input_output, paths_alias
+
+
+def _check_extraction_outputs(manifest_path: Path, documents, *, force: bool) -> None:
+    base = manifest_path.parent
+    protected = [manifest_path]
+    destinations: list[Path] = []
+    for item in documents:
+        for field in ("gold", "claims"):
+            if path := item.get(field):
+                protected.append(base / path)
+    for item in documents:
+        if item.get("status") != "adjudicated" or not item.get("prediction") or not item.get("source_url"):
+            continue
+        prediction = (base / item["prediction"]).resolve()
+        if prediction.exists() and not force:
+            continue
+        claims = prediction.with_name(prediction.stem + ".claims.json")
+        for input_file in protected:
+            check_input_output(input_file, prediction)
+            check_input_output(input_file, claims)
+        for output in (prediction, claims):
+            if any(paths_alias(output, previous) for previous in destinations):
+                raise ValueError("Los archivos generados comparten el mismo destino de salida.")
+            destinations.append(output)
 
 
 def scoped_document_input(document, scope: str | None) -> str:
@@ -40,6 +65,9 @@ def extract_evaluation_corpus(
     if provider_name.lower() != "openai":
         raise ValueError(f"Provider no soportado para benchmark: {provider_name!r}")
 
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    _check_extraction_outputs(manifest_path, manifest.get("documents", []), force=force)
+
     # Lazy imports keep offline evaluation/tests independent from DB/provider packages.
     from ..extraction.assembly_v045 import assemble_claims_payload
     from ..extraction.normalization import normalize_extraction_payload
@@ -55,7 +83,6 @@ def extract_evaluation_corpus(
         validate_literal_evidence,
     )
 
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
     base = manifest_path.parent
     repo = ExtractionRepository(database_url)
     signal_schema = load_schema()
