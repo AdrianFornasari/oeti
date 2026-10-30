@@ -20,6 +20,11 @@ DEFAULT_RELEASE_THRESHOLDS = {
 }
 
 
+def _validate_threshold(value: Any, name: str) -> None:
+    if type(value) not in (int, float) or not 0 <= value <= 1:
+        raise ValueError(f"{name} must be a finite number between 0 and 1.")
+
+
 def _select_evaluator(benchmark_version: str | None) -> Callable[..., dict[str, Any]]:
     if benchmark_version == "0.4.7":
         return evaluate_payloads_v047
@@ -35,6 +40,7 @@ def evaluate_file(
     *,
     benchmark_version: str | None = None,
 ) -> dict[str, Any]:
+    _validate_threshold(threshold, "threshold")
     prediction = json.loads(prediction_path.read_text(encoding="utf-8-sig"))
     gold = json.loads(gold_path.read_text(encoding="utf-8-sig"))
     expected = copy.deepcopy(gold.get("expected", gold))
@@ -62,10 +68,14 @@ def _mean(documents: list[dict[str, Any]], getter) -> float:
 
 
 def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESHOLD) -> dict[str, Any]:
+    _validate_threshold(threshold, "threshold")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
     minimum_documents = manifest.get("minimum_documents_for_event_matcher_gate", 6)
     if type(minimum_documents) is not int or minimum_documents < 1:
         raise ValueError("minimum_documents_for_event_matcher_gate must be a positive integer.")
+    thresholds = {**DEFAULT_RELEASE_THRESHOLDS, **(manifest.get("release_thresholds") or {})}
+    for name in DEFAULT_RELEASE_THRESHOLDS:
+        _validate_threshold(thresholds[name], name)
     base = manifest_path.parent
     benchmark_version = str(manifest.get("benchmark_version") or "") or None
     documents = []
@@ -120,7 +130,6 @@ def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESH
     adjudicated_total = sum(1 for x in manifest.get("documents", []) if x.get("status") == "adjudicated")
     corpus_ready = len(documents) >= minimum_documents and len(documents) == adjudicated_total
 
-    thresholds = {**DEFAULT_RELEASE_THRESHOLDS, **(manifest.get("release_thresholds") or {})}
     metrics_pass = (
         avg_signal_f1 >= thresholds["mean_signal_f1"]
         and avg_evidence_support >= thresholds["mean_evidence_support_f1"]
