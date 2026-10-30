@@ -1,8 +1,10 @@
 # Diseño: ejecución controlada de una cohorte
 
-Fecha: 13 de octubre de 2026. El servicio descrito está implementado en
-`event_creation_executor_v049.py`; su integración operativa por CLI permanece
-pendiente. No se habilitaron escrituras productivas.
+Fecha del diseño: 13 de octubre de 2026. El servicio descrito está implementado
+en `event_creation_executor_v049.py`. Comprobación estática del 29 de octubre:
+el checkout también incluye su acceso por CLI mediante
+`execute-event-creation-plan`; ver [el diseño del comando manual](event-cohort-manual-execution-command-design.md).
+Esto no habilita escrituras productivas ni acredita una ejecución actual.
 
 ## Entrada y alcance
 
@@ -20,8 +22,9 @@ execute_planned_cohort(*, report, expected_event_code, dry_run=True)
 
 `EventCreationExecutor(repository)` recibe un repository ya configurado. Nunca modifica
 `event_creation_writes_enabled`; `dry_run=False` requiere que el caller haya
-habilitado explícitamente ese repository. La integración de un comando de
-escritura se decidirá después de validar este servicio localmente.
+habilitado explícitamente ese repository. El acceso manual de escritura ya
+existe en el comando citado; su uso exige una autorización específica y no
+activa la creación desde el orquestador.
 
 Se ejecuta una sola cohorte seleccionada. Si un informe tiene varias, la selección
 por código debe ser inequívoca. No se ejecutan las restantes, ni attachments,
