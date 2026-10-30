@@ -9,6 +9,7 @@ from .scoring import DEFAULT_MATCH_THRESHOLD, evaluate_payloads as evaluate_payl
 from .scoring_v046 import evaluate_payloads as evaluate_payloads_v046
 from .scoring_v047 import evaluate_payloads as evaluate_payloads_v047
 from ..extraction.schema import load_schema, validate_extraction
+from ..file_outputs import paths_alias
 
 
 DEFAULT_RELEASE_THRESHOLDS = {
@@ -62,10 +63,14 @@ def _mean(documents: list[dict[str, Any]], getter) -> float:
 
 def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESHOLD) -> dict[str, Any]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    minimum_documents = manifest.get("minimum_documents_for_event_matcher_gate", 6)
+    if type(minimum_documents) is not int or minimum_documents < 1:
+        raise ValueError("minimum_documents_for_event_matcher_gate must be a positive integer.")
     base = manifest_path.parent
     benchmark_version = str(manifest.get("benchmark_version") or "") or None
     documents = []
     skipped = []
+    evaluated_paths: dict[str, list[Path]] = {"prediction": [], "gold": []}
 
     for item in manifest.get("documents", []):
         if item.get("status") != "adjudicated":
@@ -84,6 +89,10 @@ def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESH
         if not gold_path.exists():
             skipped.append({"label": item.get("label"), "reason": "gold_not_found", "path": str(gold_path)})
             continue
+        for field, path in (("prediction", prediction_path), ("gold", gold_path)):
+            if any(paths_alias(path, previous) for previous in evaluated_paths[field]):
+                raise ValueError(f"Corpus contains a duplicate {field} file: {path}")
+            evaluated_paths[field].append(path)
         report = evaluate_file(
             prediction_path,
             gold_path,
@@ -109,7 +118,6 @@ def evaluate_corpus(manifest_path: Path, threshold: float = DEFAULT_MATCH_THRESH
     )
 
     adjudicated_total = sum(1 for x in manifest.get("documents", []) if x.get("status") == "adjudicated")
-    minimum_documents = int(manifest.get("minimum_documents_for_event_matcher_gate", 6))
     corpus_ready = len(documents) >= minimum_documents and len(documents) == adjudicated_total
 
     thresholds = {**DEFAULT_RELEASE_THRESHOLDS, **(manifest.get("release_thresholds") or {})}
