@@ -104,6 +104,8 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
     soup = BeautifulSoup(fetched.body, "html.parser", from_encoding=declared_encoding)
 
     for tag in soup(["script", "style", "noscript", "svg", "nav", "header", "footer", "aside"]):
+        if tag.name == "header" and tag.find_parent(["article", "main"]) is not None:
+            continue
         tag.decompose()
 
     title = _extract_title(soup)
@@ -144,7 +146,7 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
         metadata={
             "http_status": fetched.status_code,
             "response_headers": fetched.headers,
-            "parser": "beautifulsoup-html-v0.2.5",
+            "parser": "beautifulsoup-html-v0.2.6",
             "http_charset": declared_encoding,
             "text_encoding": soup.original_encoding,
             "paragraph_count": len(unique_paragraphs),

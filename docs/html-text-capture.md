@@ -1,5 +1,15 @@
 # Captura HTML: parser 0.2.2
 
+## Actualización local: parser 0.2.6 (30/10/2026)
+
+Se conservan los elementos header que estén dentro de article o main. Eliminarlos
+como cabeceras del sitio podía borrar título, fecha publicada y entradilla de una
+noticia. Las cabeceras externas del sitio y los elementos nav continúan excluidos.
+La selección sigue siendo estructural: no interpreta CSS ni garantiza distinguir
+toda cabecera editorial de navegación en HTML arbitrario. Se mantiene la política
+de extraer p/li, sin incorporar automáticamente todos los encabezados al cuerpo.
+Puede cambiar el texto/hash de futuras capturas, sin reprocesar históricos.
+
 ## Actualización local: parser 0.2.5 (30/10/2026)
 
 La decodificación recibe el charset declarado en Content-Type HTTP, incluidos
