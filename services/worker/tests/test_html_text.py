@@ -40,7 +40,7 @@ def parse(body):
 def test_ingestion_preserves_punctuation_from_inline_elements():
     parsed = parse('<main><p>Se confirmó un caso en <strong>Villa Norte</strong>, provincia X.</p></main>')
     assert parsed.text == 'Se confirmó un caso en Villa Norte, provincia X.'
-    assert parsed.metadata['parser'] == 'beautifulsoup-html-v0.2.4'
+    assert parsed.metadata['parser'] == 'beautifulsoup-html-v0.2.5'
 
 
 def test_nested_list_paragraph_is_not_captured_twice():

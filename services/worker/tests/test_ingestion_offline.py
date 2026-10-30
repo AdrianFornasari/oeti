@@ -25,7 +25,7 @@ def test_pipeline_preserves_article_with_invalid_date_using_fake_repository(monk
             assert parsed.published_at is None
             assert parsed.url == fetched.url
             assert 'Texto del documento' in parsed.text
-            assert parsed.metadata['parser'] == 'beautifulsoup-html-v0.2.4'
+            assert parsed.metadata['parser'] == 'beautifulsoup-html-v0.2.5'
             calls.append(source_code)
             return 'synthetic-id', True
 
