@@ -19,8 +19,9 @@ class IngestionResult:
 
 def ingest_html_url(database_url: str, source_code: str, url: str) -> IngestionResult:
     fetched = fetch_document(url)
-    mime = (fetched.mime_type or "").lower()
-    if "html" not in mime and "text/" not in mime:
+    mime = (fetched.mime_type or "").split(";", 1)[0].strip().lower()
+    is_text = mime.startswith("text/") and bool(mime.removeprefix("text/"))
+    if mime != "application/xhtml+xml" and not is_text:
         raise ValueError(f"El endpoint devolvió un MIME no HTML: {fetched.mime_type!r}")
 
     parsed = parse_html_document(fetched)
