@@ -57,3 +57,22 @@ def test_valid_publication_metadata_takes_precedence_over_invalid_visible_date()
         body=b'<meta property="article:published_time" content="2026-10-30T12:00:00+00:00">'
              b'<main><p>31 de febrero de 2026</p></main>')
     assert parse_html_document(fetched).published_at.isoformat() == '2026-10-30T12:00:00+00:00'
+
+
+@pytest.mark.parametrize('container', ['article', 'main'])
+def test_article_header_preserves_title_date_and_lead_without_site_navigation(container):
+    html = ('<html><body><header><h1>Cabecera del sitio</h1>'
+            '<time datetime="2010-01-01">Fecha del sitio</time></header>'
+            f'<{container}><header><h1>Informe de vigilancia</h1>'
+            '<time datetime="2026-10-30T12:00:00+00:00">Publicado</time>'
+            '<p>3 casos.</p><nav>Menú de navegación</nav></header>'
+            '<p>El seguimiento continúa con controles de vigilancia.</p>'
+            f'</{container}></body></html>')
+    fetched = FetchedDocument('https://example.invalid/article', 200, 'text/html; charset=utf-8',
+        html.encode('utf-8'), datetime.now(timezone.utc))
+    parsed = parse_html_document(fetched)
+    assert parsed.title == 'Informe de vigilancia'
+    assert parsed.published_at.isoformat() == '2026-10-30T12:00:00+00:00'
+    assert parsed.text == '3 casos.\n\nEl seguimiento continúa con controles de vigilancia.'
+    assert 'navegación' not in parsed.text
+    assert 'Cabecera del sitio' not in parsed.text
