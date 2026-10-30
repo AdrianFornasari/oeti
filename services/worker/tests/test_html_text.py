@@ -40,7 +40,7 @@ def parse(body):
 def test_ingestion_preserves_punctuation_from_inline_elements():
     parsed = parse('<main><p>Se confirmó un caso en <strong>Villa Norte</strong>, provincia X.</p></main>')
     assert parsed.text == 'Se confirmó un caso en Villa Norte, provincia X.'
-    assert parsed.metadata['parser'] == 'beautifulsoup-html-v0.2.3'
+    assert parsed.metadata['parser'] == 'beautifulsoup-html-v0.2.4'
 
 
 def test_nested_list_paragraph_is_not_captured_twice():
@@ -53,3 +53,23 @@ def test_nested_list_paragraph_is_not_captured_twice():
 
 def test_fallback_preserves_short_inline_text_and_block_boundaries():
     assert parse('<main><div>Uno <b>dos</b>.</div><div>Tres.</div></main>').text == 'Uno dos.\n\nTres.'
+
+
+@pytest.mark.parametrize('tag', ['p', 'li'])
+@pytest.mark.parametrize('short', ['No hubo casos.', '3 casos.', 'En investigación.'])
+def test_short_evidence_is_preserved_alongside_long_paragraphs(tag, short):
+    long = 'La vigilancia continúa con seguimiento epidemiológico de la población.'
+    short_html = f'<{tag}>{short}</{tag}>'
+    if tag == 'li':
+        short_html = f'<ul>{short_html}</ul>'
+    parsed = parse(f'<meta charset="utf-8"><main>{short_html}<p>{long}</p></main>')
+    assert parsed.text == short + '\n\n' + long
+    assert parsed.metadata['paragraph_count'] == 2
+
+
+def test_empty_paragraphs_remain_excluded_without_importing_navigation():
+    parsed = parse('<meta charset="utf-8"><nav><p>Inicio</p></nav><main><p> </p><p>No hubo casos.</p>'
+                   '<p>La vigilancia continúa con seguimiento epidemiológico.</p></main>')
+    assert parsed.metadata['paragraph_count'] == 2
+    assert parsed.text.startswith('No hubo casos.\n\n')
+    assert 'Inicio' not in parsed.text
