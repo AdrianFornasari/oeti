@@ -112,7 +112,7 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
         if any(parent.name in {"p", "li"} for parent in node.parents if parent is not main):
             continue
         text = render_dom_text(node)
-        if len(text) >= 20:
+        if text:
             paragraphs.append(text)
 
     if not paragraphs:
@@ -140,7 +140,7 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
         metadata={
             "http_status": fetched.status_code,
             "response_headers": fetched.headers,
-            "parser": "beautifulsoup-html-v0.2.3",
+            "parser": "beautifulsoup-html-v0.2.4",
             "paragraph_count": len(unique_paragraphs),
         },
     )

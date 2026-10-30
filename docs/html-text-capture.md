@@ -1,5 +1,20 @@
 # Captura HTML: parser 0.2.2
 
+## Actualización local: parser 0.2.4 (30/10/2026)
+
+El parser conserva todos los párrafos y elementos de lista no vacíos dentro del
+contenedor seleccionado. El filtro anterior de 20 caracteres podía omitir hechos
+breves como «No hubo casos.» o «3 casos.» cuando otro párrafo superaba el límite.
+Se mantienen la exclusión de navegación y bloques ajenos, la serialización DOM,
+el rechazo de texto vacío y la deduplicación estable de párrafos.
+
+Este cambio puede modificar el texto y su hash en capturas futuras; la versión
+0.2.4 permite distinguirlo. No reconstruye ni reemplaza capturas históricas, y
+no demuestra extracción perfecta de cualquier sitio. La versión 0.2.3 ya conserva
+fecha desconocida ante una fecha visible imposible. Las secciones siguientes
+describen el comportamiento y validación históricos de 0.2.2; sus referencias al
+filtro de 20 caracteres no aplican a 0.2.4.
+
 `ingestion.html_text.render_dom_text` preserva adyacencia inline sin agregar
 separadores entre negritas, enlaces o spans. `<strong>Lobos</strong>,` conserva
 `Lobos,`. Mantiene espacios que existan en los nodos de texto, colapsando
