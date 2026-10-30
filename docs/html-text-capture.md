@@ -1,5 +1,19 @@
 # Captura HTML: parser 0.2.2
 
+## Actualización local: parser 0.2.5 (30/10/2026)
+
+La decodificación recibe el charset declarado en Content-Type HTTP, incluidos
+parámetros entrecomillados y nombres en mayúsculas. Cuando no está declarado o
+no se reconoce, BeautifulSoup conserva su fallback de metadatos/autodetección.
+La metadata registra `http_charset` y `text_encoding` (codificación utilizada por
+BeautifulSoup). Los bytes recibidos no se modifican. Esto corrige casos como
+Łódź en ISO-8859-2, que la autodetección podía interpretar como £ód¼.
+
+Un encabezado incorrecto sigue pudiendo inducir una decodificación equivocada;
+el registro no acredita que la fuente declarase correctamente su codificación.
+El cambio puede alterar texto/hash de futuras capturas, sin reprocesar históricos.
+La versión 0.2.5 conserva la preservación de p/li breves de 0.2.4.
+
 ## Actualización local: parser 0.2.4 (30/10/2026)
 
 El parser conserva todos los párrafos y elementos de lista no vacíos dentro del

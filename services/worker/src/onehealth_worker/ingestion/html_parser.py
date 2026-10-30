@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
+from email.message import Message
 from zoneinfo import ZoneInfo
 
 from bs4 import BeautifulSoup
@@ -97,7 +98,10 @@ def _extract_title(soup: BeautifulSoup) -> str | None:
 
 
 def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
-    soup = BeautifulSoup(fetched.body, "html.parser")
+    content_type = Message()
+    content_type["content-type"] = fetched.mime_type or ""
+    declared_encoding = content_type.get_content_charset()
+    soup = BeautifulSoup(fetched.body, "html.parser", from_encoding=declared_encoding)
 
     for tag in soup(["script", "style", "noscript", "svg", "nav", "header", "footer", "aside"]):
         tag.decompose()
@@ -140,7 +144,9 @@ def parse_html_document(fetched: FetchedDocument) -> ParsedDocument:
         metadata={
             "http_status": fetched.status_code,
             "response_headers": fetched.headers,
-            "parser": "beautifulsoup-html-v0.2.4",
+            "parser": "beautifulsoup-html-v0.2.5",
+            "http_charset": declared_encoding,
+            "text_encoding": soup.original_encoding,
             "paragraph_count": len(unique_paragraphs),
         },
     )
