@@ -13,6 +13,7 @@ from psycopg.rows import dict_row
 from .prompt import EXTRACTOR_VERSION, PROMPT_VERSION
 from .matching import event_matching_eligible
 from .token_usage import TOKEN_USAGE_KEYS, normalize_token_usage
+from .schema import validate_extraction
 
 
 def _usage_columns(
@@ -158,6 +159,13 @@ class ExtractionRepository:
         input_char_count: int,
         usage: dict[str, int] | None = None,
     ) -> tuple[str, list[str]]:
+        """Store a complete candidate; only explicit promotion changes vigence."""
+        validate_extraction(payload)
+        if payload["document"]["raw_item_id"] != raw_item_id:
+            raise ValueError("Candidate document does not match raw_item_id.")
+        keys = [signal["local_signal_id"] for signal in payload["signals"]]
+        if len(keys) != len(set(keys)):
+            raise ValueError("Candidate contains duplicate local signal keys.")
         warnings: list[str] = list(payload.get("warnings", []))
 
         (
@@ -170,6 +178,10 @@ class ExtractionRepository:
 
         with self.connection() as conn:
             with conn.cursor() as cur:
+                # Serialize candidate version numbering and promotions per source.
+                cur.execute("select id from public.raw_items where id = %s for update", (raw_item_id,))
+                if not cur.fetchone():
+                    raise ValueError("Candidate source document does not exist.")
                 cur.execute(
                     """
                     insert into public.extraction_runs (
@@ -177,11 +189,11 @@ class ExtractionRepository:
                       provider, model_name, status, response_id, input_char_count,
                       input_tokens, cached_input_tokens, output_tokens,
                       reasoning_tokens, total_tokens,
-                      output_json, warnings
+                      output_json, warnings, snapshot_policy
                     ) values (
                       %s, %s, %s, %s, %s, %s, 'succeeded', %s, %s,
                       %s, %s, %s, %s, %s,
-                      %s::jsonb, %s::jsonb
+                      %s::jsonb, %s::jsonb, 'document-v1'
                     )
                     returning id
                     """,
@@ -219,6 +231,17 @@ class ExtractionRepository:
             conn.commit()
         return extraction_run_id, warnings
 
+    def promote_extraction_snapshot(
+        self, *, raw_item_id: str, run_id: str, expected_revision: int, actor: str, reason: str,
+    ) -> dict[str, Any]:
+        from .snapshot_promotion import promote_snapshot, validate_promotion_request
+        validate_promotion_request(expected_revision, actor, reason)
+        with self.connection() as conn:
+            result = promote_snapshot(conn, raw_item_id=raw_item_id, run_id=run_id,
+                expected_revision=expected_revision, actor=actor, reason=reason)
+            conn.commit()
+        return result
+
     def _persist_signal(
         self,
         cur,
@@ -233,13 +256,13 @@ class ExtractionRepository:
         pathogen_id, pathogen_status = self._resolve_pathogen(cur, signal["pathogen"])
 
         local_key = signal["local_signal_id"]
-        # If the same extractor is rerun, supersede the current version instead of violating
-        # the one-current-version partial unique index.
+        # A local key/ordinal is not semantic identity across runs. Version is
+        # only a storage sequence; candidates never supersede a fact implicitly.
         cur.execute(
             """
             select id, version
             from public.signals
-            where raw_item_id = %s and local_signal_key = %s and is_current = true
+            where raw_item_id = %s and local_signal_key = %s
             order by version desc
             limit 1
             """,
@@ -247,9 +270,7 @@ class ExtractionRepository:
         )
         previous = cur.fetchone()
         next_version = (previous["version"] + 1) if previous else 1
-        previous_id = previous["id"] if previous else None
-        if previous:
-            cur.execute("update public.signals set is_current = false where id = %s", (previous_id,))
+        previous_id = None
 
         cur.execute(
             """
@@ -262,7 +283,7 @@ class ExtractionRepository:
               transmission, extractor_version, model_name, warnings, review_status,
               extraction_run_id
             ) values (
-              %s, %s, %s, %s, %s, true,
+              %s, %s, %s, %s, %s, false,
               %s, %s, %s, %s, %s, %s, %s,
               %s, %s, %s, %s,
               %s, %s, %s, %s,
