@@ -242,6 +242,27 @@ class ExtractionRepository:
             conn.commit()
         return result
 
+    def plan_legacy_snapshot_adoption(self, *, raw_item_id: str, run_id: str) -> dict[str, Any]:
+        from .legacy_adoption import inspect_legacy_snapshot
+        with self.connection() as conn:
+            conn.execute('set transaction isolation level repeatable read read only')
+            result = inspect_legacy_snapshot(conn, raw_item_id=raw_item_id, run_id=run_id)
+            conn.rollback()
+        return result
+
+    def adopt_legacy_snapshot(
+        self, *, raw_item_id: str, run_id: str, expected_revision: int,
+        expected_state_sha256: str, actor: str, reason: str,
+    ) -> dict[str, Any]:
+        from .legacy_adoption import adopt_legacy_snapshot, validate_adoption_request
+        validate_adoption_request(expected_revision, expected_state_sha256, actor, reason)
+        with self.connection() as conn:
+            result = adopt_legacy_snapshot(conn, raw_item_id=raw_item_id, run_id=run_id,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                actor=actor, reason=reason)
+            conn.commit()
+        return result
+
     def _persist_signal(
         self,
         cur,
