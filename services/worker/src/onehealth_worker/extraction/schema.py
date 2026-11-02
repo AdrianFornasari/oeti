@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from math import isfinite
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +10,18 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 class ExtractionSchemaError(ValueError):
     pass
+
+
+def _validate_finite_numbers(payload: Any) -> None:
+    pending = [payload]
+    while pending:
+        value = pending.pop()
+        if isinstance(value, float) and not isfinite(value):
+            raise ExtractionSchemaError("La salida contiene un número no finito.")
+        if isinstance(value, dict):
+            pending.extend(value.values())
+        elif isinstance(value, list):
+            pending.extend(value)
 
 
 def default_schema_path() -> Path:
@@ -33,6 +46,7 @@ def load_atomic_claims_schema(path: Path | None = None) -> dict[str, Any]:
 
 
 def validate_atomic_claims(payload: dict[str, Any], schema: dict[str, Any] | None = None) -> None:
+    _validate_finite_numbers(payload)
     validator = Draft202012Validator(schema or load_atomic_claims_schema(), format_checker=FormatChecker())
     errors = sorted(validator.iter_errors(payload), key=lambda err: list(err.absolute_path))
     if not errors:
@@ -46,6 +60,7 @@ def validate_atomic_claims(payload: dict[str, Any], schema: dict[str, Any] | Non
     raise ExtractionSchemaError("Salida de claims atómicos inválida:\n" + "\n".join(details))
 
 def validate_extraction(payload: dict[str, Any], schema: dict[str, Any] | None = None) -> None:
+    _validate_finite_numbers(payload)
     validator = Draft202012Validator(schema or load_schema(), format_checker=FormatChecker())
     errors = sorted(validator.iter_errors(payload), key=lambda err: list(err.absolute_path))
     if not errors:
