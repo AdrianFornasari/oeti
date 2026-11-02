@@ -32,6 +32,7 @@ class ExtractionResult:
     usage: dict[str, int] | None
     warnings: list[str]
     payload: dict[str, Any]
+    promoted: bool = False
 
 
 def extract_raw_item(

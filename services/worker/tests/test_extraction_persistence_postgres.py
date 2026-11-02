@@ -36,7 +36,7 @@ def extraction_transaction_database():
             for ddl in re.findall(r'create type public\.\w+ as enum \(.*?\);', core, re.S):
                 conn.execute(ddl)
             for table in ('sources', 'raw_items', 'raw_item_payloads', 'diseases', 'pathogens',
-                          'signals', 'signal_metrics', 'signal_evidence'):
+                          'signals', 'signal_metrics', 'signal_evidence', 'events', 'event_signals', 'signal_relations'):
                 conn.execute(re.search(rf'create table public\.{table} \(.*?\n\);', core, re.S).group())
             conn.execute(re.search(r'create unique index signals_one_current_version_idx.*?;', core, re.S).group())
             conn.execute(re.search(r'create table public.extraction_runs \(.*?\n\);', runs, re.S).group())
@@ -46,6 +46,16 @@ def extraction_transaction_database():
             conn.execute(re.search(r'alter table public.signals\s+add column event_matching_eligible.*?;', eligibility, re.S).group())
             for ddl in re.findall(r'alter table public.extraction_runs\s+.*?;', tokens, re.S):
                 conn.execute(ddl)
+            snapshots = (migrations / '20261102120000_extraction_snapshot_promotion.sql').read_text(encoding='utf-8')
+            # Disposable cluster roles only, so execute the complete migration,
+            # including RLS/grants rather than a fixture-only table substitute.
+            for role in ('anon', 'authenticated', 'service_role'):
+                if not conn.execute('select 1 from pg_roles where rolname=%s', (role,)).fetchone():
+                    conn.execute(sql.SQL('create role {}').format(sql.Identifier(role)))
+            conn.commit()
+            conn.autocommit = True
+            conn.execute(snapshots)
+            conn.autocommit = False
             source = conn.execute("insert into public.sources(code,name,kind,ingestion) values('synthetic','Synthetic','primary_official','manual') returning id").fetchone()[0]
             raw = conn.execute("insert into public.raw_items(source_id,url,content_sha256) values(%s,'https://example.invalid/synthetic','synthetic-hash') returning id", (source,)).fetchone()[0]
             fixture = artifacts()
@@ -90,12 +100,13 @@ def test_success_persists_complete_signal_tree(extraction_transaction_database):
     assert stored_run['id'] == run and stored_run['status'] == 'succeeded'
     assert stored_run['output_json'] == payload
     assert signal['raw_item_id'] == raw and signal['extraction_run_id'] == run
-    assert signal['version'] == 1 and signal['is_current'] is True
+    assert signal['version'] == 1 and signal['is_current'] is False
+    assert stored_run['snapshot_policy'] == 'document-v1'
     assert state['signal_metrics'][0][0]['signal_id'] == signal['id']
     assert state['signal_evidence'][0][0]['signal_id'] == signal['id']
 
 
-def test_sequential_versions_retain_history_and_link_supersedes(extraction_transaction_database):
+def test_sequential_candidates_retain_history_without_semantic_supersedes(extraction_transaction_database):
     repo, dsn, raw, payload = extraction_transaction_database
     first_run, _ = persist(repo, raw, payload)
     before = snapshot(dsn)
@@ -106,8 +117,8 @@ def test_sequential_versions_retain_history_and_link_supersedes(extraction_trans
     assert len(after['extraction_runs']) == len(signals) == 2
     assert first_run != second_run
     assert signals[0]['id'] == first_signal['id'] and signals[0]['is_current'] is False
-    assert signals[1]['version'] == 2 and signals[1]['is_current'] is True
-    assert signals[1]['supersedes_signal_id'] == signals[0]['id']
+    assert signals[1]['version'] == 2 and signals[1]['is_current'] is False
+    assert signals[1]['supersedes_signal_id'] is None
     assert signals[1]['extraction_run_id'] == second_run
     assert len(after['signal_metrics']) == len(after['signal_evidence']) == 2
     assert next(row for row in after['extraction_runs'] if row[0]['id'] == first_run) == before['extraction_runs'][0]
@@ -124,7 +135,9 @@ def test_child_failure_rolls_back_new_run_and_signal(extraction_transaction_data
 
 def test_replacement_failure_preserves_previous_current_version(extraction_transaction_database):
     repo, dsn, raw, payload = extraction_transaction_database
-    persist(repo, raw, payload)
+    run, _ = persist(repo, raw, payload)
+    repo.promote_extraction_snapshot(raw_item_id=raw, run_id=run, expected_revision=0,
+        actor='synthetic-reviewer', reason='synthetic acceptance')
     before = snapshot(dsn)
     fail_new_evidence(dsn)
     with pytest.raises(psycopg.errors.CheckViolation):

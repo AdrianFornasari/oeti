@@ -166,6 +166,13 @@ def _parser() -> argparse.ArgumentParser:
     execute_plan.add_argument("--output", type=Path, default=None)
     execute_plan.add_argument("--execute", action="store_true", help="Escribe una sola cohorte; sin este flag solo revalida")
 
+    promote = sub.add_parser("promote-extraction-snapshot", help="Promueve explícitamente un conjunto documental revisado")
+    promote.add_argument("--raw-item-id", required=True, type=UUID)
+    promote.add_argument("--run-id", required=True, type=UUID)
+    promote.add_argument("--expected-revision", required=True, type=int)
+    promote.add_argument("--actor", required=True)
+    promote.add_argument("--reason", required=True)
+    promote.add_argument("--execute", required=True, action="store_true", help="Confirmación explícita de escritura")
     return parser
 
 
@@ -266,6 +273,15 @@ def main() -> None:
     from .config import Settings
     settings = Settings()
 
+    if args.command == "promote-extraction-snapshot":
+        from .extraction.repository import ExtractionRepository
+        result = ExtractionRepository(settings.database_url).promote_extraction_snapshot(
+            raw_item_id=str(args.raw_item_id), run_id=str(args.run_id),
+            expected_revision=args.expected_revision, actor=args.actor, reason=args.reason,
+        )
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+
     if args.command == "execute-event-creation-plan":
         from .evaluation.event_creation_command_v049 import execute_event_creation_plan
         _check_input_output(args.plan_file, args.output)
@@ -346,7 +362,7 @@ def main() -> None:
             model_name=args.model,
             schema_path=args.schema,
         )
-        print(json.dumps({"persisted": True, "extraction_run_id": run_id, "warnings": warnings}, ensure_ascii=False, indent=2))
+        print(json.dumps({"persisted": True, "promoted": False, "snapshot_status": "candidate", "extraction_run_id": run_id, "warnings": warnings}, ensure_ascii=False, indent=2))
         return
 
     provider = args.provider or settings.llm_provider
