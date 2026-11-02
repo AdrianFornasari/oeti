@@ -48,6 +48,7 @@ def extract_raw_item(
     document = repo.load_raw_document(raw_item_id)
     signal_schema = load_schema(schema_path)
     claims_schema = load_atomic_claims_schema()
+    expected_document_date = document.published_at.date().isoformat() if document.published_at else None
     document_input = build_document_input(
         raw_item_id=document.raw_item_id,
         title=document.title,
@@ -70,14 +71,14 @@ def extract_raw_item(
         )
         claims_payload = provider_response.payload
         validate_atomic_claims(claims_payload, claims_schema)
-        _validate_document_binding(claims_payload, document.raw_item_id)
+        _validate_document_binding(claims_payload, document.raw_item_id, expected_document_date)
         validate_literal_claim_evidence(claims_payload, document.raw_text)
 
         payload = assemble_claims_payload(claims_payload)
         payload = normalize_extraction_payload(payload)
         payload = harden_signal_semantics_v049(payload)
         validate_extraction(payload, signal_schema)
-        _validate_document_binding(payload, document.raw_item_id)
+        _validate_document_binding(payload, document.raw_item_id, expected_document_date)
         validate_literal_evidence(payload, document.raw_text)
     except Exception as exc:
         if persist:
@@ -120,11 +121,18 @@ def extract_raw_item(
     )
 
 
-def _validate_document_binding(payload: dict[str, Any], expected_raw_item_id: str) -> None:
+def _validate_document_binding(
+    payload: dict[str, Any], expected_raw_item_id: str, expected_document_date: str | None,
+) -> None:
     returned = payload.get("document", {}).get("raw_item_id")
     if returned != expected_raw_item_id:
         raise ValueError(
             f"El extractor devolvió raw_item_id={returned!r}, pero se esperaba {expected_raw_item_id!r}."
+        )
+    returned_date = payload.get("document", {}).get("document_date")
+    if returned_date != expected_document_date:
+        raise ValueError(
+            f"El extractor devolvió document_date={returned_date!r}, pero se esperaba {expected_document_date!r}."
         )
 
 
