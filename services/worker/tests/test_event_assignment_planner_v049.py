@@ -9,6 +9,8 @@ from onehealth_worker.evaluation.event_matching_repository_v049 import (
     EventMatchingRepository,
 )
 
+import pytest
+
 
 ANCHOR = (
     "11111111-1111-1111-1111-111111111111"
@@ -240,6 +242,65 @@ def test_repository_reads_event_membership_and_lifecycle():
             "linked_at": None,
         }
     ]
+
+
+@pytest.mark.parametrize('decision',['manual_unlinked','review_required','rejected',None])
+@pytest.mark.parametrize('side',['source','target'])
+def test_non_positive_membership_requires_review_and_remains_in_report(decision,side):
+    membership={'event_id':EVENT_A,'lifecycle_status':'active','match_decision':decision}
+    class FakeRepository:
+        def load_persisted_matcher_relations_for_signal(self,signal_id):
+            return [_persisted_relation(relation='refines',decision='auto_linked',merge_allowed=True,score=.95)]
+        def load_event_memberships_for_signal(self,signal_id):
+            selected=ANCHOR if side=='source' else TARGET
+            return [membership.copy()] if signal_id==selected else []
+    report=EventAssignmentPlanner(FakeRepository()).plan_persisted_anchor(ANCHOR)
+    row=report['plans'][0]
+    assignment=row['assignment_plan']
+    assert assignment['action']=='manual_review'
+    assert assignment['reason']=='non_positive_membership_requires_review'
+    assert assignment['write_allowed'] is False
+    assert assignment['event_id'] is None
+    assert row[side+'_memberships']==[membership]
+    assert report['summary']['write_allowed']==0
+    assert report['summary']['requires_review']==1
+
+
+@pytest.mark.parametrize('negative',['manual_unlinked','review_required','rejected',None])
+def test_negative_row_does_not_produce_false_already_same_event(negative):
+    class FakeRepository:
+        def load_persisted_matcher_relations_for_signal(self,signal_id):
+            return [_persisted_relation(relation='refines',decision='auto_linked',merge_allowed=True,score=.95)]
+        def load_event_memberships_for_signal(self,signal_id):
+            return [{'event_id':EVENT_A,'lifecycle_status':'active',
+                     'match_decision':'manual_linked' if signal_id==ANCHOR else negative}]
+    report=EventAssignmentPlanner(FakeRepository()).plan_persisted_anchor(ANCHOR)
+    assert report['plans'][0]['assignment_plan']['action']=='manual_review'
+    assert report['summary']['already_same_event']==0
+    assert report['summary']['write_allowed']==0
+
+
+@pytest.mark.parametrize('decision',['auto_linked','manual_linked'])
+def test_positive_memberships_still_allow_attachment(decision):
+    class FakeRepository:
+        def load_persisted_matcher_relations_for_signal(self,signal_id):
+            return [_persisted_relation(relation='refines',decision='auto_linked',merge_allowed=True,score=.95)]
+        def load_event_memberships_for_signal(self,signal_id):
+            return [{'event_id':EVENT_A,'lifecycle_status':'active','match_decision':decision}] if signal_id==ANCHOR else []
+    report=EventAssignmentPlanner(FakeRepository()).plan_persisted_anchor(ANCHOR)
+    assert report['plans'][0]['assignment_plan']['action']=='attach_target_to_event'
+    assert report['summary']['write_allowed']==1
+
+
+def test_rejected_matcher_keeps_no_change_even_with_negative_membership():
+    class FakeRepository:
+        def load_persisted_matcher_relations_for_signal(self,signal_id):
+            return [_persisted_relation(relation='unrelated',decision='rejected',merge_allowed=False,score=.1)]
+        def load_event_memberships_for_signal(self,signal_id):
+            return [{'event_id':EVENT_A,'lifecycle_status':'active','match_decision':'manual_unlinked'}]
+    report=EventAssignmentPlanner(FakeRepository()).plan_persisted_anchor(ANCHOR)
+    assert report['plans'][0]['assignment_plan']['action']=='no_event_change'
+    assert report['summary']['write_allowed']==0
 
 
 def test_planner_review_relation_never_writes_and_caches_memberships():
