@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from .event_assignment_v049 import (
+    EventAssignmentPlan,
     apply_event_lifecycle_guard,
     plan_event_assignment,
 )
@@ -109,14 +110,29 @@ class EventAssignmentPlanner:
                         item["event_id"]
                         for item
                         in source_memberships
+                        if item.get('match_decision') in {'auto_linked','manual_linked'}
                     ],
                     target_event_ids=[
                         item["event_id"]
                         for item
                         in target_memberships
+                        if item.get('match_decision') in {'auto_linked','manual_linked'}
                     ],
                 )
             )
+
+            # Keep negative/pending/unknown decisions in the report. They are
+            # not positive memberships and must not trigger a new automatic
+            # attachment/create plan or a false "already linked" conclusion.
+            if (assignment.write_allowed or assignment.action == 'already_same_event') and any(
+                item.get('match_decision') not in {'auto_linked','manual_linked'}
+                for item in (*source_memberships,*target_memberships)
+            ):
+                assignment = EventAssignmentPlan(
+                    action='manual_review', reason='non_positive_membership_requires_review',
+                    event_id=None, signal_ids=tuple(sorted((source_signal_id,target_signal_id))),
+                    write_allowed=False, requires_review=True,
+                )
 
             lifecycle_by_event_id: dict[
                 str,
