@@ -13,6 +13,19 @@ from psycopg import Connection
 from psycopg.rows import dict_row
 
 
+def _lock_current_matcher_signals(cur, signal_ids) -> None:
+    ids = sorted(set(signal_ids))
+    cur.execute(
+        """select id from public.signals
+        where id = any(%s::uuid[])
+          and is_current = true and event_matching_eligible = true
+        order by id for update""",
+        (ids,),
+    )
+    if {str(row['id']) for row in cur.fetchall()} != set(ids):
+        raise ValueError('Matcher relation endpoints must still be current and eligible.')
+
+
 @dataclass(slots=True)
 class PersistedMatcherSignal:
     signal_id: str
@@ -1703,6 +1716,7 @@ class EventMatchingRepository:
             self.connection() as conn,
             conn.cursor() as cur,
         ):
+            _lock_current_matcher_signals(cur, [canonical_source_id, canonical_target_id])
             # Do not overwrite a relation owned by another producer.
             cur.execute(
                 """
@@ -2159,6 +2173,11 @@ class EventMatchingRepository:
             self.connection() as conn,
             conn.cursor() as cur,
         ):
+            # Lock all endpoints in one stable order before writing any pair.
+            _lock_current_matcher_signals(cur, [
+                signal_id for item in prepared
+                for signal_id in (item['source_signal_id'], item['target_signal_id'])
+            ])
             for item in prepared:
                 source_signal_id = item[
                     "source_signal_id"
