@@ -1099,6 +1099,37 @@ def test_v049_orchestrator_integrates_with_real_v048_matcher():
         == 1
     )
 
+def _with_current_endpoint_rows(cursor):
+    """Give relation-only test doubles a current/eligible signal dataset."""
+    execute = cursor.execute
+    fetchall = getattr(cursor, "fetchall", None)
+    pending = None
+
+    def execute_with_signals(query, params):
+        nonlocal pending
+        normalized = " ".join(str(query).split())
+        if normalized.startswith("select id from public.signals where id = any"):
+            assert "is_current = true" in normalized
+            assert "event_matching_eligible = true" in normalized
+            assert normalized.endswith("order by id for update")
+            pending = [{"id": value} for value in params[0]]
+        else:
+            pending = None
+        return execute(query, params)
+
+    def fetchall_with_signals():
+        nonlocal pending
+        if pending is not None:
+            result, pending = pending, None
+            return result
+        assert fetchall is not None
+        return fetchall()
+
+    cursor.execute = execute_with_signals
+    cursor.fetchall = fetchall_with_signals
+    return cursor
+
+
 def _v049_persistable_result(
     **overrides,
 ):
@@ -1220,7 +1251,7 @@ def test_v049_relation_persistence_inserts_new_matcher_pair():
         def fetchall(self):
             return self.fetchall_results.pop(0)
 
-    cursor = FakeCursor()
+    cursor = _with_current_endpoint_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -1396,7 +1427,7 @@ def test_v049_relation_persistence_updates_existing_matcher_pair():
         def fetchall(self):
             return self.fetchall_results.pop(0)
 
-    cursor = FakeCursor()
+    cursor = _with_current_endpoint_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -1515,7 +1546,7 @@ def test_v049_relation_persistence_protects_foreign_relation():
                 )
             }
 
-    cursor = FakeCursor()
+    cursor = _with_current_endpoint_rows(FakeCursor())
 
     class FakeConnection:
         def cursor(self):
@@ -1634,7 +1665,7 @@ def test_v049_batch_persistence_commits_once():
             )
             return []
 
-    cursor = FakeCursor()
+    cursor = _with_current_endpoint_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -1819,7 +1850,7 @@ def test_v049_batch_foreign_conflict_aborts_without_commit():
         def fetchall(self):
             return []
 
-    cursor = FakeCursor()
+    cursor = _with_current_endpoint_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
