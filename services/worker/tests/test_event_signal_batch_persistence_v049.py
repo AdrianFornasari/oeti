@@ -1,3 +1,4 @@
+from test_event_signal_persistence_v049 import _with_positive_anchor_rows
 from contextlib import contextmanager
 from decimal import Decimal
 from uuid import UUID
@@ -237,7 +238,7 @@ def test_batch_inserts_two_attachments_with_one_commit():
                 query
             )
 
-    cursor = FakeCursor()
+    cursor = _with_positive_anchor_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -403,7 +404,7 @@ def test_batch_terminal_second_event_prevents_commit():
                 query
             )
 
-    cursor = FakeCursor()
+    cursor = _with_positive_anchor_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -530,7 +531,7 @@ def test_batch_manual_membership_prevents_commit():
                 query
             )
 
-    cursor = FakeCursor()
+    cursor = _with_positive_anchor_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):

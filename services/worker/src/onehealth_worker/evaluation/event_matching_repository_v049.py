@@ -26,6 +26,22 @@ def _lock_current_matcher_signals(cur, signal_ids) -> None:
         raise ValueError('Matcher relation endpoints must still be current and eligible.')
 
 
+def _lock_event_attachment_anchor(cur, *, event_id, signal_id, relation_row, action):
+    attached_side = 'target_signal_id' if action == 'attach_target_to_event' else 'source_signal_id'
+    anchor_side = 'source_signal_id' if action == 'attach_target_to_event' else 'target_signal_id'
+    if str(relation_row[attached_side]) != signal_id:
+        raise ValueError('Attachment direction no longer matches the persisted relation.')
+    cur.execute(
+        """select signal_id from public.event_signals
+        where event_id = %s and signal_id = %s
+          and match_decision in ('auto_linked', 'manual_linked')
+        for update""",
+        (event_id, str(relation_row[anchor_side])),
+    )
+    if not cur.fetchone():
+        raise ValueError('Event anchor membership changed; replan attachment.')
+
+
 @dataclass(slots=True)
 class PersistedMatcherSignal:
     signal_id: str
@@ -2770,6 +2786,8 @@ class EventMatchingRepository:
                     "the matcher relation."
                 )
 
+            _lock_event_attachment_anchor(cur, event_id=event_id, signal_id=signal_id,
+                relation_row=relation_row, action=action)
             relation_rationale = (
                 _as_mapping(
                     relation_row.get(
@@ -3297,6 +3315,8 @@ class EventMatchingRepository:
                         "of the matcher relation."
                     )
 
+                _lock_event_attachment_anchor(cur, event_id=event_id, signal_id=signal_id,
+                    relation_row=relation_row, action=item['action'])
                 relation_rationale = (
                     _as_mapping(
                         relation_row.get(

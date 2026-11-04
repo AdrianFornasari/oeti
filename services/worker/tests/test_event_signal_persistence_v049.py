@@ -26,6 +26,33 @@ RELATION_ID = (
 )
 
 
+def _with_positive_anchor_rows(cursor):
+    """Represent the positive anchor omitted by legacy relation-only mocks."""
+    execute, fetchone = cursor.execute, cursor.fetchone
+    pending = None
+
+    def execute_with_anchor(query, params):
+        nonlocal pending
+        normalized = " ".join(str(query).split())
+        if normalized.startswith("select signal_id from public.event_signals"):
+            assert "match_decision in ('auto_linked', 'manual_linked')" in normalized
+            assert normalized.endswith("for update")
+            pending = {"signal_id": params[1]}
+            return
+        pending = None
+        return execute(query, params)
+
+    def fetchone_with_anchor():
+        nonlocal pending
+        if pending is not None:
+            row, pending = pending, None
+            return row
+        return fetchone()
+
+    cursor.execute, cursor.fetchone = execute_with_anchor, fetchone_with_anchor
+    return cursor
+
+
 def _plan():
     return {
         "action": "attach_target_to_event",
@@ -158,7 +185,7 @@ def test_event_signal_persistence_inserts_into_active_event():
 
             raise AssertionError(query)
 
-    cursor = FakeCursor()
+    cursor = _with_positive_anchor_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -292,7 +319,7 @@ def test_event_signal_persistence_updates_matcher_owned_membership():
 
             raise AssertionError(query)
 
-    cursor = FakeCursor()
+    cursor = _with_positive_anchor_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -363,7 +390,7 @@ def test_event_signal_persistence_blocks_terminal_event_inside_transaction():
                 "lifecycle_status": "resolved",
             }
 
-    cursor = FakeCursor()
+    cursor = _with_positive_anchor_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -443,7 +470,7 @@ def test_event_signal_persistence_blocks_stale_signal():
                 self.last_query
             )
 
-    cursor = FakeCursor()
+    cursor = _with_positive_anchor_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
@@ -542,7 +569,7 @@ def test_event_signal_persistence_protects_manual_membership():
 
             raise AssertionError(query)
 
-    cursor = FakeCursor()
+    cursor = _with_positive_anchor_rows(FakeCursor())
 
     class FakeConnection:
         def __init__(self):
