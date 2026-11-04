@@ -173,6 +173,17 @@ def _parser() -> argparse.ArgumentParser:
     promote.add_argument("--actor", required=True)
     promote.add_argument("--reason", required=True)
     promote.add_argument("--execute", required=True, action="store_true", help="Confirmación explícita de escritura")
+    legacy_plan = sub.add_parser('plan-legacy-snapshot-adoption', help='Inspecciona una línea de base heredada sin escribir')
+    legacy_plan.add_argument('--raw-item-id', required=True, type=UUID)
+    legacy_plan.add_argument('--run-id', required=True, type=UUID)
+    legacy_adopt = sub.add_parser('adopt-legacy-snapshot', help='Registra una línea de base heredada sin reemplazar señales')
+    legacy_adopt.add_argument('--raw-item-id', required=True, type=UUID)
+    legacy_adopt.add_argument('--run-id', required=True, type=UUID)
+    legacy_adopt.add_argument('--expected-revision', required=True, type=int)
+    legacy_adopt.add_argument('--expected-state-sha256', required=True)
+    legacy_adopt.add_argument('--actor', required=True)
+    legacy_adopt.add_argument('--reason', required=True)
+    legacy_adopt.add_argument('--execute', required=True, action='store_true')
     return parser
 
 
@@ -272,6 +283,18 @@ def main() -> None:
         return
     from .config import Settings
     settings = Settings()
+
+    if args.command in ('plan-legacy-snapshot-adoption', 'adopt-legacy-snapshot'):
+        from .extraction.repository import ExtractionRepository
+        repo = ExtractionRepository(settings.database_url)
+        if args.command == 'plan-legacy-snapshot-adoption':
+            result = repo.plan_legacy_snapshot_adoption(raw_item_id=str(args.raw_item_id), run_id=str(args.run_id))
+        else:
+            result = repo.adopt_legacy_snapshot(raw_item_id=str(args.raw_item_id), run_id=str(args.run_id),
+                expected_revision=args.expected_revision, expected_state_sha256=args.expected_state_sha256,
+                actor=args.actor, reason=args.reason)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
 
     if args.command == "promote-extraction-snapshot":
         from .extraction.repository import ExtractionRepository
