@@ -40,6 +40,16 @@ def _lock_event_attachment_anchor(cur, *, event_id, signal_id, relation_row, act
     )
     if not cur.fetchone():
         raise ValueError('Event anchor membership changed; replan attachment.')
+    # The attached signal is already locked FOR UPDATE by both callers.
+    # That blocks new FK memberships; lock all existing rows as well so an
+    # in-flight move is rechecked after waiting instead of missing the row.
+    cur.execute(
+        """select event_id from public.event_signals
+        where signal_id = %s order by event_id for update""",
+        (signal_id,),
+    )
+    if any(str(row['event_id']) != str(event_id) for row in cur.fetchall()):
+        raise ValueError('Signal has a membership for another event; replan attachment.')
 
 
 @dataclass(slots=True)

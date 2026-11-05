@@ -117,3 +117,79 @@ def test_second_stale_anchor_rolls_back_first_attachment(attachment):
     with pytest.raises(ValueError,match='anchor membership changed'):
         repo.persist_event_signal_attachments_batch([item,second])
     assert memberships(dsn)==before
+
+
+@pytest.mark.parametrize('batch',[False,True])
+@pytest.mark.parametrize('decision',['auto_linked','manual_linked','manual_unlinked','review_required'])
+@pytest.mark.parametrize('direction',['attach_target_to_event','attach_source_to_event'])
+def test_other_event_membership_requires_replanning(attachment,batch,decision,direction):
+    repo,dsn,item,source,target=attachment
+    if direction=='attach_source_to_event':
+        with psycopg.connect(dsn) as conn:
+            conn.execute('update public.event_signals set signal_id=%s',(target,))
+        item['assignment_plan']['action']=direction
+        item['assignment_plan']['signal_ids']=[source]
+    attached=item['assignment_plan']['signal_ids'][0]
+    with psycopg.connect(dsn) as conn:
+        event=str(conn.execute("insert into public.events(event_code,title,lifecycle_status) values('conflicting','Conflicting','active') returning id").fetchone()[0])
+        conn.execute('insert into public.event_signals(event_id,signal_id,match_decision) values(%s,%s,%s)',(event,attached,decision))
+    before=memberships(dsn)
+    with pytest.raises(ValueError,match='another event'):
+        write(repo,item,batch)
+    assert memberships(dsn)==before
+
+
+@pytest.mark.parametrize('batch',[False,True])
+@pytest.mark.parametrize('change',['insert','move'])
+def test_concurrent_other_membership_is_rechecked_after_wait(attachment,batch,change):
+    repo,dsn,item,source,target=attachment
+    if change=='move':
+        write(repo,item,batch)
+    with psycopg.connect(dsn) as conn:
+        other=str(conn.execute("insert into public.events(event_code,title,lifecycle_status) values('concurrent','Concurrent','active') returning id").fetchone()[0])
+    with psycopg.connect(dsn) as changing,psycopg.connect(dsn,autocommit=True) as monitor:
+        if change=='move':
+            changing.execute('update public.event_signals set event_id=%s where signal_id=%s',(other,target))
+        else:
+            changing.execute("insert into public.event_signals(event_id,signal_id,match_decision) values(%s,%s,'manual_linked')",(other,target))
+        pid=changing.info.backend_pid
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            future=executor.submit(write,repo,item,batch)
+            deadline=monotonic()+5
+            blocked=False
+            try:
+                while monotonic()<deadline and not future.done():
+                    blocked=monitor.execute('select exists(select 1 from pg_stat_activity where %s=any(pg_blocking_pids(pid)))',(pid,)).fetchone()[0]
+                    if blocked:
+                        break
+                    Event().wait(.01)
+                assert blocked,'Attachment did not wait for the changing membership'
+            finally:
+                changing.commit()
+            with pytest.raises(ValueError,match='another event'):
+                future.result(timeout=10)
+    with psycopg.connect(dsn) as conn:
+        actual=conn.execute('select event_id::text from public.event_signals where signal_id=%s',(target,)).fetchall()
+    assert actual==[(other,)]
+
+
+def test_later_conflicting_target_rolls_back_earlier_valid_attachment(attachment):
+    import copy
+    from uuid import UUID
+    repo,dsn,item,source,target=attachment
+    third=str(UUID(int=UUID(target).int+1))
+    with psycopg.connect(dsn) as conn:
+        conn.execute("""insert into public.signals
+            (id,raw_item_id,local_signal_key,signal_type,signal_summary,extraction_confidence,event_matching_eligible,is_current)
+            select %s,raw_item_id,'third','case_report','Synthetic',.8,true,true
+            from public.signals where id=%s""",(third,source))
+        other=str(conn.execute("insert into public.events(event_code,title,lifecycle_status) values('second-conflict','Second conflict','active') returning id").fetchone()[0])
+        conn.execute("insert into public.event_signals(event_id,signal_id,match_decision) values(%s,%s,'manual_linked')",(other,third))
+    relation=repo.persist_matcher_relation(source_signal_id=source,target_signal_id=third,matcher_result=_v049_persistable_result())
+    second=copy.deepcopy(item)
+    second['signal_relation_id']=relation['signal_relation_id']
+    second['assignment_plan']['signal_ids']=[third]
+    before=memberships(dsn)
+    with pytest.raises(ValueError,match='another event'):
+        repo.persist_event_signal_attachments_batch([item,second])
+    assert memberships(dsn)==before

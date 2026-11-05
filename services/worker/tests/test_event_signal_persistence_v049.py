@@ -29,11 +29,17 @@ RELATION_ID = (
 def _with_positive_anchor_rows(cursor):
     """Represent the positive anchor omitted by legacy relation-only mocks."""
     execute, fetchone = cursor.execute, cursor.fetchone
+    fetchall = getattr(cursor, 'fetchall', None)
     pending = None
+    pending_many = None
 
     def execute_with_anchor(query, params):
-        nonlocal pending
+        nonlocal pending, pending_many
         normalized = " ".join(str(query).split())
+        if normalized.startswith('select event_id from public.event_signals'):
+            assert normalized.endswith('where signal_id = %s order by event_id for update')
+            pending_many = []
+            return
         if normalized.startswith("select signal_id from public.event_signals"):
             assert "match_decision in ('auto_linked', 'manual_linked')" in normalized
             assert normalized.endswith("for update")
@@ -49,7 +55,16 @@ def _with_positive_anchor_rows(cursor):
             return row
         return fetchone()
 
+    def fetchall_with_memberships():
+        nonlocal pending_many
+        if pending_many is not None:
+            rows, pending_many = pending_many, None
+            return rows
+        assert fetchall is not None
+        return fetchall()
+
     cursor.execute, cursor.fetchone = execute_with_anchor, fetchone_with_anchor
+    cursor.fetchall = fetchall_with_memberships
     return cursor
 
 
